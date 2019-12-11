@@ -33,9 +33,8 @@
       <el-table :data="goodsList" border stripe>
 
         <el-table-column label="身分證" prop=""></el-table-column>
-        <el-table-column label="帳戶名稱" prop="" ></el-table-column>
+        <el-table-column label="會員" prop="" ></el-table-column>
         <el-table-column label="銀行名稱" prop=""></el-table-column>
-        <el-table-column label="銀行代號" prop=""></el-table-column>
         <el-table-column label="銀行卡卡號" prop=""></el-table-column>
         <el-table-column label="註冊時間">
           <template slot-scope="scope">{{scope.row.add_time | dateFormat}}</template>
@@ -141,7 +140,7 @@ export default {
       })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败')
+        return this.$message.error('獲取列表失敗')
       }
       this.goodsList = res.data.goods
       this.total = res.data.total
@@ -151,7 +150,7 @@ export default {
     },
     async removeGoodsById (id) {
       const confirmResult = await this.$confirm(
-        '此操作将永久删除该商品, 是否继续?',
+        '此操作将永久删除該銀行, 是否繼續?',
         '提示',
         {
           type: 'warning'
@@ -189,40 +188,17 @@ export default {
       this.showDialogVisible = true
     },
     // 篩選區
-    handleSearch () {
-      /*    const { data: res } = await this.$http.get('goods', {
+    async  handleSearch () {
+      const { data: res } = await this.$http.get('goods', {
         params: this.queryInfo
       })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败')
+        return this.$message.error('獲取列表失敗')
       }
       this.List = res.data.goods
       console.log('123', res.data.goods)
-      this.total = res.data.total */
-      //
-
-      if ((this.queryInfo.payment === '入金', '出金' && this.queryInfo.Coin === 'TWD')) {
-        console.log('i')
-        this.$http.get('goods').then(res => {
-          let dataa = []
-          res.data.goods.forEach((item, index) => {
-            if (
-              item.goods_state === this.queryInfo.payment &&
-              item.goods_weight === this.queryInfo.Coin
-            ) {
-              dataa.push(item)
-              console.log(item.goods_weight)
-            }
-          })
-          this.GoodsList = dataa
-        })
-      } else {
-        this.$http.get('goods').then(res => {
-          // console.log(res);
-          this.GoodsList = res.data.goods
-        })
-      }
+      this.total = res.data.total
     }
   }
 }

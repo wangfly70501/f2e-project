@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目設置', '手續費設置']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理ˇ', '手續費設置']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
@@ -47,23 +47,14 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 新增會員 -->
-    <el-dialog title="新增會員" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+    <!-- 新增手續費 -->
+    <el-dialog title="新增手續費" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
-        <el-form-item label="姓名" prop="username">
+        <el-form-item label="銀行" prop="username">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
-        <el-form-item label="帳號" prop="account">
+        <el-form-item label="手續費" prop="account">
           <el-input v-model="addForm.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="addForm.password"></el-input>
-        </el-form-item>
-        <el-form-item label="信箱" prop="email">
-          <el-input v-model="addForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="手機" prop="mobile">
-          <el-input v-model="addForm.mobile"></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -73,19 +64,19 @@
       </span>
     </el-dialog>
 
-    <!--修改會員 -->
-    <el-dialog title="修改會員資料" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+    <!--修改手續費 -->
+    <el-dialog title="修改手續費" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
         <el-form-item label="銀行">
           <el-input v-model="editForm.username" disabled></el-input>
         </el-form-item>
-        <el-form-item label="手續費" prop="email">
-          <el-input v-model="editForm.email"></el-input>
+        <el-form-item label="手續費"  prop="charge">
+          <el-input v-model="editForm.charge"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editUserInfo">確定</el-button>
+        <el-button type="primary" @click="editcharge">確定</el-button>
       </span>
     </el-dialog>
 
@@ -95,20 +86,6 @@
 <script>
 export default {
   data () {
-    // 验证邮箱的规则
-    var checkEmail = (rule, value, cb) => {
-      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
-      if (regEmail.test(value)) return cb()
-      cb(new Error('请输入合法的邮箱'))
-    }
-
-    // 验证手机号的规则
-    var checkMobile = (rule, value, cb) => {
-      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
-      if (regMobile.test(value)) return cb()
-      cb(new Error('请输入合法的手机号'))
-    }
-
     return {
       queryInfo: {
         query: '',
@@ -123,28 +100,17 @@ export default {
         username: '',
         password: '',
         email: '',
-        mobile: ''
+        mobile: '',
+        charge: ''
       },
       addFormRules: {
         username: [
-          { required: true, message: '請輸入姓名', trigger: 'blur' },
+          { required: true, message: '請輸入銀行', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
         account: [
-          { required: true, message: '請輸入帳號', trigger: 'blur' },
+          { required: true, message: '請輸入手續費', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '請輸入密碼', trigger: 'blur' },
-          { min: 3, max: 15, message: '長度在 3 到 10 個字元', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '請輸入信箱', trigger: 'blur' },
-          { validator: checkEmail, trigger: 'blur' }
-        ],
-        mobile: [
-          { required: true, message: '請輸入手機', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' }
         ]
       },
 
@@ -152,13 +118,9 @@ export default {
       table: {},
       editForm: {},
       editFormRules: {
-        email: [
-          { required: true, message: '請輸入信箱', trigger: 'blur' },
-          { validator: checkEmail, trigger: 'blur' }
-        ],
-        mobile: [
-          { required: true, message: '請輸入手機', trigger: 'blur' },
-          { validator: checkMobile, trigger: 'blur' }
+        charge: [
+          { required: true, message: '請輸入手續費', trigger: 'blur' },
+          { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ]
       },
 
@@ -181,7 +143,7 @@ export default {
       })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('獲取用户列表失败')
+        return this.$message.error('獲取列表失败')
       }
 
       this.chargeList = res.data.users
@@ -222,10 +184,10 @@ export default {
         const { data: res } = await this.$http.post('users', this.addForm)
 
         if (res.meta.status !== 201) {
-          return this.$message.error('添加用户失败')
+          return this.$message.error('新增失敗')
         }
 
-        this.$message.success('添加用户成功')
+        this.$message.success('新增成功')
         this.getChargeList()
         this.addDialogVisible = false
       })
@@ -235,7 +197,7 @@ export default {
       const { data: res } = await this.$http.get('users/' + id)
 
       if (res.meta.status !== 200) {
-        return this.$message.error('查詢用户信息失败')
+        return this.$message.error('查詢信息失败')
       }
 
       this.editForm = res.data
@@ -246,7 +208,7 @@ export default {
       this.$refs.editFormRef.resetFields()
     },
 
-    editUserInfo () {
+    editcharge () {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
 
@@ -259,10 +221,10 @@ export default {
         )
 
         if (res.meta.status !== 200) {
-          return this.$message.error('更新用户信息失败')
+          return this.$message.error('更新失败')
         }
 
-        this.$message.success('更新用户信息成功')
+        this.$message.success('更新成功')
         this.getChargeList()
         this.editDialogVisible = false
       })
@@ -270,7 +232,7 @@ export default {
 
     async deleteUserById (id) {
       const confirmResult = await this.$confirm(
-        '此操作将永久删除该用户, 是否繼續?',
+        '此操作將永久删除, 是否繼續?',
         '提示信息',
         {
           type: 'warning'
@@ -284,38 +246,18 @@ export default {
       const { data: res } = await this.$http.delete('users/' + id)
 
       if (res.meta.status !== 200) {
-        return this.$message.error('删除用户失败')
+        return this.$message.error('删除失敗')
       }
 
-      this.$message.success('删除用户成功')
+      this.$message.success('删除成功')
       this.getChargeList()
     },
 
     setRoleDialogClosed () {
       this.selectedRoleId = null
       this.userInfo = {}
-    },
-
-    async saveRoleInfo () {
-      if (!this.selectedRoleId) {
-        return this.$message.error('請選擇要分配的角色')
-      }
-
-      const { data: res } = await this.$http.put(
-        `users/${this.userInfo.id}/role`,
-        {
-          rid: this.selectedRoleId
-        }
-      )
-
-      if (res.meta.status !== 200) {
-        return this.$message.error('更新角色失败')
-      }
-
-      this.$message.success('更新角色成功')
-      this.getChargeList()
-      this.setRoleDialogVisible = false
     }
+
   }
 }
 </script>

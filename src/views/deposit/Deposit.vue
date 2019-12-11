@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['財務管理','出入金管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['出入金管理','出入金列表']"></TopBreadcrumb>
 
     <!-- 卡片视图区域 -->
     <el-card>
@@ -8,9 +8,6 @@
         <!--         <el-col :span="4">
           <el-button type="primary" @click="toAddpage">搜尋</el-button>
         </el-col>-->
-      </SearchTool>
-
-      <!-- 搜尋區域 -->
       <!-- 下拉式選單 -->
 
       <el-select v-model="queryInfo.coin" placeholder="幣種">
@@ -29,7 +26,12 @@
         value-format="yyyy-MM-dd"
         style="width:20%;"
       ></el-date-picker>&nbsp;
-      <el-button type="primary" icon="el-icon-search" @click="handleSearch"></el-button>
+      <el-button type="primary" icon="el-icon-search"  @search="getGoodsList"></el-button>
+
+      </SearchTool>
+
+      <!-- 搜尋區域 -->
+
       <!-- table表格区域 -->
       <el-table :data="goodsList" border stripe>
         <el-table-column label="序號" prop="" width="100px"></el-table-column>
@@ -53,12 +55,6 @@
             ></el-button>
             <!-- <el-button type="primary" icon="el-icon-edit"
             size="mini" @click="handleEdit"></el-button>-->
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              @click="removeGoodsById(scope.row.goods_id)"
-            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -103,10 +99,6 @@
           </tr>
         </table>
       </el-form>
-      <!--              <el-table :data="goodsList" border stripe>
-        <el-table-column type="index"></el-table-column>
-        <el-table-column label="帳號" prop="goods_name"  ></el-table-column>
-      </el-table>-->
     </el-dialog>
   </div>
 </template>
@@ -143,7 +135,7 @@ export default {
       })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败')
+        return this.$message.error('獲取列表失敗')
       }
       this.goodsList = res.data.goods
       this.total = res.data.total
@@ -153,7 +145,7 @@ export default {
     },
     async removeGoodsById (id) {
       const confirmResult = await this.$confirm(
-        '此操作将永久删除该商品, 是否继续?',
+        '此操作将永久删除该商品, 是否繼續?',
         '提示',
         {
           type: 'warning'
@@ -191,40 +183,17 @@ export default {
       this.showDialogVisible = true
     },
     // 篩選區
-    handleSearch () {
-      /*    const { data: res } = await this.$http.get('goods', {
+    async handleSearch () {
+      const { data: res } = await this.$http.get('goods', {
         params: this.queryInfo
       })
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败')
+        return this.$message.error('獲取列表失敗')
       }
       this.List = res.data.goods
       console.log('123', res.data.goods)
-      this.total = res.data.total */
-      //
-
-      if ((this.queryInfo.payment === '入金', '出金' && this.queryInfo.Coin === 'TWD')) {
-        console.log('i')
-        this.$http.get('goods').then(res => {
-          let dataa = []
-          res.data.goods.forEach((item, index) => {
-            if (
-              item.goods_state === this.queryInfo.payment &&
-              item.goods_weight === this.queryInfo.Coin
-            ) {
-              dataa.push(item)
-              console.log(item.goods_weight)
-            }
-          })
-          this.GoodsList = dataa
-        })
-      } else {
-        this.$http.get('goods').then(res => {
-          // console.log(res);
-          this.GoodsList = res.data.goods
-        })
-      }
+      this.total = res.data.total
     }
   }
 }
