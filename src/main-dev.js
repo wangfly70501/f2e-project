@@ -14,7 +14,9 @@ import VueQuillEditor from 'vue-quill-editor' // 富文本编辑器
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 // 树型表格插件
 Vue.use(ZkTable)
 

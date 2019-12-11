@@ -1,12 +1,12 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['用户管理', '用户列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['管理者管理', '管理者列表']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
       <SearchTool v-model="queryInfo.query" @search="getUserList">
         <el-col :span="4">
-          <el-button type="primary" @click="addDialogVisible = true">新增使用者</el-button>
+          <el-button type="primary" @click="addDialogVisible = true">新增管理者</el-button>
         </el-col>
       </SearchTool>
 
@@ -50,9 +50,9 @@
     </el-card>
 
     <!-- 添加用户的对话框 -->
-    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+    <el-dialog title="新增管理者" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item label="管理者" prop="username">
           <el-input v-model="addForm.username"></el-input>
         </el-form-item>
         <el-form-item label="密碼" prop="password">
@@ -73,7 +73,7 @@
     </el-dialog>
 
     <!-- 修改用户的对话框 -->
-    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+    <el-dialog title="修改資訊" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
         <el-form-item label="用户名">
           <el-input v-model="editForm.username" disabled></el-input>
@@ -94,7 +94,7 @@
     <!-- 分配角色的对话框 -->
     <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%" @close="setRoleDialogClosed">
       <el-form label-width="100px">
-        <el-form-item label="目前使用者">
+        <el-form-item label="目前管理者">
           <el-input disabled :value="userInfo.username"></el-input>
         </el-form-item>
         <el-form-item label="目前角色" prop="email">
@@ -122,21 +122,21 @@ export default {
     var checkEmail = (rule, value, cb) => {
       const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
       if (regEmail.test(value)) return cb()
-      cb(new Error('请输入合法的邮箱'))
+      cb(new Error('請輸入正確的信箱'))
     }
 
     // 验证手机号的规则
     var checkMobile = (rule, value, cb) => {
       const regMobile = /^[0-9]{10}$/
       if (regMobile.test(value)) return cb()
-      cb(new Error('请输入合法的手机号'))
+      cb(new Error('請輸入正確的手機號碼'))
     }
 
     return {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 2
+        pagesize: 10
       },
       userList: [],
       total: 0, // 总用户数
@@ -151,11 +151,11 @@ export default {
       addFormRules: {
         username: [
           { required: true, message: '請輸入使用者', trigger: 'blur' },
-          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+          { min: 3, max: 10, message: '長度在 3 到 10個字元', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '請輸入密碼', trigger: 'blur' },
-          { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+          { min: 3, max: 15, message: '长度在 3 到 15 個字元', trigger: 'blur' }
         ],
         email: [
           { required: true, message: '請輸入信箱', trigger: 'blur' },

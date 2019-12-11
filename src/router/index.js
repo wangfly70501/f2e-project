@@ -34,7 +34,7 @@ const Orders = () => import(/* webpackChunkName: "Orders_Report" */ '../views/or
 // const Report = () => import(/* webpackChunkName: "Orders_Report" */ '../views/report/Report.vue')
 const Charge = () => import(/* webpackChunkName: "service_Charges" */ '../views/charge/Charge.vue')
 const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views/deposit/Deposit.vue')
-const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont.vue')
+const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont1.vue')
 const Receipt = () => import(/* webpackChunkName: "service_Charges" */ '../views/receipt/Receipt.vue')
 
 Vue.use(VueRouter)

@@ -4,7 +4,7 @@
 
     <el-card>
       <el-row>
-        <el-button type="primary" @click="addDialogVisible = true">添加角色</el-button>
+        <el-button type="primary" @click="addDialogVisible = true">新增角色</el-button>
       </el-row>
 
       <!-- 角色列表 -->
@@ -50,23 +50,23 @@
         </el-table-column>
 
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="角色名称" prop="roleName"></el-table-column>
+        <el-table-column label="角色名稱" prop="roleName"></el-table-column>
         <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
         <el-table-column label="操作" width="300px">
           <template v-slot="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEditRole">编辑</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRoleById(scope.row.id)">删除</el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="handleEditRole">編輯</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRoleById(scope.row.id)">刪除</el-button>
             <el-button type="warning" icon="el-icon-setting" size="mini"
-              @click="showSetRightDialog(scope.row)">分配权限</el-button>
+              @click="showSetRightDialog(scope.row)">分配權限</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-card>
 
     <!-- 添加角色的对话框 -->
-    <el-dialog title="添加角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+    <el-dialog title="新增角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-        <el-form-item label="角色名称" prop="roleName">
+        <el-form-item label="角色名稱" prop="roleName">
           <el-input v-model="addForm.roleName"></el-input>
         </el-form-item>
         <el-form-item label="角色描述" prop="roleDesc">
@@ -81,7 +81,7 @@
     </el-dialog>
 
     <!-- 分配权限的对话框 -->
-    <el-dialog title="分配权限" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed">
+    <el-dialog title="分配權限" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed">
       <el-tree
         :data="rightsList" :props="treeProps" ref="treeRef"
         show-checkbox node-key="id" default-expand-all
