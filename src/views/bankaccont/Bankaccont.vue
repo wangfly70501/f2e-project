@@ -6,7 +6,7 @@
 <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜尋">
 </SearchTool>
 
-<!-- 订单列表数据 -->
+<!-- 列表数据 -->
 <el-table :data="orderList" border stripe>
 <el-table-column type="index"></el-table-column>
 <el-table-column label="身分證" prop="identityid"></el-table-column>

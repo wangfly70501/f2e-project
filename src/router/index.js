@@ -36,6 +36,7 @@ const Charge = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views/deposit/Deposit.vue')
 const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont.vue')
 const Receipt = () => import(/* webpackChunkName: "service_Charges" */ '../views/receipt/Receipt.vue')
+const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Member.vue')
 
 Vue.use(VueRouter)
 
@@ -60,6 +61,7 @@ const routes = [
       { path: '/charge', component: Charge },
       { path: '/deposit', component: Deposit },
       { path: '/bankaccont', component: Bankaccont },
+      { path: '/member', component: Member },
       { path: '/receipt', component: Receipt }
     ]
   }
