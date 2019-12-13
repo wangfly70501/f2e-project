@@ -10,23 +10,32 @@
 <el-table :data="orderList" border stripe>
 <el-table-column type="index"></el-table-column>
 <el-table-column label="姓名" prop="username"></el-table-column>
-<el-table-column label="類別" prop=""></el-table-column>
-<el-table-column label="身分證" prop="identityid"></el-table-column>
-<el-table-column label="銀行名稱" prop="bank_ch"></el-table-column>
-<el-table-column label="幣種" prop=""></el-table-column>
-<el-table-column label="手續費" prop=""></el-table-column>
-<el-table-column label="金額" prop=""></el-table-column>
-<el-table-column label="是否綁定" prop="status">
-<template slot-scope="scope">
+
+ <!--<template slot-scope="scope">
 <el-tag type="danger" v-if="scope.row.status === 3">未綁定</el-tag>
 <el-tag type="success" v-else>已綁定</el-tag>
 </template>
-</el-table-column>
+-->
 
-<el-table-column label="綁定時間" prop="bank_ctime">
-<template slot-scope="scope">
-{{scope.row.bank_ctime | dateFormat}}
+<el-table-column label="身分證" prop="identityid"></el-table-column>
+<el-table-column label="銀行帳號" prop="bankcard_uuid"></el-table-column>
+
+<el-table-column label="幣種" prop="currency"></el-table-column>
+<el-table-column label="交易前" prop="quota_before"></el-table-column>
+<el-table-column label="交易後" prop="quota_after"></el-table-column>
+
+<el-table-column label="手續費" prop="cost"></el-table-column>
+<el-table-column label="金額" prop="amount"></el-table-column>
+<el-table-column label="總資產" prop="uamount"></el-table-column>
+<el-table-column label="入金" prop="status">
+ <template slot-scope="scope">
+<el-tag  type="danger" v-if="scope.row.status ===0 ">未</el-tag>
+ <el-tag type="success" v-else>已</el-tag>
 </template>
+</el-table-column>
+<el-table-column label="入金" prop="status"></el-table-column>
+<el-table-column label="出金" prop="mode"></el-table-column>
+<el-table-column label="交易日期" prop="txdate">
 </el-table-column>
 <el-table-column label="操作">
 <template>
@@ -95,9 +104,8 @@ export default {
       }
 
       this.total = res.data.total
-
+      console.log(res.data)
       this.orderList = res.data
-      console.log('this.orderList', res.data)
     },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize

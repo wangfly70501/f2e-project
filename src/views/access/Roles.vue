@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['權限管理', '角色列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['管理者管理', '角色列表']"></TopBreadcrumb>
 
     <el-card>
       <el-row>
