@@ -3,7 +3,7 @@
 <TopBreadcrumb :titles="['出入金管理', '出入金列表']"></TopBreadcrumb>
 
 <el-card>
-<SearchTool v-model="queryInfo.query" placeholder="暫不支持搜尋">
+<SearchTool v-model="queryInfo.query" placeholder="暫不支持搜尋" >
 </SearchTool>
 
 <!-- 列表数据 -->
@@ -16,8 +16,7 @@
 <el-table-column label="交易前" prop="quota_before"></el-table-column>
 <el-table-column label="交易後" prop="quota_after"></el-table-column>
 <el-table-column label="手續費" prop="cost"></el-table-column>
-<el-table-column label="金額" prop="amount"></el-table-column>
-<el-table-column label="總資產" prop="uamount"></el-table-column>
+<el-table-column label="總資產" prop="amount"></el-table-column>
 <el-table-column label="類別" prop="status">
  <template slot-scope="scope">
 <el-tag  type="success" v-if="scope.row.status !==0 ">入金</el-tag>
@@ -35,14 +34,14 @@
   {{scope.row.txdate| dateFormat}}
   </template>
 </el-table-column>
-<el-table-column label="操作">
+<!-- <el-table-column label="操作">
 <template>
 <el-button size="mini" type="primary" icon="el-icon-edit"
 @click="addressVisible = true" :disabled="isDisabl"></el-button>
 <el-button size="mini" type="success" icon="el-icon-location"
  :disabled="isDisabl"></el-button>
 </template>
-</el-table-column>
+</el-table-column> -->
 </el-table>
 
 <!-- 分页区域 -->
@@ -70,11 +69,11 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 20
+        pagesize: 10
       },
       orderList: [],
       total: 0,
-      isDisabl: true,
+      /* isDisabl: true, */
 
       addressVisible: false,
       addressForm: {
@@ -102,8 +101,8 @@ export default {
       }
 
       this.total = res.data.total
-      Object.keys(res.data).map(k => res.data[k].status === 3 && delete res.data[k])
-      console.log(res.data)
+      /* Object.keys(res.data).map(k => res.data[k].status === 3 && delete res.data[k]) */
+
       this.orderList = res.data
     },
     handleSizeChange (newSize) {

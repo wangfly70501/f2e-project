@@ -91,7 +91,7 @@ export default {
 
       this.total = res.data.total
 
-      Object.keys(res.data.goods).map(k => res.data.goods[k].status === 3 && delete res.data.goods[k])
+      Object.keys(res.data.goods).map(k => res.data.goods[k].status === 5 && delete res.data.goods[k])
 
       this.orderList = res.data.goods
     },
