@@ -22,7 +22,7 @@ Vue.use(ZkTable)
 
 // axios处理
 // 在 request 拦截器中，展示进度条 NProgress.start()
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://192.168.50.105:8888/api/private/v1/'
 axios.interceptors.request.use(config => {
   NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem('token')

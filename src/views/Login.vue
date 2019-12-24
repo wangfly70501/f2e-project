@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-box">
       <div class="avatar-box">
-        <img src="../assets/logo1.png">
+        <img src="../assets/btcbox_icon.jpg">
       </div>
 
       <el-form
