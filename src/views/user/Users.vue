@@ -204,6 +204,7 @@ export default {
 
       this.userList = res.data.users
       this.total = res.data.total
+      console.log(res.data)
     },
 
     // 更改用户状态

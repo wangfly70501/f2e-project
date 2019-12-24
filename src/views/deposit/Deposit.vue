@@ -45,14 +45,15 @@
 </el-table>
 
 <!-- 分页区域 -->
-<el-pagination
-@size-change="handleSizeChange"
-@current-change="handleCurrentChange"
-:current-page="queryInfo.pagenum"
-:page-sizes="[5, 10, 15,20]"
-:page-size="queryInfo.pagesize"
-layout="total, sizes, prev, pager, next, jumper"
-:total="total">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-count="6"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
 </el-pagination>
 </el-card>
 
@@ -73,8 +74,6 @@ export default {
       },
       orderList: [],
       total: 0,
-      /* isDisabl: true, */
-
       addressVisible: false,
       addressForm: {
         city: [],
@@ -88,6 +87,7 @@ export default {
 
   created () {
     this.getOrderList()
+    console.log('123', this.orderList)
   },
 
   methods: {
@@ -99,11 +99,15 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('獲取列表失败')
       }
+      console.log('123', res)
+      console.log('res.data', res.data)
+      this.total = res.data.length
+      console.log('total111', this.total)
+      /* this.orderList = res.data */
 
-      this.total = res.data.total
       /* Object.keys(res.data).map(k => res.data[k].status === 3 && delete res.data[k]) */
-
-      this.orderList = res.data
+      this.orderList = res.data.slice(this.total / this.queryInfo.pagesize * this.pagenum, 10)
+      console.log('res.data.length', res)
     },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
