@@ -37,8 +37,7 @@ const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views
 const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont.vue')
 const Receipt = () => import(/* webpackChunkName: "service_Charges" */ '../views/receipt/Receipt.vue')
 const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Member.vue')
-const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Banner.vue')
-const Indexmenu = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Indexmenu.vue')
+const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/banner/Banner.vue')
 
 Vue.use(VueRouter)
 
@@ -51,22 +50,7 @@ const routes = [
     component: Home,
     children: [
       { path: '/welcome', component: Welcome },
-      { path: '/users', component: Users },
-      { path: '/rights', component: Rights },
-      { path: '/roles', component: Roles },
-      /* { path: '/categories', component: Categories }, */
-      /*  { path: '/params', component: Params }, */
-      { path: '/goods', component: GoodsList },
-      { path: '/goods/add', component: GoodsAdd },
-      { path: '/orders', component: Orders },
-      /* { path: '/reports', component: Report } */
-      { path: '/charge', component: Charge },
-      { path: '/deposit', component: Deposit },
-      { path: '/bankaccont', component: Bankaccont },
-      { path: '/member', component: Member },
-      { path: '/banner', component: Banner },
-      { path: '/receipt', component: Receipt },
-      { path: '/indexmenu', component: Indexmenu }
+    
     ]
   }
 ]

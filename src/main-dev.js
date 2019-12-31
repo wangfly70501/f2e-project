@@ -16,6 +16,8 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/fonts/icon.css'
+
 Vue.use(ElementUI)
 // 树型表格插件
 Vue.use(ZkTable)

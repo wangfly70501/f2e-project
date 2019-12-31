@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理ˇ', '手續費設置']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '手續費設置']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
