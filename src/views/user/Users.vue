@@ -131,8 +131,8 @@ export default {
       if (regMobile.test(value)) return cb()
       cb(new Error('請輸入正確的手機號碼'))
     }
-
     return {
+
       queryInfo: {
         query: '',
         pagenum: 1,

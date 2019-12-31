@@ -6,10 +6,7 @@
 
 <script>
 export default {
-  inject: ['setActivePath'],
-  created () {
-    this.setActivePath('/')
-  }
+
 }
 </script>
 

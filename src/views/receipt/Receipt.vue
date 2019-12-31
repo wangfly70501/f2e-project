@@ -4,18 +4,37 @@
 
     <el-card>
       <!-- 搜索工具 -->
-      <SearchTool v-model="queryInfo.query" @search="getChargeList">
-        <el-col :span="4">
-        <!--   <el-button type="primary" @click="addDialogVisible = true">新增載具</el-button> -->
-        </el-col>
-      </SearchTool>
 
+      <el-select v-model="queryInfo.enable" placeholder="請選擇">
+        <el-option
+          v-for="(enableValue,index) in enable"
+          :key="index"
+          v-bind:label="enableValue.label"
+          v-bind:value="enableValue.value"
+        >{{enableValue.label}}</el-option>
+      </el-select>&nbsp;
+          <el-input
+        v-model="formData.name"
+        style="width:10% "
+        placeholder='請輸入內容'
+        clearable @clear="handleSearch" @keyup.enter.native="handleSearch">
+          </el-input>
+      <el-date-picker
+        type="daterange"
+        start-placeholder="StartTime"
+        end-placeholder="EndTime"
+        v-model="queryInfo.date"
+        value-format="yyyy-MM-dd"
+        style="width:30% "
+      ></el-date-picker>&nbsp;
+      <el-button type="primary" @click="search()">搜尋</el-button>
       <!-- 手續費列表 -->
-      <el-table :data="chargeList" stripe border>
-        <el-table-column label="訂單編號" prop></el-table-column>
-        <el-table-column label="載具類型" prop=""></el-table-column>
-        <el-table-column label="身分證" prop=""></el-table-column>
-        <el-table-column label="開立日期" prop=""></el-table-column>
+      <el-table :data="tableDataEnd" stripe border>
+        <el-table-column label="性別" prop="sex"></el-table-column>
+        <el-table-column label="訂單編號" prop="number"></el-table-column>
+        <el-table-column label="載具類型" prop></el-table-column>
+        <el-table-column label="身分證" prop="idcard"></el-table-column>
+        <el-table-column label="開立日期" prop="date"></el-table-column>
         <el-table-column label="操作" width="180px">
           <template v-slot="scope">
             <el-button
@@ -30,7 +49,6 @@
               size="mini"
               @click="deleteUserById(scope.row.id)"
             ></el-button>
-
           </template>
         </el-table-column>
       </el-table>
@@ -48,7 +66,12 @@
     </el-card>
 
     <!--修改會員 -->
-    <el-dialog title="修改會員資料" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+    <el-dialog
+      title="修改會員資料"
+      :visible.sync="editDialogVisible"
+      width="50%"
+      @close="editDialogClosed"
+    >
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
         <el-form-item label="銀行">
           <el-input v-model="editForm.username" disabled></el-input>
@@ -62,7 +85,6 @@
         <el-button type="primary" @click="editUserInfo">確 定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
@@ -84,13 +106,66 @@ export default {
     }
 
     return {
+      tableData: [
+        {
+          id: '1',
+          number: 'XA123445678',
+          date: '2019-12-11',
+          idcard: 'a123456789',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄',
+          sex: '女'
+        },
+        {
+          id: '2',
+          number: 'XA123445678',
+          date: '2019-12-11',
+          idcard: 'a123456789',
+          name: '王二虎',
+          address: '上海市普陀区金沙江路 1518 弄',
+          sex: '女'
+        },
+        {
+          id: '3',
+          number: 'XA123445678',
+          date: '2019-12-11',
+          idcard: 'a123456789',
+          name: '王4虎',
+          address: '上海市普陀区金沙江路 1518 弄',
+          sex: '男'
+        },
+        {
+          id: '4',
+          number: 'XA123445678',
+          date: '2019-12-11',
+          idcard: 'a123456789',
+          name: '王5虎',
+          address: '上海市普陀区金沙江路 1518 弄',
+          sex: '男'
+        }
+      ],
+      enable: [
+        {
+          label: '所有',
+          value: '0'
+        },
+        {
+          label: '男',
+          value: '1'
+        },
+        {
+          label: '女',
+          value: '2'
+        }
+      ],
       queryInfo: {
         query: '',
+        date: '',
         pagenum: 1,
         pagesize: 10
       },
       chargeList: [],
-      total: 0, // 总用户数
+      total: 10, // 总用户数
 
       addDialogVisible: false,
       addForm: {
@@ -139,12 +214,24 @@ export default {
       setRoleDialogVisible: false,
       selectedRoleId: null,
       userInfo: {},
-      rolesList: []
+      rolesList: [],
+      tableDataEnd: [],
+      filterTableDataEnd: [],
+      totalItems: 0
     }
   },
 
   created () {
     this.getChargeList()
+    this.search({})
+    this.totalItems = this.tableDataBegin.length
+    if (this.totalItems > this.pageSize) {
+      for (let index = 0; index < this.pageSize; index) {
+        this.tableDataEnd.push(this.tableDataBegin[index])
+      }
+    } else {
+      this.tableDataEnd = this.tableData
+    }
   },
 
   methods: {
@@ -173,6 +260,22 @@ export default {
         return this.$message.error('更新用户狀態失败')
       }
       this.$message.success('更新用戶狀態成功')
+    },
+
+    search ({ name, phone, sex }) {
+      this.realList = this.list.filter(item => {
+        let matchName = true // // 姓名 筛选
+        if (name) {
+          // 模糊搜索;
+          const keys = name
+            .toUpperCase() // 转大写
+            .replace(' ', '') // 删掉空格
+            .split('') // 切割成 单个字
+
+          matchName = keys.every(key => item.name.toUpperCase().includes(key))
+        }
+        return matchName
+      })
     },
 
     handleSizeChange (newSize) {
