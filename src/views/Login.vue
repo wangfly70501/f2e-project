@@ -30,10 +30,12 @@
 </template>
 
 <script>
+import { login } from '../api/index.js'
 
 export default {
   data () {
     return {
+      data: '',
       loginForm: {
         username: '',
         password: ''
@@ -50,18 +52,45 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$refs.loginFormRef.validate(async valid => {
-        if (!valid) return
+    async login () {
+      let data = {
+        mg_name: this.loginForm.username,
+        mg_pwd: this.loginForm.password
+      }
 
-        const { data: res } = await this.$http.post('login', this.loginForm)
-        if (res.meta.status !== 200) return this.$message.error('登入失敗：' + res.meta.msg)
+      await login(data).then(res => {
+        this.data = res.data.mg_state
+
+        console.log(res)
+        console.log(this.data)
+
+        if (res.error_code !== 0 || this.data !== 1) {
+          return this.$message.error('登入失敗：')
+        } else if (res.error_code === 0 || this.data === 1) {
+          localStorage.setItem('mg_name', this.loginForm.username)
+        }
 
         // 登陆成功，保存token到sessionStorage，并跳转到首页
         this.$message.success(' 登入成功')
         window.sessionStorage.setItem('token', res.data.token)
         this.$router.push('/home')
       })
+
+      /* this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return
+
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        if (res.error_code !== 0) {
+          return this.$message.error('登入失敗：')
+        } else if (res.error_code === 0) {
+          localStorage.setItem('mg_name', this.loginForm.sername)
+        }
+
+        // 登陆成功，保存token到sessionStorage，并跳转到首页
+        this.$message.success(' 登入成功')
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
+      }) */
     },
     reset () {
       this.$refs.loginFormRef.resetFields()
