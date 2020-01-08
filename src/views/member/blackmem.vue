@@ -1,27 +1,24 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['會員管理', '會員列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['會員管理', '黑名單會員列表']"></TopBreadcrumb>
 
     <el-card>
       <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
       </SearchTool>
 
-      <!-- 會員列表数据 -->
-      <el-table :data="userList" border stripe>
+      <!-- 订单列表数据 -->
+      <el-table :data="blackmemList" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="會員姓名" prop="username"></el-table-column>
         <el-table-column label="會員層級" prop="level"></el-table-column>
         <el-table-column label="身分證字號" prop="identityid"></el-table-column>
         <el-table-column label="會員帳號" prop="account"></el-table-column>
- <el-table-column label="金錢" prop="amount"></el-table-column>
-
-        <el-table-column label="是否付款" prop="status">
+      <el-table-column label="狀態" prop="status">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status =='1'">未開通</el-tag>
-            <el-tag type="success" v-else>已開通</el-tag>
+            <el-tag type="danger" v-if="scope.row.blacklist =='0'">禁用</el-tag>
+            <el-tag type="success" v-else>啟用</el-tag>
           </template>
         </el-table-column>
-
         <el-table-column label="登入時間" prop="lg_in_time">
           <template slot-scope="scope">
             {{scope.row.lg_in_time | dateFormat}}
@@ -58,7 +55,7 @@
 </template>
 
 <script>
-import { userData } from '../../api/index.js'
+import { blackmemData } from '../../api/index.js'
 
 export default {
   data () {
@@ -69,21 +66,20 @@ export default {
         pagenum: 1,
         pagesize: 10
       },
-      orderList: [],
+      blackmemList: [],
       total: 0,
       isDisabl: true,
-      userList: [],
       addressVisible: false
 
     }
   },
 
   created () {
-    this.getUserList()
+    this.getblackusrList()
   },
 
   methods: {
-    async getUserList () {
+    async getblackusrList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -92,8 +88,8 @@ export default {
         page: this.queryInfo.pagenum,
         searchValue: this.searchlist
       }
-      await userData(data).then(res => {
-        this.userList = res.data
+      await blackmemData(data).then(res => {
+        this.blackmemList = res.data
         console.log(res.data)
         console.log(res)
         this.total = res.pagination.total_record

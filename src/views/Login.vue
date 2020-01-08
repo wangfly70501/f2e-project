@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-box">
       <div class="avatar-box">
-        <img src="../assets/btcbox_icon.jpg">
+        <img src="../assets/btcbox_icon.jpg" />
       </div>
 
       <el-form
@@ -11,14 +11,23 @@
         :rules="rules"
         label-width="0"
         class="login-form"
-       >
+      >
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"
-            placeholder="帳號" @keyup.enter.native="login"></el-input>
+          <el-input
+            v-model="loginForm.username"
+            prefix-icon="iconfont icon-user"
+            placeholder="帳號"
+            @keyup.enter.native="login"
+          ></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-3702mima"
-            placeholder="密碼" @keyup.enter.native="login"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            prefix-icon="iconfont icon-3702mima"
+            placeholder="密碼"
+            @keyup.enter.native="login"
+          ></el-input>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登入</el-button>
@@ -45,9 +54,7 @@ export default {
           { required: true, message: '請輸入帳號', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '請輸入密碼', trigger: 'blur' }
-        ]
+        password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }]
       }
     }
   },
@@ -61,14 +68,12 @@ export default {
       await login(data).then(res => {
         this.data = res.data.mg_state
 
-        console.log(res)
-        console.log(this.data)
-
         if (res.error_code !== 0 || this.data !== 1) {
           return this.$message.error('登入失敗：')
-        } else if (res.error_code === 0 || this.data === 1) {
-          localStorage.setItem('mg_name', this.loginForm.username)
         }
+        localStorage.setItem('mg_name', this.loginForm.username)
+        localStorage.setItem('mg_pwd', this.loginForm.password)
+        localStorage.setItem('mg_state', this.data)
 
         // 登陆成功，保存token到sessionStorage，并跳转到首页
         this.$message.success(' 登入成功')
@@ -137,14 +142,14 @@ export default {
   }
 }
 
-.login-form{
+.login-form {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
   position: absolute;
   bottom: 0;
 
-  .btns{
+  .btns {
     display: flex;
     justify-content: flex-end;
   }

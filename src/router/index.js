@@ -33,12 +33,16 @@ const GoodsAdd = () => import(/* webpackChunkName: "GoodsList_GoodsAdd" */ '../v
 const Orders = () => import(/* webpackChunkName: "Orders_Report" */ '../views/order/Orders.vue')
 // const Report = () => import(/* webpackChunkName: "Orders_Report" */ '../views/report/Report.vue')
 const Charge = () => import(/* webpackChunkName: "service_Charges" */ '../views/charge/Charge.vue')
+const Bankset = () => import(/* webpackChunkName: "service_Charges" */ '../views/charge/Bankset.vue')
 const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views/deposit/Deposit.vue')
 const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont.vue')
 const Receipt = () => import(/* webpackChunkName: "service_Charges" */ '../views/receipt/Receipt.vue')
 const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Member.vue')
+const Blackmember = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/blackmem.vue')
 const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Banner.vue')
+const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realname.vue')
 const Indexmenu = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Indexmenu.vue')
+const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Userlevel.vue')
 
 Vue.use(VueRouter)
 
@@ -64,9 +68,13 @@ const routes = [
       { path: '/deposit', component: Deposit },
       { path: '/bankaccont', component: Bankaccont },
       { path: '/member', component: Member },
+      { path: '/blackmember', component: Blackmember },
       { path: '/banner', component: Banner },
       { path: '/receipt', component: Receipt },
-      { path: '/indexmenu', component: Indexmenu }
+      { path: '/bankset', component: Bankset },
+      { path: '/indexmenu', component: Indexmenu },
+      { path: '/realname', component: Realname },
+      { path: '/userlevel', component: Userlevel }
     ]
   }
 ]

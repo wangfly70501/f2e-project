@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import { userData } from '../../api/index.js'
 export default {
   data () {
     // 验证邮箱的规则
@@ -194,17 +195,18 @@ export default {
   methods: {
     // 获取用户列表
     async getUserList () {
-      const { data: res } = await this.$http.get('users', {
-        params: this.queryInfo
-      })
-
-      if (res.meta.status !== 200) {
-        return this.$message.error('獲取使用者列表失敗')
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        searchValue: this.searchlist
       }
-
-      this.userList = res.data.users
-      this.total = res.data.total
-      console.log(res.data)
+      await userData(data).then(res => {
+        this.userList = res.data.users
+        this.total = res.pagination.total_record
+      })
     },
 
     // 更改用户状态

@@ -60,7 +60,7 @@ export default {
           index: 'welcome',
           title: '系统首頁'
         }, */
-        {
+        /*    {
           icon: 'iconfont icon-user',
           index: '1',
           title: '管理者管理',
@@ -69,14 +69,16 @@ export default {
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' }
           ]
-        },
+        }, */
         {
           icon: 'iconfont icon-users',
           index: '2',
           title: '會員管理',
           subs: [
             { index: 'bankaccont', title: '銀行帳號綁定' },
-            { index: 'member', title: '會員列表' }
+            { index: 'member', title: '會員列表' },
+            { index: 'blackmember', title: '黑名單會員列表' },
+            { index: 'userlevel', title: '會員層級列表' }
           ]
         },
         {
@@ -90,11 +92,21 @@ export default {
           index: '4',
           title: '項目管理',
           subs: [
-            { index: 'receipt', title: '發票設置' },
+            /*  { index: 'receipt', title: '發票設置' }, */
+            { index: 'bankset', title: '銀行設置' },
             { index: 'charge', title: '手續費設置' }
           ]
         },
         {
+          icon: 'iconfont icon-danju',
+          index: '6',
+          title: '實名認證',
+          subs: [
+            { index: 'realname', title: '實名認證' }
+
+          ]
+        }
+        /*       {
           icon: 'iconfont icon-baobiao',
           index: '5',
           title: 'CMS系統',
@@ -102,7 +114,7 @@ export default {
             { index: 'indexmenu', title: '公告管理' },
             { index: 'banner', title: 'banner管理' }
           ]
-        }
+        } */
       ],
       collapse: false
     }

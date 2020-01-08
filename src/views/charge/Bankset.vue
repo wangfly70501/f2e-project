@@ -1,41 +1,37 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '手續費設置']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '銀行設置']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
-      <div style="vertical-align: middle">
-        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
-          <el-button type="primary" @click="Search" slot="append">搜尋</el-button>
-        </el-input>
-        <el-button type="primary" @click="addDialogVisible = true">新增手續費</el-button>
+      <div  style="vertical-align: middle;">
+      <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
+        <el-button type="primary" @click="Search" slot="append">搜尋</el-button>
+      </el-input>
+        <el-button type="primary" @click="addDialogVisible = true">新增銀行</el-button>
       </div>
-      <!-- 手續費列表 -->
-      <el-table :data="chargeList" stripe border>
+      <!-- 銀行列表 -->
+      <el-table :data="bankList" stripe border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="銀行" prop="bank_en"></el-table-column>
-        <el-table-column label="手續費" prop="rate"></el-table-column>
-        <el-table-column label="類別" prop="trans_type">
-          <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.trans_type === 0">入金</el-tag>
-            <el-tag type="success" v-else>出金</el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column label="銀行代碼" prop="bankcode"></el-table-column>
+        <el-table-column label="銀行名稱" prop="bank_ch"></el-table-column>
+        <el-table-column label="銀行名稱" prop="bank_en"></el-table-column>
+
         <el-table-column label="狀態">
-          <!--    <template slot-scope="scope">
+              <template slot-scope="scope">
             <el-tag type="danger" v-if="scope.row.status === 0">禁用</el-tag>
             <el-tag type="success" v-else>啟用</el-tag>
-          </template>-->
-          <template slot-scope="scope">
+          </template>
+ <!--          <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
               active-color="#13ce66"
               inactive-color="#BEBEBE"
               :active-value="1"
               :inactive-value="0"
-              @change.native="changeSwitch(scope.$index,scope.row)"
+              @change="changeSwitch(scope.$index,scope.row)"
             ></el-switch>
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column label="操作" width="180px">
           <template v-slot="scope">
@@ -67,62 +63,65 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 新增手續費 -->
-    <el-dialog title="新增手續費" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
-        <el-form-item label="銀行">
-          <!--  <el-input v-model="addForm.addbank"></el-input> -->
-          <el-select v-model="addForm.addbank" placeholder="請選擇">
-            <el-option
-              v-for="item in bankList"
-              :key="item.bank_en"
-              :label="item.bank_ch+item.bank_en"
-              :value="item.bank_en"
-            ></el-option>
-          </el-select>
+    <!-- 新增銀行 -->
+    <el-dialog title="新增銀行" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+          <el-form-item label="銀行代碼" prop="addbankcode">
+          <el-input v-model="addForm.addbankcode"  placeholder="ex:809"></el-input>
         </el-form-item>
-        <el-form-item label="手續費" prop="addCharge">
-          <el-input v-model="addForm.addCharge"></el-input>
+        <el-form-item label="中文名稱" prop="addbankch">
+          <el-input v-model="addForm.addbankch"  placeholder="ex:凱基銀行"></el-input>
+        </el-form-item>
+                <el-form-item label="英文簡寫" prop="addbanken">
+          <el-input v-model="addForm.addbanken"  placeholder="ex:KGI Bank"></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addCharge">確定</el-button>
+        <el-button type="primary" @click="addBank">確定</el-button>
       </span>
     </el-dialog>
 
-    <!--修改手續費 -->
+    <!--修改銀行設置 -->
     <el-dialog
-      title="修改手續費"
+      title="修改銀行設置"
       :visible.sync="editDialogVisible"
       width="50%"
       @close="editDialogClosed"
     >
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-        <el-form-item label="銀行">
-          <el-input v-model="editForm.bank_en" disabled></el-input>
+      <el-form :model="editForm" ref="editFormRef" label-width="100px">
+        <el-form-item label="銀行中文名稱">
+          <el-input v-model="editForm.bank_ch" ></el-input>
         </el-form-item>
-        <el-form-item label="手續費" prop="editcharge">
-          <el-input v-model="editForm.rate"></el-input>
+     <el-form-item label="銀行英文名稱">
+          <el-input v-model="editForm.bank_en" ></el-input>
         </el-form-item>
-      </el-form>
+        <el-form-item label="銀行代碼">
+          <el-input v-model="editForm.bankcode" ></el-input>
+        </el-form-item>
+          <el-form-item label="銀行狀態">
+                        <el-select v-model="queryInfo.enable" placeholder="請選擇">
+                            <el-option
+                                v-for="(enableValue,index) in enable"
+                                :key="index"
+                                v-bind:label="enableValue.label"
+                                v-bind:value="enableValue.value"
+                            >{{enableValue.label}}</el-option>
+                        </el-select>
+        </el-form-item>
+        </el-form >
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveEdit">確定</el-button>
       </span>
+
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {
-  chargeData,
-  createCharge,
-  editchargedata,
-  changeSw,
-  chargebankList
-} from '../../api/index.js'
+import { editbankData, bankdata, createBank } from '../../api/index.js'
 
 export default {
   data () {
@@ -132,68 +131,74 @@ export default {
         query: '',
         pagenum: 1,
         pagesize: 10,
-        enable: '0'
+        enable: '1'
       },
-      chargeList: [],
       bankList: [],
+
       total: 0, // 总用户数
 
       addDialogVisible: false,
       addForm: {
-        addbank: '',
-        addCharge: ''
+        addbankch: '',
+        addbanken: '',
+        addbankcode: ''
       },
       addFormRules: {
-        addbank: [
-          { required: true, message: '請輸入銀行', trigger: 'blur' },
+        addbanken: [
+          { required: true, message: '請輸入銀行英文名稱', trigger: 'blur' },
+          { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
+        ],
+        addbankcode: [
+          { required: true, message: '請輸入銀行英文名稱', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
-        addCharge: [
-          { required: true, message: '請輸入手續費', trigger: 'blur' },
-          { min: 1, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
+        addbankch: [
+          { required: true, message: '請輸入銀行中文名稱', trigger: 'blur' },
+          { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ]
       },
 
       editDialogVisible: false,
       table: {},
       editForm: {},
-      editFormRules: {
+      /*       editFormRules: {
         editcharge: [
           { required: true, message: '請輸入手續費', trigger: 'blur' },
           { min: 1, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ]
-      }
+      } */
+      enable: [
+        {
+          label: '禁用',
+          value: '0'
+        },
+        {
+          label: '啟用',
+          value: '1'
+        }
+      ]
     }
   },
 
   created () {
-    this.getChargeList()
-    this.getBankList()
+    this.getbankList()
   },
 
   methods: {
     async changeSwitch (index, row) {
-      var data = {
-
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        status: this.scope.row.status
-      }
-
-      await changeSw(data).then(res => {
+      console.log('index', index)
+      console.log('row', row)
+      /* changeSw(b).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
-          this.$message.error('格式不符，修改失敗')
+          let newData = b
+          newData.status = newData.status === 0 ? '1' : '0'
+          this.chargeList[index] = newData
         }
-        this.getChargeList()
-      })
-    },
+      }) */
 
-    /* changesw(a).then(res => {
+      /* changesw(a).then(res => {
         if (res.error_code === 0) {
           console.log('1', res)
           console.log('2', res)
@@ -204,22 +209,25 @@ export default {
           this.chargeList[index] = newData
         }
       }) */
-
-    // 獲取銀行列表
-    async getBankList () {
-      let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
+      var data = {
+        bank_en: this.editForm.bank_en,
+        bank_ch: this.editForm.bank_ch,
+        bankcode: this.editForm.bankcode,
+        status: this.scope.row.status
       }
-      await chargebankList(data).then(res => {
-        this.bankList = res.data
-        console.log('1213', this.bankList)
+      await editbankData(data).then(res => {
+        if (res.error_code === 0) {
+          console.log('1', res)
+          console.log('2', res)
+          this.$message.success('修改成功')
+        } else {
+          this.$message.error('格式不符，修改失敗')
+        }
+        this.getbankList()
       })
     },
-
-    // 獲取手續列表
-    async getChargeList () {
+    // 获取列表
+    async getbankList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -228,25 +236,21 @@ export default {
         page: this.queryInfo.pagenum,
         searchValue: this.searchlist
       }
-
-      await chargeData(data).then(res => {
-        this.chargeList = res.data
-        console.log('res', res)
+      await bankdata(data).then(res => {
+        this.bankList = res.data
         this.total = res.pagination.total_record
-
-        console.log('res.data', res.data)
       })
     },
 
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
-      this.getChargeList()
+      this.getbankList()
     },
 
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
-      this.getChargeList()
+      this.getbankList()
     },
 
     addDialogClosed () {
@@ -266,12 +270,14 @@ export default {
       this.editDialogVisible = false
       var data = {
         bank_en: this.editForm.bank_en,
+        bank_ch: this.editForm.bank_ch,
+        bankcode: this.editForm.bankcode,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        rate: this.editForm.rate
+        status: this.queryInfo.enable
       }
-      await editchargedata(data).then(res => {
+      await editbankData(data).then(res => {
         if (res.error_code === 0) {
           console.log('1', res)
           console.log('2', res)
@@ -279,7 +285,7 @@ export default {
         } else {
           this.$message.error('格式不符，修改失敗')
         }
-        this.getChargeList()
+        this.getbankList()
       })
     },
     /*
@@ -306,18 +312,19 @@ export default {
       this.getChargeList()
     },  */
 
-    async addCharge () {
+    async addBank () {
       this.addDialogVisible = false
       var data = {
+        bank_en: this.addForm.addbanken,
+        bank_ch: this.addForm.addbankch,
+        bankcode: this.addForm.addbankcode,
+        status: 1,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        bank_en: this.addForm.addbank,
-        rate: this.addForm.addCharge,
-        txt_rate: '0'
+        mg_state: localStorage.getItem('mg_state')
       }
 
-      await createCharge(data).then(res => {
+      await createBank(data).then(res => {
         console.log('asdsad', data)
         console.log(typeof res.error_code)
         if (res.error_code === 0) {
@@ -327,13 +334,13 @@ export default {
         } else {
           this.$message.error('格式不符，新增失敗')
         }
-        this.getChargeList()
+        this.getbankList()
       })
     },
     async Search () {
       console.log()
       this.queryInfo.pagenum = 1
-      await this.getChargeList()
+      await this.getbankList()
     }
   }
 }
