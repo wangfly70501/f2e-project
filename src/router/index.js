@@ -43,7 +43,9 @@ const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realname.vue')
 const Indexmenu = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Indexmenu.vue')
 const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Userlevel.vue')
-
+const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Revenue.vue')
+const Transaction = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Transaction.vue')
+const Markdown = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Markdown.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -63,7 +65,7 @@ const routes = [
       { path: '/goods', component: GoodsList },
       { path: '/goods/add', component: GoodsAdd },
       { path: '/orders', component: Orders },
-      /* { path: '/reports', component: Report } */
+      /* { path: '/reports', component: Report }, */
       { path: '/charge', component: Charge },
       { path: '/deposit', component: Deposit },
       { path: '/bankaccont', component: Bankaccont },
@@ -74,7 +76,10 @@ const routes = [
       { path: '/bankset', component: Bankset },
       { path: '/indexmenu', component: Indexmenu },
       { path: '/realname', component: Realname },
-      { path: '/userlevel', component: Userlevel }
+      { path: '/revenue', component: Revenue },
+      { path: '/transaction', component: Transaction },
+      { path: '/userlevel', component: Userlevel },
+      { path: '/markdown', component: Markdown }
     ]
   }
 ]

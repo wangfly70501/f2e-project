@@ -4,7 +4,7 @@
 
     <el-card>
       <!-- 搜索工具 -->
-      <div  style="vertical-align: middle;">
+      <div  class="text">
       <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
         <el-button type="primary" @click="Search" slot="append">搜尋</el-button>
       </el-input>
@@ -177,6 +177,7 @@ export default {
           value: '1'
         }
       ]
+
     }
   },
 
@@ -347,4 +348,5 @@ export default {
 </script>
 
 <style>
+
 </style>

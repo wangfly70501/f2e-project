@@ -3,18 +3,17 @@
     <TopBreadcrumb :titles="['會員管理', '會員層級列表']"></TopBreadcrumb>
 
     <el-card>
-      <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
-      </SearchTool>
+      <el-button type="primary" @click="addDialogVisible = true">新增層級</el-button>
 
       <!-- 會員列表数据 -->
       <el-table :data="userlevelList" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="會員層級" prop="level"></el-table-column>
         <el-table-column label="限額" prop="limitamt"></el-table-column>
-        <el-table-column label="是否付款" prop="status">
-          <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status =='1'">未開通</el-tag>
-            <el-tag type="success" v-else>已開通</el-tag>
+        <el-table-column label="是否開通" prop="status">
+                <template slot-scope="scope">
+            <el-tag type="danger" v-if="scope.row.status === 0">禁用</el-tag>
+            <el-tag type="success" v-else>啟用</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180px">
@@ -35,18 +34,54 @@
         </el-table-column>
       </el-table>
 
-      <!-- 分页区域 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pagenum"
-        :page-sizes="[5, 10, 15]"
-        :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-      </el-pagination>
     </el-card>
+   <!--新增會員層級 -->
+      <el-dialog title="新增層級" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+      <el-form :model="addForm" ref="addFormRef" label-width="100px">
+          <el-form-item label="會員層級" >
+          <el-input v-model="addForm.level"  placeholder="請輸入層級"></el-input>
+        </el-form-item>
+        <el-form-item label="限額">
+          <el-input v-model="addForm.limitamt"  placeholder="請輸入限額"></el-input>
+           </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="adduserlevel">確定</el-button>
+      </span>
+    </el-dialog>
 
+    <!--修改會員層級 -->
+    <el-dialog
+      title="修改會員層級"
+      :visible.sync="editDialogVisible"
+      width="50%"
+      @close="editDialogClosed"
+    >
+      <el-form :model="editForm"  ref="editFormRef" label-width="70px">
+        <el-form-item label="銀行層級">
+          <el-input v-model="editForm.level"></el-input>
+        </el-form-item>
+        <el-form-item label="銀行限額" prop="editcharge">
+          <el-input v-model="editForm.limitamt"></el-input>
+        </el-form-item>
+                <el-form-item label="銀行狀態">
+                        <el-select v-model="queryInfo.enable" placeholder="請選擇">
+                            <el-option
+                                v-for="(enableValue,index) in enable"
+                                :key="index"
+                                v-bind:label="enableValue.label"
+                                v-bind:value="enableValue.value"
+                            >{{enableValue.label}}</el-option>
+                        </el-select>
+        </el-form-item></el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveEdit">確定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -56,17 +91,30 @@ import { userlevelData, userlevelSet, adduserlevel } from '../../api/index.js'
 export default {
   data () {
     return {
-
+      editForm: {},
       queryInfo: {
         query: '',
-        pagenum: 1,
-        pagesize: 10
+        enable: '1'
       },
 
-      total: 0,
-      isDisabl: true,
       userlevelList: [],
-      addressVisible: false
+      addDialogVisible: false,
+      editDialogVisible: false,
+      enable: [
+        {
+          label: '禁用',
+          value: '0'
+        },
+        {
+          label: '啟用',
+          value: '1'
+        }
+      ],
+      addForm: {
+        level: '',
+        limitamt: ''
+
+      }
 
     }
   },
@@ -80,48 +128,41 @@ export default {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        paginate: this.queryInfo.pagesize,
-        page: this.queryInfo.pagenum,
-        searchValue: this.searchlist
+        mg_state: localStorage.getItem('mg_state')
+
       }
       await userlevelData(data).then(res => {
         this.userlevelList = res.data
         console.log(res.data)
         console.log(res)
-        this.total = res.pagination.total_record
       })
-    },
-    handleSizeChange (newSize) {
-      this.queryInfo.pagesize = newSize
-      this.getUserList()
-    },
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getUserList()
     },
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
     },
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
+    },
     async saveEdit () {
       this.editDialogVisible = false
       var data = {
-        bank_en: this.editForm.bank_en,
+        level: this.editForm.level,
+        limitamt: this.editForm.limitamt,
+        status: parseInt(this.queryInfo.enable),
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        rate: this.editForm.rate
+        mg_state: localStorage.getItem('mg_state')
+
       }
+      console.log('asd', data)
       await userlevelSet(data).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
         }
-        this.getChargeList()
+        this.getUserlevelList()
       })
     },
     async adduserlevel () {
@@ -130,9 +171,8 @@ export default {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        bank_en: this.addForm.addbank,
-        rate: this.addForm.addCharge,
-        txt_rate: '0'
+        level: this.addForm.level,
+        limitamt: this.addForm.limitamt
       }
 
       await adduserlevel(data).then(res => {
@@ -145,8 +185,11 @@ export default {
         } else {
           this.$message.error('格式不符，新增失敗')
         }
-        this.getChargeList()
+        this.getUserlevelList()
       })
+    },
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
     }
   }
 }

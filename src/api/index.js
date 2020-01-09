@@ -39,7 +39,7 @@ export const userlevelSet = query => {
 // 會員層級列新增
 export const adduserlevel = query => {
   return request({
-    url: './bankendapi?method=getLevelList',
+    url: './bankendapi?method=setLevel',
     method: 'post',
     data: query
   })
@@ -84,7 +84,7 @@ export const editchargedata = query => {
     data: query
   })
 }
-
+// 登入
 export const login = query => {
   // console.log('create')
   return request({
@@ -93,7 +93,14 @@ export const login = query => {
     data: query
   })
 }
-
+// 註冊
+export const signup = query => {
+  return request({
+    url: './bankendapi?method=mgregister',
+    method: 'post',
+    data: query
+  })
+}
 // 手續費的銀行add
 export const chargebankList = query => {
   return request({
@@ -123,6 +130,23 @@ export const createBank = query => {
 export const editbankData = query => {
   return request({
     url: './bankendapi?method=setBank',
+    method: 'post',
+    data: query
+  })
+}
+
+// 營收報表
+export const revenuedata = query => {
+  return request({
+    url: './bankendapi?method=getRevenueStatement',
+    method: 'post',
+    data: query
+  })
+}
+// 交易報表
+export const transactiondata = query => {
+  return request({
+    url: './bankendapi?method=getTransactionReport',
     method: 'post',
     data: query
   })

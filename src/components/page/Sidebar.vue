@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar">
     <!-- 折叠按钮 -->
-<!--     <div class="collapse-btn" @click="collapseChage">
+    <!--     <div class="collapse-btn" @click="collapseChage">
       <i v-if="!collapse" class="el-icon-s-fold"></i>
       <i v-else class="el-icon-s-unfold"></i>
-    </div> -->
+    </div>-->
 
     <!-- 菜单栏 -->
     <el-menu
@@ -31,7 +31,6 @@
                   v-for="(threeItem,i) in subItem.subs"
                   :key="i"
                   :index="threeItem.index"
-
                 >{{ threeItem.title }}</el-menu-item>
               </el-submenu>
               <el-menu-item v-else :index="subItem.index" :key="subItem.index">{{ subItem.title }}</el-menu-item>
@@ -75,18 +74,18 @@ export default {
           index: '2',
           title: '會員管理',
           subs: [
-            { index: 'bankaccont', title: '銀行帳號綁定' },
+            /* { index: 'bankaccont', title: '銀行帳號綁定' }, */
             { index: 'member', title: '會員列表' },
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
           ]
         },
-        {
+        /*  {
           icon: 'iconfont icon-tijikongjian',
           index: '3',
           title: '出入金管理',
           subs: [{ index: 'deposit', title: '出入金列表' }]
-        },
+        }, */
         {
           icon: 'iconfont icon-danju',
           index: '4',
@@ -102,10 +101,10 @@ export default {
           index: '6',
           title: '實名認證',
           subs: [
-            { index: 'realname', title: '實名認證' }
-
+            { index: 'realname', title: '實名認證' },
+            { index: 'markdown', title: '文字編輯' }
           ]
-        }
+        },
         /*       {
           icon: 'iconfont icon-baobiao',
           index: '5',
@@ -115,6 +114,16 @@ export default {
             { index: 'banner', title: 'banner管理' }
           ]
         } */
+
+        {
+          icon: 'iconfont icon-baobiao',
+          index: '7',
+          title: '報表',
+          subs: [
+            { index: 'revenue', title: '營收報表' },
+            { index: 'transaction', title: '交易報表' }
+          ]
+        }
       ],
       collapse: false
     }
@@ -149,9 +158,8 @@ export default {
   width: 200px;
   position: relative;
 }
-.menuls{
+.menuls {
   text-align: right;
   margin: 0 5px;
 }
-
 </style>
