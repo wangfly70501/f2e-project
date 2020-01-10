@@ -18,8 +18,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/fonts/icon.css'
 import htmlToPdf from './htmlToPdf.js'
+import locale from 'element-ui/lib/locale/lang/zh-TW.js'
 Vue.use(htmlToPdf)
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 // 树型表格插件
 Vue.use(ZkTable)
 

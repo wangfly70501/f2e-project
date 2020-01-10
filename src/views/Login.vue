@@ -1,12 +1,13 @@
 <template>
   <div class="login-container">
-    <div class="login-box">
-      <div class="avatar-box">
+        <div class="avatar-box">
         <img src="../assets/btcbox_icon.jpg" />
       </div>
+    <div class="login-box">
+
     <el-tabs v-model="activeName">
       <el-tab-pane label="登入" name="signin">
-        <div>
+        <div class="text">歡迎登入
         <el-form
         ref="loginFormRef"
         :model="loginForm"
@@ -17,7 +18,6 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            prefix-icon="iconfont icon-user"
             placeholder="帳號"
             @keyup.enter.native="login"
           ></el-input>
@@ -26,7 +26,6 @@
           <el-input
             v-model="loginForm.password"
             type="password"
-            prefix-icon="iconfont icon-3702mima"
             placeholder="密碼"
             @keyup.enter.native="login"
           ></el-input>
@@ -34,7 +33,9 @@
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登入</el-button>
           <el-button type="info" @click="reset">清除</el-button>
+            <router-link to="/forgetpsw">忘記密碼</router-link>
         </el-form-item>
+
       </el-form>
         </div>
       </el-tab-pane>
@@ -46,10 +47,10 @@
         label-width="0"
         class="login-form"
       >
+
         <el-form-item prop="username">
           <el-input
             v-model="signupForm.username"
-            prefix-icon="iconfont icon-user"
             placeholder="帳號"
             @keyup.enter.native="signup"
           ></el-input>
@@ -58,31 +59,27 @@
           <el-input
             v-model="signupForm.password"
             type="password"
-            prefix-icon="iconfont icon-3702mima"
             placeholder="密碼"
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-                <el-form-item prop="username">
+                <el-form-item prop="checkpwd">
           <el-input
             v-model="signupForm.checkpass"
-            prefix-icon="iconfont icon-user"
             placeholder="確認密碼"
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-                <el-form-item prop="username">
+              <el-form-item prop="mobile">
           <el-input
             v-model="signupForm.mobile"
-            prefix-icon="iconfont icon-user"
             placeholder="手機"
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-                <el-form-item prop="username">
+                <el-form-item prop="email">
           <el-input
             v-model="signupForm.email"
-            prefix-icon="iconfont icon-user"
             placeholder="email"
             @keyup.enter.native="signup"
           ></el-input>
@@ -95,7 +92,7 @@
           </el-tab-pane>
 
       </el-tabs>
-    </div>
+      </div>
   </div>
 </template>
 
@@ -123,7 +120,11 @@ export default {
           { required: true, message: '請輸入帳號', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
-        password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }]
+        password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
+        checkpwd: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
+        mobile: [{ required: true, message: '請輸入手機', trigger: 'blur' }],
+        email: [{ required: true, message: '請輸入email', trigger: 'blur' }]
+
       }
     }
   },
@@ -177,11 +178,20 @@ export default {
     reset () {
       this.$refs.loginFormRef.resetFields()
     }
+
   }
 }
 </script>
-
+<style>
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
+</style>
 <style lang="less" scoped>
+.text{
+    font-size: 24px;
+    color: #5B5B5B;
+    text-align: center;
+     font-family: 'Noto Sans TC', sans-serif;
+}
 .login-container {
   height: 100%;
   background: #2b4b6b;
@@ -196,6 +206,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  padding: 20px;
 }
 
 .avatar-box {
@@ -207,10 +218,10 @@ export default {
   border-radius: 50%;
   border: 1px solid #eee;
   box-shadow: 0 0 10px #ddd;
-  position: absolute;
+  position: relative;
+  top:150px;
   left: 50%;
   transform: translate(-50%, -50%);
-
   img {
     width: 100%;
     height: 100%;
@@ -220,9 +231,7 @@ export default {
 }
 
 .login-form {
-
-  padding: 50px 20px;
-
+  padding: 30px 20px;
   .btns {
     display: flex;
     justify-content: flex-end;

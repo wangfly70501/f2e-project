@@ -101,6 +101,22 @@ export const signup = query => {
     data: query
   })
 }
+// 忘記密碼
+export const forgetpsw = query => {
+  return request({
+    url: './bankendapi?method=pwdForget',
+    method: 'post',
+    data: query
+  })
+}
+// 重設密碼
+export const resetpsw = query => {
+  return request({
+    url: './bankendapi?method=resetPwd',
+    method: 'post',
+    data: query
+  })
+}
 // 手續費的銀行add
 export const chargebankList = query => {
   return request({

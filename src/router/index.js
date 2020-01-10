@@ -19,7 +19,8 @@ import VueRouter from 'vue-router'
 const Login = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Login.vue')
 const Home = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Home.vue')
 const Welcome = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Welcome.vue')
-
+const Forgetpsw = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Forgetpsw.vue')
+const Resetpassword = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Resetpassword.vue')
 const Users = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/user/Users.vue')
 const Rights = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/access/Rights.vue')
 const Roles = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/access/Roles.vue')
@@ -51,15 +52,21 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
+  { path: '/login', redirect: '/forgetpsw' },
+  { path: '/forgetpsw', component: Forgetpsw },
+  { path: '/login', redirect: '/resetpassword' },
+  { path: '/resetpassword', component: Resetpassword },
   {
     path: '/home',
     redirect: '/welcome',
     component: Home,
     children: [
       { path: '/welcome', component: Welcome },
+      /*  { path: '/forgetpsw', component: Forgetpsw }, */
       { path: '/users', component: Users },
       { path: '/rights', component: Rights },
       { path: '/roles', component: Roles },
+      { path: '/forgetpsw', component: Forgetpsw },
       /* { path: '/categories', component: Categories }, */
       /*  { path: '/params', component: Params }, */
       { path: '/goods', component: GoodsList },
@@ -88,7 +95,7 @@ const router = new VueRouter({
   routes
 })
 
-// 权限控制导航守卫
+/* // 权限控制导航守卫
 router.beforeEach((to, from, next) => {
   const tokenStr = window.sessionStorage.getItem('token')
 
@@ -99,6 +106,6 @@ router.beforeEach((to, from, next) => {
     if (!tokenStr) return next('/login')
     next()
   }
-})
+}) */
 
 export default router

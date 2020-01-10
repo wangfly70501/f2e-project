@@ -6,14 +6,15 @@
       <!-- 搜索工具 -->
       <div  class="text">
       <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
-        <el-button type="primary" @click="Search" slot="append">搜尋</el-button>
-      </el-input>
+
+      </el-input>&nbsp;
         <el-button type="primary" @click="addDialogVisible = true">新增銀行</el-button>
+        <el-button type="primary" @click="Search" >搜尋</el-button>
       </div>
       <!-- 銀行列表 -->
       <el-table :data="bankList" stripe border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="銀行代碼" prop="bankcode"></el-table-column>
+        <el-table-column label="銀行代碼" prop="bankcode" ></el-table-column>
         <el-table-column label="銀行名稱" prop="bank_ch"></el-table-column>
         <el-table-column label="銀行名稱" prop="bank_en"></el-table-column>
 
@@ -98,10 +99,10 @@
           <el-input v-model="editForm.bank_en" ></el-input>
         </el-form-item>
         <el-form-item label="銀行代碼">
-          <el-input v-model="editForm.bankcode" ></el-input>
+          <el-input v-model="editForm.bankcode" disabled></el-input>
         </el-form-item>
           <el-form-item label="銀行狀態">
-                        <el-select v-model="queryInfo.enable" placeholder="請選擇">
+                        <el-select  v-model="queryInfo.enable" placeholder="請選擇">
                             <el-option
                                 v-for="(enableValue,index) in enable"
                                 :key="index"
@@ -131,7 +132,7 @@ export default {
         query: '',
         pagenum: 1,
         pagesize: 10,
-        enable: '1'
+        enable: '請選擇'
       },
       bankList: [],
 

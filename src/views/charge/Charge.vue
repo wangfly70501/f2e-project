@@ -6,9 +6,9 @@
       <!-- 搜索工具 -->
       <div style="vertical-align: middle">
         <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
-          <el-button type="primary" @click="Search" slot="append">搜尋</el-button>
         </el-input>
         <el-button type="primary" @click="addDialogVisible = true">新增手續費</el-button>
+        <el-button type="primary" @click="Search" >搜尋</el-button>
       </div>
       <!-- 手續費列表 -->
       <el-table :data="chargeList" stripe border>
@@ -21,7 +21,7 @@
             <el-tag type="success" v-else>出金</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="狀態">
+        <el-table-column label="狀態" prop="status">
           <!--    <template slot-scope="scope">
             <el-tag type="danger" v-if="scope.row.status === 0">禁用</el-tag>
             <el-tag type="success" v-else>啟用</el-tag>
@@ -33,7 +33,7 @@
               inactive-color="#BEBEBE"
               :active-value="1"
               :inactive-value="0"
-              @change.native="changeSwitch(scope.$index,scope.row)"
+              @change="changeSwitch($event,scope.$index,scope.row)"
             ></el-switch>
           </template>
         </el-table-column>
@@ -136,7 +136,7 @@ export default {
       },
       chargeList: [],
       bankList: [],
-      total: 0, // 总用户数
+      total: 0,
 
       addDialogVisible: false,
       addForm: {
@@ -172,38 +172,35 @@ export default {
   },
 
   methods: {
-    async changeSwitch (index, row) {
-      var data = {
-
+    async changeSwitch (data, b, index) {
+      /*       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
+        bank_en: this.editForm.bank_en,
         status: this.scope.row.status
       }
 
       await changeSw(data).then(res => {
         if (res.error_code === 0) {
           console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
         }
         this.getChargeList()
-      })
-    },
-
-    /* changesw(a).then(res => {
+      }) */
+      console.log(data)
+      changeSw(b).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
-          let newData = a
+          let newData = b
           newData.status = newData.status === 0 ? '1' : '0'
           this.chargeList[index] = newData
         }
-      }) */
+      })
+    },
 
     // 獲取銀行列表
     async getBankList () {
@@ -214,7 +211,6 @@ export default {
       }
       await chargebankList(data).then(res => {
         this.bankList = res.data
-        console.log('1213', this.bankList)
       })
     },
 
@@ -231,10 +227,7 @@ export default {
 
       await chargeData(data).then(res => {
         this.chargeList = res.data
-        console.log('res', res)
         this.total = res.pagination.total_record
-
-        console.log('res.data', res.data)
       })
     },
 
