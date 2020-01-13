@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     username () {
-      let username = localStorage.getItem('ms_username')
+      let username = localStorage.getItem('mg_name')
       return username || this.name
     }
   },

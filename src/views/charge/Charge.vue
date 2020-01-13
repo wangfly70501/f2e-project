@@ -12,30 +12,34 @@
       </div>
       <!-- 手續費列表 -->
       <el-table :data="chargeList" stripe border>
-        <el-table-column type="index"></el-table-column>
+        <el-table-column label="ID" prop="id"></el-table-column>
         <el-table-column label="銀行" prop="bank_en"></el-table-column>
-        <el-table-column label="手續費" prop="rate"></el-table-column>
+        <el-table-column label="交易手續費" prop="rate"></el-table-column>
+        <el-table-column label="轉帳手續費" prop="txt_rate"></el-table-column>
         <el-table-column label="類別" prop="trans_type">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.trans_type === 0">入金</el-tag>
-            <el-tag type="success" v-else>出金</el-tag>
+            <span v-if="scope.row.trans_type === 0">入金</span>
+            <span v-else>出金</span>
           </template>
         </el-table-column>
-        <el-table-column label="狀態" prop="status">
-          <!--    <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status === 0">禁用</el-tag>
-            <el-tag type="success" v-else>啟用</el-tag>
-          </template>-->
+        <el-table-column label="狀態" >
           <template slot-scope="scope">
+            <el-tag type="danger" v-if="scope.row.status === 0">停用</el-tag>
+            <el-tag type="success" v-else>啟用</el-tag>
+          </template>
+<!--           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.status"
               active-color="#13ce66"
               inactive-color="#BEBEBE"
               :active-value="1"
               :inactive-value="0"
-              @change="changeSwitch($event,scope.$index,scope.row)"
+              active-text="啟用"
+              inactive-text="停用"
+
+              @change="changeSwitch(scope.$index,scope.row)"
             ></el-switch>
-          </template>
+          </template> -->
         </el-table-column>
         <el-table-column label="操作" width="180px">
           <template v-slot="scope">
@@ -69,20 +73,24 @@
 
     <!-- 新增手續費 -->
     <el-dialog title="新增手續費" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
-        <el-form-item label="銀行">
+      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+        <el-form-item label="選擇銀行">
           <!--  <el-input v-model="addForm.addbank"></el-input> -->
+
           <el-select v-model="addForm.addbank" placeholder="請選擇">
             <el-option
               v-for="item in bankList"
-              :key="item.bank_en"
+              :key="item.id"
               :label="item.bank_ch+item.bank_en"
               :value="item.bank_en"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="手續費" prop="addCharge">
+        <el-form-item label="交易手續費" prop="addCharge">
           <el-input v-model="addForm.addCharge"></el-input>
+        </el-form-item>
+              <el-form-item label="轉帳手續費" prop="addCharge">
+          <el-input v-model="addForm.addtxtrate"></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -99,17 +107,40 @@
       width="50%"
       @close="editDialogClosed"
     >
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+      <el-form :model="editForm" ref="editFormRef" label-width="100px">
         <el-form-item label="銀行">
           <el-input v-model="editForm.bank_en" disabled></el-input>
         </el-form-item>
-        <el-form-item label="手續費" prop="editcharge">
+        <el-form-item label="交易手續費" >
           <el-input v-model="editForm.rate"></el-input>
+        </el-form-item>
+          <el-form-item label="轉帳手續費" >
+          <el-input v-model="editForm.txt_rate"></el-input>
+        </el-form-item>
+          <el-form-item label="類別">
+                        <el-select  v-model="editForm.trans_type" placeholder="請選擇">
+                            <el-option
+                                v-for="(enableValue,index) in enable"
+                                :key="index"
+                                v-bind:label="enableValue.label"
+                                v-bind:value="enableValue.value"
+                            >{{enableValue.label}}</el-option>
+                        </el-select>
+        </el-form-item>
+             <el-form-item label="狀態">
+                        <el-select  v-model.number="editForm.status" placeholder="請選擇">
+                            <el-option
+                                v-for="(statuslistValue,index) in statuslist"
+                                :key="index"
+                                v-bind:label="statuslistValue.label"
+                                v-bind:value="statuslistValue.value"
+                            >{{statuslistValue.label}}</el-option>
+                        </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveEdit">確定</el-button>
+        <el-button type="primary" @click="saveEdit()">確定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -120,19 +151,20 @@ import {
   chargeData,
   createCharge,
   editchargedata,
-  changeSw,
+
   chargebankList
 } from '../../api/index.js'
 
 export default {
   data () {
     return {
+      query: {},
       searchlist: '',
       queryInfo: {
         query: '',
         pagenum: 1,
         pagesize: 10,
-        enable: '0'
+        enable: ''
       },
       chargeList: [],
       bankList: [],
@@ -141,7 +173,8 @@ export default {
       addDialogVisible: false,
       addForm: {
         addbank: '',
-        addCharge: ''
+        addCharge: '',
+        addtxtrate: ''
       },
       addFormRules: {
         addbank: [
@@ -156,13 +189,29 @@ export default {
 
       editDialogVisible: false,
       table: {},
-      editForm: {},
-      editFormRules: {
-        editcharge: [
-          { required: true, message: '請輸入手續費', trigger: 'blur' },
-          { min: 1, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
-        ]
-      }
+      editForm: { },
+      enable: [
+        {
+          label: '入金',
+          value: 0
+        },
+        {
+          label: '出金',
+          value: 1
+        }
+
+      ],
+      statuslist: [
+        {
+          label: '停用',
+          value: 0
+        },
+        {
+          label: '啟用',
+          value: 1
+        }
+
+      ]
     }
   },
 
@@ -172,35 +221,6 @@ export default {
   },
 
   methods: {
-    async changeSwitch (data, b, index) {
-      /*       let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        bank_en: this.editForm.bank_en,
-        status: this.scope.row.status
-      }
-
-      await changeSw(data).then(res => {
-        if (res.error_code === 0) {
-          console.log('1', res)
-          this.$message.success('修改成功')
-        } else {
-          this.$message.error('格式不符，修改失敗')
-        }
-        this.getChargeList()
-      }) */
-      console.log(data)
-      changeSw(b).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('修改成功')
-        } else {
-          let newData = b
-          newData.status = newData.status === 0 ? '1' : '0'
-          this.chargeList[index] = newData
-        }
-      })
-    },
 
     // 獲取銀行列表
     async getBankList () {
@@ -248,6 +268,10 @@ export default {
 
     showEditDialog (index, row) {
       this.editForm = row
+      console.log(this.editForm)
+      console.log(typeof this.editForm.status)
+      console.log(typeof this.enable.value)
+      this.editForm.status = this.enable.value
       this.editDialogVisible = true
     },
 
@@ -257,17 +281,22 @@ export default {
 
     async saveEdit () {
       this.editDialogVisible = false
-      var data = {
-        bank_en: this.editForm.bank_en,
+      let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        rate: this.editForm.rate
+        bank_en: this.editForm.bank_en,
+        rate: this.editForm.rate,
+        txt_rate: this.editForm.txt_rate,
+        trans_type: this.editForm.trans_type,
+        status: this.editForm.status,
+        id: this.editForm.id
       }
       await editchargedata(data).then(res => {
+        console.log('data', data)
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
+          console.log('res', res)
+
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
@@ -307,7 +336,7 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         bank_en: this.addForm.addbank,
         rate: this.addForm.addCharge,
-        txt_rate: '0'
+        txt_rate: this.addForm.addtxtrate
       }
 
       await createCharge(data).then(res => {
@@ -318,7 +347,7 @@ export default {
           console.log('2', res)
           this.$message.success('新增成功')
         } else {
-          this.$message.error('格式不符，新增失敗')
+          this.$message.error('此銀行新增過了，請使用編輯修改')
         }
         this.getChargeList()
       })

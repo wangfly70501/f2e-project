@@ -13,7 +13,7 @@
       </div>
       <!-- 銀行列表 -->
       <el-table :data="bankList" stripe border>
-        <el-table-column type="index"></el-table-column>
+        <el-table-column label="ID" prop="id"></el-table-column>
         <el-table-column label="銀行代碼" prop="bankcode" ></el-table-column>
         <el-table-column label="銀行名稱" prop="bank_ch"></el-table-column>
         <el-table-column label="銀行名稱" prop="bank_en"></el-table-column>
@@ -99,10 +99,10 @@
           <el-input v-model="editForm.bank_en" ></el-input>
         </el-form-item>
         <el-form-item label="銀行代碼">
-          <el-input v-model="editForm.bankcode" disabled></el-input>
+          <el-input v-model="editForm.bankcode" ></el-input>
         </el-form-item>
-          <el-form-item label="銀行狀態">
-                        <el-select  v-model="queryInfo.enable" placeholder="請選擇">
+           <el-form-item label="銀行狀態">
+                        <el-select  v-model="editForm.status" placeholder="請選擇">
                             <el-option
                                 v-for="(enableValue,index) in enable"
                                 :key="index"
@@ -111,6 +111,16 @@
                             >{{enableValue.label}}</el-option>
                         </el-select>
         </el-form-item>
+   <!--        <el-form-item label="狀態">
+           <el-switch
+              v-model="scope.row.status"
+              active-color="#13ce66"
+              inactive-color="#BEBEBE"
+              :active-value="1"
+              :inactive-value="0"
+
+            ></el-switch>
+        </el-form-item> -->
         </el-form >
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -132,7 +142,7 @@ export default {
         query: '',
         pagenum: 1,
         pagesize: 10,
-        enable: '請選擇'
+        enable: ''
       },
       bankList: [],
 
@@ -171,11 +181,11 @@ export default {
       enable: [
         {
           label: '禁用',
-          value: '0'
+          value: 0
         },
         {
           label: '啟用',
-          value: '1'
+          value: 1
         }
       ]
 
@@ -211,11 +221,12 @@ export default {
           this.chargeList[index] = newData
         }
       }) */
-      var data = {
+      let data = {
         bank_en: this.editForm.bank_en,
         bank_ch: this.editForm.bank_ch,
         bankcode: this.editForm.bankcode,
-        status: this.scope.row.status
+        status: this.scope.row.status,
+        id: this.editForm.id
       }
       await editbankData(data).then(res => {
         if (res.error_code === 0) {
@@ -274,10 +285,11 @@ export default {
         bank_en: this.editForm.bank_en,
         bank_ch: this.editForm.bank_ch,
         bankcode: this.editForm.bankcode,
+        id: this.editForm.id,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        status: this.queryInfo.enable
+        status: this.editForm.status
       }
       await editbankData(data).then(res => {
         if (res.error_code === 0) {

@@ -71,7 +71,7 @@ export const changeSw = query => {
 export const createCharge = query => {
   // console.log('create')
   return request({
-    url: './bankendapi?method=ex_feeSetRate',
+    url: './bankendapi?method=ex_feeAdd',
     method: 'post',
     data: query
   })
@@ -137,7 +137,7 @@ export const bankdata = query => {
 
 export const createBank = query => {
   return request({
-    url: './bankendapi?method=setBank',
+    url: './bankendapi?method=addBank',
     method: 'post',
     data: query
   })

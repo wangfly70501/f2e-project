@@ -6,7 +6,7 @@
       <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
       </SearchTool>
 
-      <!-- 订单列表数据 -->
+      <!-- 列表数据 -->
       <el-table :data="blackmemList" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="會員姓名" prop="username"></el-table-column>
