@@ -118,23 +118,24 @@
           <el-input v-model="editForm.txt_rate"></el-input>
         </el-form-item>
           <el-form-item label="類別">
-                        <el-select  v-model="editForm.trans_type" placeholder="請選擇">
+                        <el-select  v-model="editForm.trans_type" placeholder="請選擇" value-key="id">
                             <el-option
-                                v-for="(enableValue,index) in enable"
-                                :key="index"
-                                v-bind:label="enableValue.label"
-                                v-bind:value="enableValue.value"
+                                v-for="(enableValue) in enable"
+                                :key="enableValue.value"
+                                :label="enableValue.label"
+                                :value="enableValue.value"
                             >{{enableValue.label}}</el-option>
                         </el-select>
         </el-form-item>
              <el-form-item label="狀態">
-                        <el-select  v-model.number="editForm.status" placeholder="請選擇">
-                            <el-option
+                         <el-select  v-model="editForm.status" placeholder="請選擇">
+                             <el-option
                                 v-for="(statuslistValue,index) in statuslist"
                                 :key="index"
-                                v-bind:label="statuslistValue.label"
-                                v-bind:value="statuslistValue.value"
+                                :label="statuslistValue.label"
+                                :value="statuslistValue.value"
                             >{{statuslistValue.label}}</el-option>
+
                         </el-select>
         </el-form-item>
       </el-form>
@@ -189,7 +190,9 @@ export default {
 
       editDialogVisible: false,
       table: {},
-      editForm: { },
+      editForm: {
+
+      },
       enable: [
         {
           label: '入金',
@@ -268,10 +271,9 @@ export default {
 
     showEditDialog (index, row) {
       this.editForm = row
-      console.log(this.editForm)
-      console.log(typeof this.editForm.status)
-      console.log(typeof this.enable.value)
-      this.editForm.status = this.enable.value
+      console.log('123', this.editForm)
+      console.log('stasus', this.editForm.status, typeof this.editForm.status)
+
       this.editDialogVisible = true
     },
 
@@ -288,12 +290,13 @@ export default {
         bank_en: this.editForm.bank_en,
         rate: this.editForm.rate,
         txt_rate: this.editForm.txt_rate,
-        trans_type: this.editForm.trans_type,
-        status: this.editForm.status,
+        trans_type: this.editForm.trans_type.toString(),
+        status: this.editForm.status.toString(),
         id: this.editForm.id
       }
       await editchargedata(data).then(res => {
         console.log('data', data)
+
         if (res.error_code === 0) {
           console.log('res', res)
 

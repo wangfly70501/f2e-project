@@ -18,6 +18,7 @@
 
       <el-button type="primary" @click="Search">搜尋</el-button>
       <el-button type="primary" @click="ExportSavePdf()">匯出</el-button>
+      <el-button type="primary" @click="downExcel()">匯出excel</el-button>
       <!-- 列表数据 -->
       <div ref="pdfContent" id="pdfContent">
         <div class="font">
@@ -118,6 +119,13 @@ export default {
       console.log()
       this.queryInfo.pagenum = 1
       await this.getRevenueList()
+    },
+    async  downExcel () {
+      const th = ['UID', '會員帳號', '身分證', '交易次數', '交易總金額']
+      const filterVal = ['uuid', 'account', 'identityid', 'transactionTimes', 'transactionTotal']
+      const data = this.revenueList.map(v => filterVal.map(k => v[k]))
+      const [fileName, fileType, sheetName] = ['測試下載', 'xlsx', '測試頁']
+      this.$toExcel({ th, data, fileName, fileType, sheetName })
     }
   }
 }

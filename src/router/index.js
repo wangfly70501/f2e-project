@@ -47,6 +47,7 @@ const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../vie
 const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Revenue.vue')
 const Transaction = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Transaction.vue')
 const Markdown = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Markdown.vue')
+const Faq = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Faq.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -86,6 +87,7 @@ const routes = [
       { path: '/revenue', component: Revenue },
       { path: '/transaction', component: Transaction },
       { path: '/userlevel', component: Userlevel },
+      { path: '/faq', component: Faq },
       { path: '/markdown', component: Markdown }
     ]
   }

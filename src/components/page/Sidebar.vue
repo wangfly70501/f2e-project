@@ -102,7 +102,8 @@ export default {
           title: '實名認證',
           subs: [
             { index: 'realname', title: '實名認證' },
-            { index: 'markdown', title: '文字編輯' }
+            { index: 'markdown', title: '文字編輯' },
+            { index: 'faq', title: 'FaQ' }
           ]
         },
         /*       {

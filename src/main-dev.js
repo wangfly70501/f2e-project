@@ -19,6 +19,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/fonts/icon.css'
 import htmlToPdf from './htmlToPdf.js'
 import locale from 'element-ui/lib/locale/lang/zh-TW.js'
+import toExcel from './json2excel'
+
+Vue.prototype.$toExcel = toExcel
 Vue.use(htmlToPdf)
 Vue.use(ElementUI, { locale })
 // 树型表格插件
