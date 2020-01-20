@@ -125,8 +125,7 @@
       @close="editDialogClosed"
     >
       <el-form :model="editForm" ref="editFormRef" label-width="100px">
-        <button @click="showcontent">test </button>
-        <el-form-item label="標題">
+             <el-form-item label="標題">
           <el-input v-model="editForm.title"></el-input>
         </el-form-item>
         <el-form-item label="語系">
@@ -189,8 +188,7 @@
 
 <script>
 import { faqdata, faqadd, faqedit } from '../../api/index.js'
-/* import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css' */
+
 import moment from 'moment'
 
 export default {
@@ -241,12 +239,7 @@ export default {
       editForm: {
         lang: []
       },
-      /*       editFormRules: {
-        editcharge: [
-          { required: true, message: '請輸入手續費', trigger: 'blur' },
-          { min: 1, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
-        ]
-      } */
+
       enable: [
         {
           label: 'zh',
@@ -272,11 +265,6 @@ export default {
 
   methods: {
 
-    showcontent () {
-      console.log('ddd', this.$refs.md.d_render)
-      console.log('ccc', this.$refs.md.d_value)
-      console.log('ccc', this.$refs.md)
-    },
     $imgAdd (pos, $file) {
       var formdata = new FormData()
       formdata.append('file', $file)
