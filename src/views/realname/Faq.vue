@@ -1,37 +1,50 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', 'Faq']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', 'FaQ']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
       <div class="text">
-        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:10%"></el-input>&nbsp;
+        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:10%" placeholder="請輸入標題"></el-input>&nbsp;
         <el-date-picker
           type="daterange"
           start-placeholder="StartTime"
           end-placeholder="EndTime"
           v-model="queryInfo.date"
           value-format="yyyy-MM-dd"
-          style="width:30% "
+          style="width:15% "
         ></el-date-picker>&nbsp;
-
+                        <el-select  v-model="enable.value" placeholder="請選擇語系"
+                         style="width:8% ">
+                            <el-option
+                                v-for="(enableValue,index) in enable"
+                                :key="index"
+                                v-bind:label="enableValue.label"
+                                v-bind:value="enableValue.value"
+                            >{{enableValue.label}}</el-option>
+                        </el-select>&nbsp;
+                         <el-button type="primary" @click="clear">清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
         <el-button type="primary" @click="addDialogVisible = true">新增</el-button>
-         <el-button type="danger" @click="delDialogVisible = true">刪除</el-button>
+
       </div>
       <!-- 列表 -->
-      <el-table :data="bankList" stripe border @selection-change="handleSelectionChange">
-        <el-table-column
+      <el-table :data="faqlist" stripe border @selection-change="handleSelectionChange">
+        <!-- <el-table-column
       type="selection"
       width="40px">
     </el-table-column>
-        <el-table-column label="ID" prop="id" width="40px"></el-table-column>
-        <el-table-column label="標題" prop ></el-table-column>
-        <el-table-column label="分類" prop></el-table-column>
-        <el-table-column label="發布者" prop></el-table-column>
-        <el-table-column label="發布時間" prop></el-table-column>
-        <el-table-column label="發布時間" prop></el-table-column>
-
+        <el-table-column label="ID" prop="id" width="40px"></el-table-column> -->
+        <el-table-column label="標題" prop="title" ></el-table-column>
+        <!-- <el-table-column label="內容" prop="content"></el-table-column> -->
+        <el-table-column label="發布時間" prop="ctime"></el-table-column>
+        <el-table-column label="語系" prop="lang"></el-table-column>
+            <el-table-column label="狀態" >
+          <template slot-scope="scope">
+            <el-tag type="danger" v-if="scope.row.status === 0">棄用</el-tag>
+            <el-tag type="success" v-else>啟用</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="180px">
           <template v-slot="scope">
             <el-button
@@ -65,24 +78,36 @@
     <!-- 新增 -->
     <el-dialog title="新增" :visible.sync="addDialogVisible" width="80%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-        <el-form-item label="標題" prop="addbankcode">
-          <el-input v-model="addForm.addbankcode"></el-input>
-        </el-form-item>
-        <el-form-item label="分類" prop="addbankch">
-          <el-input v-model="addForm.addbankch"></el-input>
-        </el-form-item>
-        <el-form-item label="英文簡寫" prop="addbanken">
-          <el-input v-model="addForm.addbanken"></el-input>
-        </el-form-item>
+        <el-form-item label="標題" >
+          <el-input v-model="addForm.addtitle"></el-input>
+            </el-form-item>
+         <el-form-item label="語系">
+    <el-radio-group v-model="addForm.lang">
+      <el-radio label="zh"></el-radio>
+      <el-radio label="en"></el-radio>
+    </el-radio-group>
+  </el-form-item>
 
-        <el-form-item>
+  <!--       <el-form-item label="內容" >
           <mavon-editor
-            v-model="addForm.txt"
+            v-model="addForm.addcontent"
             ref="md"
             @imgAdd="$imgAdd"
             @change="change"
             style="min-height: 400px"
+            placeholder="開始編輯"
+
           />
+        </el-form-item> -->
+               <el-form-item label="內容">
+
+         <quill-editor
+            v-model="addForm.addcontent"
+            ref="myQuillEditor"
+            :options="editorOption"
+
+           >
+        </quill-editor>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -94,41 +119,54 @@
 
     <!--修改設置 -->
     <el-dialog
-      title="修改銀行設置"
+      title="修改設置"
       :visible.sync="editDialogVisible"
       width="50%"
       @close="editDialogClosed"
     >
       <el-form :model="editForm" ref="editFormRef" label-width="100px">
-        <el-form-item label="銀行中文名稱">
-          <el-input v-model="editForm.bank_ch"></el-input>
+        <button @click="showcontent">test </button>
+        <el-form-item label="標題">
+          <el-input v-model="editForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="銀行英文名稱">
-          <el-input v-model="editForm.bank_en"></el-input>
-        </el-form-item>
-        <el-form-item label="銀行代碼">
-          <el-input v-model="editForm.bankcode"></el-input>
-        </el-form-item>
-
-        <el-form-item label="內容">
-          <mavon-editor
-            v-model="editForm.txt"
-            ref="md"
-            @imgAdd="$imgAdd"
-            @change="change"
-            style="min-height: 400px"
-          />
-        </el-form-item>
-        <!--        <el-form-item label="狀態">
+        <el-form-item label="語系">
+    <el-radio-group v-model="editForm.lang">
+      <el-radio label="zh"></el-radio>
+      <el-radio label="en"></el-radio>
+    </el-radio-group>
+  </el-form-item>
+             <el-form-item label="狀態">
            <el-switch
-              v-model="scope.row.status"
+              v-model="editForm.status"
               active-color="#13ce66"
               inactive-color="#BEBEBE"
               :active-value="1"
               :inactive-value="0"
-
             ></el-switch>
-        </el-form-item>-->
+        </el-form-item>
+
+<!--         <el-form-item label="內容">
+
+          <mavon-editor
+          placeholder="開始編輯"
+
+            @imgAdd="$imgAdd"
+            @change="change"
+            style="min-height: 400px"
+            ref="md"
+            v-model="editForm.content"
+
+          />
+        </el-form-item> -->
+       <el-form-item label="內容">
+
+         <quill-editor
+            v-model="editForm.content"
+            ref="myQuillEditor"
+            :options="editorOption"
+          >
+        </quill-editor>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -150,13 +188,15 @@
 </template>
 
 <script>
-import { editbankData, bankdata, createBank } from '../../api/index.js'
-import { mavonEditor } from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
+import { faqdata, faqadd, faqedit } from '../../api/index.js'
+/* import { mavonEditor } from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css' */
 import moment from 'moment'
+
 export default {
   data () {
     return {
+
       content: '',
       html: '',
       configs: {},
@@ -167,14 +207,20 @@ export default {
         pagesize: 10,
         enable: '',
         date: []
+
+      },
+      editorOption: {
+        placeholder: '開始編輯'
       },
       date: [],
-      bankList: [],
+      faqlist: [],
 
       total: 0, // 总用户数
       delDialogVisible: false,
       addDialogVisible: false,
-      addForm: {},
+      addForm: {
+        lang: []
+      },
       addFormRules: {
         addbanken: [
           { required: true, message: '請輸入銀行英文名稱', trigger: 'blur' },
@@ -192,7 +238,9 @@ export default {
 
       editDialogVisible: false,
       table: {},
-      editForm: {},
+      editForm: {
+        lang: []
+      },
       /*       editFormRules: {
         editcharge: [
           { required: true, message: '請輸入手續費', trigger: 'blur' },
@@ -201,12 +249,12 @@ export default {
       } */
       enable: [
         {
-          label: '禁用',
-          value: 0
+          label: 'zh',
+          value: 'zh'
         },
         {
-          label: '啟用',
-          value: 1
+          label: 'en',
+          value: 'en'
         }
       ],
       nowTime: moment(new Date()).format('YYYY-MM-DD'),
@@ -215,14 +263,20 @@ export default {
         .format('YYYY-MM-DD')
     }
   },
-  components: {
+  /*   components: {
     mavonEditor
-  },
+  }, */
   created () {
     this.getFaqList()
   },
 
   methods: {
+
+    showcontent () {
+      console.log('ddd', this.$refs.md.d_render)
+      console.log('ccc', this.$refs.md.d_value)
+      console.log('ccc', this.$refs.md)
+    },
     $imgAdd (pos, $file) {
       var formdata = new FormData()
       formdata.append('file', $file)
@@ -243,8 +297,6 @@ export default {
 
     // 获取列表
     async getFaqList () {
-      this.queryInfo.date[1] = this.nowTime
-      this.queryInfo.date[0] = this.nowTimeSubTract
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -253,10 +305,13 @@ export default {
         page: this.queryInfo.pagenum,
         searchValue: this.searchlist,
         starttime: this.queryInfo.date[0],
-        endtime: this.queryInfo.date[1]
+        endtime: this.queryInfo.date[1],
+        langSearch: this.enable.value
       }
-      await bankdata(data).then(res => {
-        this.bankList = res.data
+      await faqdata(data).then(res => {
+        console.log(res)
+        console.log(res.data)
+        this.faqlist = res.data
         this.total = res.pagination.total_record
       })
     },
@@ -279,6 +334,8 @@ export default {
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
+
+      this.getFaqList()
     },
 
     editDialogClosed () {
@@ -287,20 +344,19 @@ export default {
 
     async saveEdit () {
       this.editDialogVisible = false
+      /* this.editForm.addcontent = this.$refs.md.d_value */
       var data = {
-        bank_en: this.editForm.bank_en,
-        bank_ch: this.editForm.bank_ch,
-        bankcode: this.editForm.bankcode,
+
         id: this.editForm.id,
+        content: this.editForm.content,
+        lang: this.editForm.lang,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        status: this.editForm.status
+        status: this.editForm.status.toString()
       }
-      await editbankData(data).then(res => {
+      await faqedit(data).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
@@ -334,22 +390,18 @@ export default {
 
     async addFaq () {
       this.addDialogVisible = false
+      /*  this.addForm.addcontent = this.$refs.md.d_render */
       var data = {
-        bank_en: this.addForm.addbanken,
-        bank_ch: this.addForm.addbankch,
-        bankcode: this.addForm.addbankcode,
-        status: 1,
+        title: this.addForm.addtitle,
+        content: this.addForm.addcontent,
+        lang: this.addForm.lang,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
-
-      await createBank(data).then(res => {
-        console.log('asdsad', data)
-        console.log(typeof res.error_code)
+      console.log('ccc', this.$refs.md)
+      await faqadd(data).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('新增成功')
         } else {
           this.$message.error('格式不符，新增失敗')
@@ -358,7 +410,7 @@ export default {
       })
     },
     async Search () {
-      console.log()
+      console.log(this.queryInfo.date[0])
       this.queryInfo.pagenum = 1
       await this.getFaqList()
     },
@@ -370,6 +422,9 @@ export default {
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
+    },
+    async clear () {
+      this.$refs.editFormRef.resetFields()
     }
 
   }

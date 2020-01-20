@@ -67,7 +67,7 @@
           <el-input v-model="editForm.limitamt"></el-input>
         </el-form-item>
                 <el-form-item label="銀行狀態">
-                        <el-select v-model="queryInfo.enable" placeholder="請選擇">
+                        <el-select v-model="editForm.status" placeholder="請選擇">
                             <el-option
                                 v-for="(enableValue,index) in enable"
                                 :key="index"
@@ -103,11 +103,11 @@ export default {
       enable: [
         {
           label: '禁用',
-          value: '0'
+          value: 0
         },
         {
           label: '啟用',
-          value: '1'
+          value: 1
         }
       ],
       addForm: {
@@ -149,7 +149,7 @@ export default {
       var data = {
         level: this.editForm.level,
         limitamt: this.editForm.limitamt,
-        status: parseInt(this.queryInfo.enable),
+        status: parseInt(this.editForm.status),
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')

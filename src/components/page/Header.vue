@@ -6,7 +6,7 @@
       <i v-else class="el-icon-s-unfold"></i>
     </div>
 
-    <div class="logo">
+    <div class="logo" @click="home">
       <img src="../../assets/logo.png" />後臺管理系統
     </div>
 
@@ -105,6 +105,9 @@ export default {
         }
       }
       this.fullscreen = !this.fullscreen
+    },
+    home () {
+      this.$router.push('/home')
     }
   },
 
@@ -113,6 +116,7 @@ export default {
       this.collapseChage()
     }
   }
+
 }
 </script>
 <style scoped>
@@ -136,6 +140,10 @@ export default {
   min-width: 10%;
   float: left;
 }
+.header .logo:hover {
+    background-color: #283446 ;
+}
+
 .collapse-btn {
     float: left;
     padding: 0 21px;

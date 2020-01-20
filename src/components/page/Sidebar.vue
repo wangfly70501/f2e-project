@@ -93,7 +93,8 @@ export default {
           subs: [
             /*  { index: 'receipt', title: '發票設置' }, */
             { index: 'bankset', title: '銀行設置' },
-            { index: 'charge', title: '手續費設置' }
+            { index: 'charge', title: '手續費設置' },
+            { index: 'faq', title: 'FaQ' }
           ]
         },
         {
@@ -101,9 +102,8 @@ export default {
           index: '6',
           title: '實名認證',
           subs: [
-            { index: 'realname', title: '實名認證' },
-            { index: 'markdown', title: '文字編輯' },
-            { index: 'faq', title: 'FaQ' }
+            { index: 'realname', title: '實名認證' }
+
           ]
         },
         /*       {

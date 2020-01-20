@@ -167,6 +167,39 @@ export const transactiondata = query => {
     data: query
   })
 }
+// faq列表
+export const faqdata = query => {
+  return request({
+    url: './bankendapi?method=getFaqList',
+    method: 'post',
+    data: query
+  })
+}
+// faq新增
+export const faqadd = query => {
+  return request({
+    url: './bankendapi?method=addFaq',
+    method: 'post',
+    data: query
+  })
+}
+// faq修改
+export const faqedit = query => {
+  return request({
+    url: './bankendapi?method=setFaq',
+    method: 'post',
+    data: query
+  })
+}
+// 實名認證
+
+export const KycList = query => {
+  return request({
+    url: './bankendapi?method=getKycList',
+    method: 'post',
+    data: query
+  })
+}
 
 // export const fetchData = query => {
 //   return request({

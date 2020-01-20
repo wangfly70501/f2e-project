@@ -26,20 +26,13 @@
       <el-button type="primary" @click="search()">搜尋</el-button>
 
       <el-table :data="nameList" stripe border>
-        <el-table-column label="UID" prop="uid"></el-table-column>
-        <el-table-column label="郵箱" prop="mail"></el-table-column>
-        <el-table-column label="手機號碼" prop="mobile"></el-table-column>
-        <el-table-column label="提交審核時間" prop="time"></el-table-column>
-        <el-table-column label="首次審核時間" prop="firsttime"></el-table-column>
-        <el-table-column label="最近審核時間" prop="lasttime"></el-table-column>
-        <el-table-column label="實名" prop="name"></el-table-column>
-        <el-table-column label="狀態" prop="status">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.status ==='0' ">未審核</el-tag>
-            <el-tag v-else>已完成</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="UID" prop="uuid"></el-table-column>
+        <el-table-column label="使用者姓名" prop="username"></el-table-column>
+         <el-table-column label="手機號碼" prop="mobile"></el-table-column>
+        <el-table-column label="信箱" prop="email"></el-table-column>
+        <el-table-column label="提交時間" prop="ctime"></el-table-column>
+
+                <el-table-column label="操作" width="180px">
           <template v-slot="scope">
             <el-button
               type="primary"
@@ -47,12 +40,29 @@
               size="mini"
               @click="showEditDialog(scope.$index, scope.row)"
             >編輯</el-button>
+            <!--     <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="deleteUserById(scope.row.id)"
+            ></el-button>-->
           </template>
         </el-table-column>
+
       </el-table>
 
       <!-- 分页组件 -->
-      <el-pagination></el-pagination>
+
+      <!-- 分页组件 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
 
       <el-dialog
         title="基本信息"
@@ -95,35 +105,75 @@
 </template>
 
 <script>
+import { KycList } from '../../api/index.js'
 export default {
   data () {
     return {
       queryInfo: {
-        date: ''
+        query: '',
+        pagenum: 1,
+        pagesize: 10,
+        enable: '',
+        date: []
       },
-      nameList: [
-        {
-          uid: 10025,
-          mail: 'ekko@btcbox.com.tw',
-          mobile: '0900123123',
-          time: '2020-01-08 11:26:31',
-          firsttime: '-',
-          lasttime: '-',
-          name: 'ekko',
-          status: '0'
-        }
-      ],
+      total: 0,
+      nameList: [],
+      searchlist: '',
       editDialogVisible: false,
-      editForm: {}
+      editForm: {},
+      enable: [
+        {
+          label: 'zh',
+          value: 'zh'
+        },
+        {
+          label: 'en',
+          value: 'en'
+        }
+      ]
     }
   },
+  created () {
+    this.getnameList()
+  },
+
   methods: {
+    async getnameList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        searchValue: this.searchlist,
+        kycStartTime: this.queryInfo.date[0],
+        kycEndTime: this.queryInfo.date[1],
+        searchUuid: ''
+      }
+      await KycList(data).then(res => {
+        console.log(res)
+        console.log(res.data)
+        this.nameList = res.data
+        this.total = res.pagination.total_record
+      })
+    },
+
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
     },
     editDialogClosed () {
       this.$refs.editFormRef.resetFields()
+    },
+    handleSizeChange (newSize) {
+      this.queryInfo.pagesize = newSize
+      this.queryInfo.pagenum = 1
+      this.getFaqList()
+    },
+
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getFaqList()
     }
   }
 }

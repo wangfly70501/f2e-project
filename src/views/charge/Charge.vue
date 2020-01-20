@@ -5,7 +5,7 @@
     <el-card>
       <!-- 搜索工具 -->
       <div style="vertical-align: middle">
-        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%">
+        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%" placeholder="請輸入銀行">
         </el-input>
         <el-button type="primary" @click="addDialogVisible = true">新增手續費</el-button>
         <el-button type="primary" @click="Search" >搜尋</el-button>

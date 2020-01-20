@@ -69,7 +69,7 @@ export default {
       addressVisible: false,
       nowTime: moment(new Date()).format('YYYY-MM-DD'),
       nowTimeSubTract: moment(new Date())
-        .subtract(7, 'days')
+        .subtract('7', 'days')
         .format('YYYY-MM-DD'),
       enable: [
         {
