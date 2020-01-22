@@ -42,6 +42,7 @@ const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const Blackmember = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/blackmem.vue')
 const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Banner.vue')
 const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realname.vue')
+const Realnamepic = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realnamepic.vue')
 const Indexmenu = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Indexmenu.vue')
 const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Userlevel.vue')
 const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Revenue.vue')
@@ -84,6 +85,7 @@ const routes = [
       { path: '/bankset', component: Bankset },
       { path: '/indexmenu', component: Indexmenu },
       { path: '/realname', component: Realname },
+      { path: '/realnamepic', component: Realnamepic },
       { path: '/revenue', component: Revenue },
       { path: '/transaction', component: Transaction },
       { path: '/userlevel', component: Userlevel },

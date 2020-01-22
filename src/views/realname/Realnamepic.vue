@@ -1,50 +1,52 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['實名認證', '實名認證']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['實名認證', '認證審核']"></TopBreadcrumb>
 
     <el-card>
-      <p class="text">認證狀態:</p>
-<!--      <el-select v-model="selectCommunityData" placeholder="請選擇">
-    <el-option
-      v-for="item in communityList"
-      :key="item.id"
-      :label="item.communityName"
-      :value="item"
-    ></el-option>
-</el-select> &nbsp; -->
-      <el-input
-        @keyup.enter.native="search"
-        style="width:15%"
-      ></el-input>&nbsp;
+      <p>認證信息</p>
 
-      <p class="text">提交時間:</p>
-      <el-date-picker
-        type="daterange"
-        start-placeholder="StartTime"
-        end-placeholder="EndTime"
-        v-model="queryInfo.date"
-        value-format="yyyy-MM-dd"
-        style="width:30%"
-      ></el-date-picker>&nbsp;
-      <el-button type="primary" @click="search()">搜尋</el-button>
+  <!--      <el-table-column label="時間">
+                                <template slot-scope="scope">
+                                    <i class="el-icon-time"></i>
+                                    <span style="margin-left: 10px">{{ scope.row.txdate }}</span>
+                                </template>
+                            </el-table-column -->
 
-      <el-table :data="nameList" stripe border>
-        <el-table-column label="UID" prop="uuid"></el-table-column>
-        <el-table-column label="使用者姓名" prop="username"></el-table-column>
-         <el-table-column label="手機號碼" prop="mobile"></el-table-column>
-        <el-table-column label="信箱" prop="email"></el-table-column>
-        <el-table-column label="提交時間" prop="ctime"></el-table-column>
-        <el-table-column label="狀態" >
-          <template slot-scope="scope">
-            <div style="color:red" v-if="scope.row.auth_status === 0"><el-button  @click="jump(scope.$index, scope.row)">未開通</el-button>
-            <!-- <router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >未開通</router-link>  --></div>
-            <div  v-else><router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >啟用</router-link></div>
-          </template>
+      <el-table :data="query" stripe border >
+        <el-table-column label="UID" >
+              <template>
+                 {{ this.$route.query.uuid }}
+              </template>
         </el-table-column>
+          <el-table-column label="使用者姓名" >
+              <template >
+                {{ this.$route.query.uuid }}
+              </template>
+        </el-table-column>
+          <el-table-column label="手機號碼" >
+              <template >
+            {{ this.$route.query.uuid }}
+              </template>
+        </el-table-column>
+          <el-table-column label="信箱" >
+              <template>
+               {{this.$route.query.uuid }}
+              </template>
+        </el-table-column>
+          <el-table-column label="提交時間" >
+              <template >
+                {{ this.$route.query.uuid }}
+              </template>
+        </el-table-column>
+     <!--     <el-table-column label="證件類型" prop="certificate_type">
+          <template slot-scope="scope">
+            <div v-if="scope.row.certificate_type === 1">身分證</div>
+             <div  v-else-if="scope.row.certificate_type === 2">護照</div>
+            <div  v-else> 居留證</div>
+          </template>
+        </el-table-column> -->
 
       </el-table>
-
-      <!-- 分页组件 -->
 
       <!-- 分页组件 -->
       <el-pagination
@@ -57,7 +59,7 @@
         :total="total"
       ></el-pagination>
 
-      <el-dialog
+  <!--     <el-dialog
         title="基本信息"
         :visible.sync="editDialogVisible"
         width="50%"
@@ -92,7 +94,7 @@
           <el-button @click="editDialogVisible = false">打 回</el-button>
           <el-button type="primary">審核通過</el-button>
         </span>
-      </el-dialog>
+      </el-dialog> -->
     </el-card>
   </div>
 </template>
@@ -110,14 +112,15 @@ export default {
         date: []
       },
       queryData: {},
-      query: {},
-      nameList: [],
       total: 0,
-      realname: [],
-      list: '',
-      editDialogVisible: false,
-      editForm: {}
-      /*       enable: [
+      form: {
+        username: ''
+      },
+      searchlist: '',
+      /*  editDialogVisible: false, */
+      editForm: {},
+      realname: {},
+      enable: [
         {
           label: 'zh',
           value: 'zh'
@@ -126,22 +129,27 @@ export default {
           label: 'en',
           value: 'en'
         }
-      ] */
-      /*     nameList: [
+      ],
+      nameList: [ ]
+      /*       nameList: [
         {
           uuid: 10025,
           auth_status: 0,
           email: 'ekko@btcbox.com.tw',
           mobile: '0900123123',
           ctime: '2020-01-08 11:26:31',
-          username: 'ekko'
-
+          username: 'ekko',
+          certificate_type: 2,
+          first_photo: 'https://images.app.goo.gl/Yc5hbJ6kJsm9Yb4A6',
+          second_photo: 'https://images.app.goo.gl/A6JYRZSJYwXfnEubA',
+          third_photo: 'https://images.app.goo.gl/rKPEbJxV5Pv3HupM7'
         }
       ] */
     }
   },
   created () {
     this.getnameList()
+    console.log('123', this.$route.query)
   },
 
   methods: {
@@ -164,14 +172,16 @@ export default {
         this.total = res.pagination.total_record
       })
     },
+    ttt () {
 
-    showEditDialog (index, row) {
+    },
+    /*    showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
     },
     editDialogClosed () {
       this.$refs.editFormRef.resetFields()
-    },
+    }, */
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
@@ -181,13 +191,6 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getFaqList()
-    },
-    jump (index, row) {
-      let queryData = {}
-      queryData = row
-
-      console.log('133', queryData)
-      this.$router.push({ path: '/realnamepic', query: queryData })
     }
   }
 }
