@@ -38,7 +38,14 @@
         <el-table-column label="標題" prop="title" ></el-table-column>
         <!-- <el-table-column label="內容" prop="content"></el-table-column> -->
         <el-table-column label="發布時間" prop="ctime"></el-table-column>
-        <el-table-column label="語系" prop="lang"></el-table-column>
+        <el-table-column label="語系" prop="lang">
+          <template slot-scope="scope">
+            <span   v-if="scope.row.lang ==='el_GR'">繁體中文</span>
+            <span   v-else-if="scope.row.lang ==='zh_CN'">简体中文</span>
+            <span   v-else>Engilsh</span>
+          </template>
+
+        </el-table-column>
             <el-table-column label="狀態" >
           <template slot-scope="scope">
             <el-tag type="danger" v-if="scope.row.status === 0">棄用</el-tag>
@@ -83,8 +90,9 @@
             </el-form-item>
          <el-form-item label="語系">
     <el-radio-group v-model="addForm.lang">
-      <el-radio label="zh"></el-radio>
-      <el-radio label="en"></el-radio>
+      <el-radio label="el_GR">繁體中文</el-radio>
+      <el-radio label="zh_CN">简体中文</el-radio>
+      <el-radio label="en_US">Engilsh</el-radio>
     </el-radio-group>
   </el-form-item>
 
@@ -130,8 +138,9 @@
         </el-form-item>
         <el-form-item label="語系">
     <el-radio-group v-model="editForm.lang">
-      <el-radio label="zh"></el-radio>
-      <el-radio label="en"></el-radio>
+      <el-radio label="el_GR">繁體中文</el-radio>
+      <el-radio label="zh_CN">简体中文</el-radio>
+      <el-radio label="en_US">Engilsh</el-radio>
     </el-radio-group>
   </el-form-item>
              <el-form-item label="狀態">

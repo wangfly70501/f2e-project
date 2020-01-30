@@ -12,7 +12,7 @@
                                 </template>
                             </el-table-column -->
 
-      <el-table :data="query" stripe border >
+      <el-table :data="nameList" stripe border >
         <el-table-column label="UID" >
               <template>
                  {{ this.$route.query.uuid }}
