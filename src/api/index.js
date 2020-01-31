@@ -192,10 +192,25 @@ export const faqedit = query => {
   })
 }
 // 實名認證
-
 export const KycList = query => {
   return request({
     url: './bankendapi?method=getKycList',
+    method: 'post',
+    data: query
+  })
+}
+// 實名認證通過
+export const KycSuccess = query => {
+  return request({
+    url: './bankendapi?method=setKycSuccess',
+    method: 'post',
+    data: query
+  })
+}
+// 實名認證失敗
+export const KycFail = query => {
+  return request({
+    url: './bankendapi?method=setKycFail',
     method: 'post',
     data: query
   })

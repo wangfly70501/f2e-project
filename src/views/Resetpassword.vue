@@ -4,9 +4,9 @@
         <img src="../assets/btcbox_icon.jpg" />
       </div>
     <div class="login-box">
-
+        <div class="text">重設帳號</div>
         <el-form
-        ref="loginFormRef"
+        ref="checkForm"
         :model="checkForm"
         :rules="rules"
         label-width="0"
@@ -23,7 +23,6 @@
         <el-form-item prop="email">
           <el-input
             v-model="checkForm.email"
-            type="password"
 
             placeholder="信箱"
             @keyup.enter.native="confirm"
@@ -32,7 +31,7 @@
         <el-form-item prop="password">
           <el-input
             v-model="checkForm.password"
-
+            type="password"
             placeholder="密碼"
             @keyup.enter.native="confirm"
           ></el-input>
@@ -41,7 +40,6 @@
           <el-input
             v-model="checkForm.checkpsw"
             type="password"
-
             placeholder="確認密碼"
             @keyup.enter.native="confirm"
           ></el-input>
@@ -85,7 +83,14 @@ export default {
         ],
         password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
         checkpwd: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
-        email: [{ required: true, message: '請輸入email', trigger: 'blur' }]
+        email: [
+          { required: true, message: '請輸入信箱', trigger: 'blur' },
+          {
+            type: 'email', // 要检验的类型（number，email，date等）
+            message: '請輸入正確的信箱',
+            trigger: ['blur', 'change']
+          }
+        ]
       }
     }
   },
@@ -116,14 +121,23 @@ export default {
     },
 
     reset () {
-      this.$refs.loginFormRef.resetFields()
+      this.$refs.checkForm.resetFields()
     }
 
   }
 }
 </script>
-
+<style>
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
+</style>
 <style lang="less" scoped>
+
+.text {
+  font-size: 24px;
+  color: #5b5b5b;
+  text-align: center;
+  font-family: "Noto Sans TC", sans-serif;
+}
 .login-container {
   height: 100%;
   background: #2b4b6b;

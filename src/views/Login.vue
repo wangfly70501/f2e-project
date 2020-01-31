@@ -9,7 +9,7 @@
       <el-tab-pane label="登入" name="signin">
         <div class="text">歡迎登入
         <el-form
-        ref="loginFormRef"
+        ref="loginForm"
         :model="loginForm"
         :rules="rules"
         label-width="0"
@@ -32,7 +32,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登入</el-button>
-          <el-button type="info" @click="reset">清除</el-button>
+          <el-button type="info" @click="reset(loginForm)">清除</el-button>
             <router-link to="/forgetpsw">忘記密碼</router-link>
         </el-form-item>
 
@@ -40,22 +40,24 @@
         </div>
       </el-tab-pane>
        <el-tab-pane label="註冊" name="signup">
+          <div class="text">註冊</div>
             <el-form
-        ref="loginFormRef"
+        ref="signupForm"
         :model="signupForm"
         :rules="rules"
         label-width="0"
         class="login-form"
       >
 
-        <el-form-item prop="username">
+        <el-form-item prop="username" label="帳號" label-width="20%">
           <el-input
             v-model="signupForm.username"
             placeholder="帳號"
             @keyup.enter.native="signup"
+
           ></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="password" label="密碼" label-width="20%">
           <el-input
             v-model="signupForm.password"
             type="password"
@@ -63,21 +65,23 @@
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-                <el-form-item prop="checkpwd">
+
+        <el-form-item prop="checkpwd" label="確認密碼" label-width="20%">
           <el-input
             v-model="signupForm.checkpass"
+            type="password"
             placeholder="確認密碼"
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-              <el-form-item prop="mobile">
+              <el-form-item prop="mobile" label="手機" label-width="20%">
           <el-input
             v-model="signupForm.mobile"
             placeholder="手機"
             @keyup.enter.native="signup"
           ></el-input>
         </el-form-item>
-                <el-form-item prop="email">
+                <el-form-item prop="email" label="email" label-width="20%">
           <el-input
             v-model="signupForm.email"
             placeholder="email"
@@ -86,7 +90,7 @@
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" @click="signup">註冊</el-button>
-          <el-button type="info" @click="reset">清除</el-button>
+          <el-button type="info" @click="resetsignup">清除</el-button>
         </el-form-item>
       </el-form>
           </el-tab-pane>
@@ -122,8 +126,20 @@ export default {
         ],
         password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
         checkpwd: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
-        mobile: [{ required: true, message: '請輸入手機', trigger: 'blur' }],
-        email: [{ required: true, message: '請輸入email', trigger: 'blur' }]
+        mobile: [ { required: true, message: '請輸入手機', trigger: 'blur' },
+          { required: true,
+            type: Number,
+            pattern: /^[0-9]{10}$/,
+            message: '目前只支持台灣手機,共10碼',
+            trigger: 'blur' }],
+        email: [
+          { required: true, message: '請輸入信箱', trigger: 'blur' },
+          {
+            type: 'email', // 要检验的类型（number，email，date等）
+            message: '請輸入正確的信箱',
+            trigger: ['blur', 'change']
+          }
+        ]
 
       }
     }
@@ -170,15 +186,22 @@ export default {
           // 登陆成功，保存token到sessionStorage，并跳转到首页
           this.$message.success('註冊成功,請洽管理員新增權限')
           window.sessionStorage.setItem('token', res.data.token)
+          this.signupForm.username = ''
+          this.signupForm.password = ''
+          this.signupForm.checkpass = ''
+          this.signupForm.mobile = ''
+          this.signupForm.email = ''
           this.$router.push('/login')
         }
       })
     },
 
     reset () {
-      this.$refs.loginFormRef.resetFields()
+      this.$refs.loginForm.resetFields()
+    },
+    resetsignup () {
+      this.$refs.signupForm.resetFields()
     }
-
   }
 }
 </script>

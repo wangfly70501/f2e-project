@@ -361,29 +361,6 @@ export default {
         this.getFaqList()
       })
     },
-    /*
-         async deleteUserById (id) {
-      const confirmResult = await this.$confirm(
-        '此操作將永久删除, 是否繼續?',
-        '提示信息',
-        {
-          type: 'warning'
-        }
-      ).catch(err => err)
-
-      if (confirmResult !== 'confirm') {
-        return this.$message.info('操作已取消')
-      }
-
-      const { data: res } = await this.$http.delete('users/' + id)
-
-      if (res.meta.status !== 200) {
-        return this.$message.error('删除失敗')
-      }
-
-      this.$message.success('删除成功')
-      this.getChargeList()
-    },  */
 
     async addFaq () {
       this.addDialogVisible = false
@@ -400,6 +377,9 @@ export default {
       await faqadd(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')
+          this.addForm.addtitle = ''
+          this.addForm.addcontent = ''
+          this.addForm.lang = ''
         } else {
           this.$message.error('格式不符，新增失敗')
         }
@@ -421,7 +401,7 @@ export default {
       this.multipleSelection = val
     },
     async clear () {
-      this.$refs.editFormRef.resetFields()
+      this.$refs.enableValue.resetFields()
     }
 
   }

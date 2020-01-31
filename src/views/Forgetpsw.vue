@@ -1,30 +1,18 @@
 <template>
   <div class="login-container">
-      <div class="avatar-box">
-        <img src="../assets/btcbox_icon.jpg" />
-      </div>
+    <div class="avatar-box">
+      <img src="../assets/btcbox_icon.jpg" />
+    </div>
     <div class="login-box">
-       <div class="text">重設登入密碼</div>
-        <el-form
-        ref="loginFormRef"
-        :model="checkForm"
-        :rules="rules"
-        label-width="0"
-        class="login-form"
-      >
+      <div class="text">驗證帳號</div>
+      <el-form ref="checkForm" :model="checkForm" :rules="rules" label-width="0" class="login-form">
         <el-form-item prop="username">
-          <el-input
-            v-model="checkForm.username"
-
-            placeholder="帳號"
-            @keyup.enter.native="confirm"
-          ></el-input>
+          <el-input v-model="checkForm.username" placeholder="帳號" @keyup.enter.native="confirm"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="email">
           <el-input
             v-model="checkForm.email"
-            type="password"
-
+            type="email"
             placeholder="信箱"
             @keyup.enter.native="confirm"
           ></el-input>
@@ -34,7 +22,6 @@
           <el-button type="info" @click="reset">清除</el-button>
           <el-button type="primary" @click="confirm">確認</el-button>
         </el-form-item>
-
       </el-form>
     </div>
   </div>
@@ -57,7 +44,14 @@ export default {
           { required: true, message: '請輸入帳號', trigger: 'blur' },
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
-        password: [{ required: true, message: '請輸入信箱', trigger: 'blur' }]
+        email: [
+          { required: true, message: '請輸入信箱', trigger: 'blur' },
+          {
+            type: 'email', // 要检验的类型（number，email，date等）
+            message: '請輸入正確的信箱',
+            trigger: ['blur', 'change']
+          }
+        ]
       }
     }
   },
@@ -86,14 +80,13 @@ export default {
     },
 
     reset () {
-      this.$refs.loginFormRef.resetFields()
+      this.$refs.checkForm.resetFields()
     }
-
   }
 }
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
 </style>
 <style lang="less" scoped>
 .login-container {
@@ -135,7 +128,6 @@ export default {
 }
 
 .login-form {
-
   padding: 50px 20px;
 
   .btns {
@@ -143,10 +135,10 @@ export default {
     justify-content: flex-end;
   }
 }
-.text{
-    font-size: 24px;
-    color: #5B5B5B;
-    text-align: center;
-     font-family: 'Noto Sans TC', sans-serif;
+.text {
+  font-size: 24px;
+  color: #5b5b5b;
+  text-align: center;
+  font-family: "Noto Sans TC", sans-serif;
 }
 </style>

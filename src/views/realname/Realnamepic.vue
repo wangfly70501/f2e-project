@@ -1,106 +1,94 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['實名認證', '認證審核']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['實名認證', '認證信息']"></TopBreadcrumb>
 
     <el-card>
       <p>認證信息</p>
 
-  <!--      <el-table-column label="時間">
-                                <template slot-scope="scope">
-                                    <i class="el-icon-time"></i>
-                                    <span style="margin-left: 10px">{{ scope.row.txdate }}</span>
-                                </template>
-                            </el-table-column -->
+      <table style="width:100%" >
+        <tr style="text-align:left">
+          <th>UID</th>
+          <th>使用者姓名</th>
+          <th>手機號碼</th>
+          <th>信箱</th>
+          <th>提交時間</th>
+        </tr>
+        <tr>
+          <td>{{ this.$route.query.uuid }}</td>
+          <td>{{ this.$route.query.username }}</td>
+          <td>{{ this.$route.query.mobile }}</td>
+          <td>{{this.$route.query.email }}</td>
+          <td>{{ this.$route.query.ctime }}</td>
+        </tr>
+      </table>
 
-      <el-table :data="nameList" stripe border >
-        <el-table-column label="UID" >
-              <template>
-                 {{ this.$route.query.uuid }}
-              </template>
-        </el-table-column>
-          <el-table-column label="使用者姓名" >
-              <template >
-                {{ this.$route.query.uuid }}
-              </template>
-        </el-table-column>
-          <el-table-column label="手機號碼" >
-              <template >
-            {{ this.$route.query.uuid }}
-              </template>
-        </el-table-column>
-          <el-table-column label="信箱" >
-              <template>
-               {{this.$route.query.uuid }}
-              </template>
-        </el-table-column>
-          <el-table-column label="提交時間" >
-              <template >
-                {{ this.$route.query.uuid }}
-              </template>
-        </el-table-column>
-     <!--     <el-table-column label="證件類型" prop="certificate_type">
-          <template slot-scope="scope">
-            <div v-if="scope.row.certificate_type === 1">身分證</div>
-             <div  v-else-if="scope.row.certificate_type === 2">護照</div>
-            <div  v-else> 居留證</div>
-          </template>
-        </el-table-column> -->
+      <!-- 下方資訊 -->
+<!--       <p>姓名:{{this.$route.query.username}}</p>
+      <div>
+        狀態:
+        <div style="color:red" v-if="this.$route.query.auth_status === 0">未開通</div>
+        <div style="color:green" v-else>開通</div>
+      </div>
+      <div>
+        證件類型:
+        <div v-if="this.$route.query.certificate_type === 1">身分證</div>
+        <div v-else-if="this.$route.query.certificate_type === 2">護照</div>
+        <div v-else>居留證</div>
+      </div>
+      <p>身分證正面照片:</p>
+      <img :src="this.$route.query.first_photo" />
+      <p>身分證反面照片:</p>
+      <img :src="this.$route.query.second_photo" />
+      <p>手寫姓名和身分證照片:</p>
+      <img :src="this.$route.query.third_photo" />
+      <div style="text-align:center">
+        <el-button @click="editDialogVisible = false">審核不通過</el-button>
+        <el-button type="primary">審核通過</el-button>
+      </div> -->
 
-      </el-table>
+<el-form ref="form" :model="form" label-width="10%">
+  <el-form-item label="姓名:">
+    {{this.$route.query.username}}
+  </el-form-item>
+  <el-form-item label="狀態:">
+<div style="color:warm" v-if="this.$route.query.auth_status === 0">未審核</div>
+<div style="color:green" v-else-if="this.$route.query.auth_status  === 1">審核通過</div>
+<div v-else style="color:red">審核不通過</div>
+       <!--  <div style="color:green" v-else>啟用</div> -->
+  </el-form-item>
+ <el-form-item label="證件類型:">
+        <div v-if="this.$route.query.certificate_type === 1">身分證</div>
+        <div v-else-if="this.$route.query.certificate_type === 2">護照</div>
+        <div v-else>居留證</div>
+  </el-form-item>
+   <el-form-item label="身分證正面照片:">
+<img :src="this.$route.query.first_photo" />
+  </el-form-item>
+     <el-form-item label="身分證反面照片:">
+<img :src="this.$route.query.second_photo" />
+  </el-form-item>
+     <el-form-item label="手寫姓名照片:">
+ <img :src="this.$route.query.third_photo" />
+  </el-form-item>
+       <el-form-item label="身分證照片:">
+ <img :src="this.$route.query.fourth_photo" />
+  </el-form-item>
+  <el-form-item label="審核不過說明：">
+    <el-input type="textarea" v-model="form.desc"></el-input>
+  </el-form-item>
+  <el-form-item style="text-align:center">
+    <el-button  @click="uppage">上一頁</el-button>
+    <el-button  @click="Submitunpass"  type="danger">審核不通過</el-button>
+    <el-button type="primary" @click="Submitpass">審核通過</el-button>
+  </el-form-item>
+</el-form>
 
-      <!-- 分页组件 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 5, 10]"
-        :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-
-  <!--     <el-dialog
-        title="基本信息"
-        :visible.sync="editDialogVisible"
-        width="50%"
-      >
-        <el-form ref="editFormRef" label-width="155px">
-          <el-form-item label="姓名">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="國家或地區">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="證件類型">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="證件號碼">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="身分證正面照片">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="身分證反面照片">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="手寫姓名和身分證照片">
-            <el-input></el-input>
-          </el-form-item>
-          <el-form-item label="">
-            <el-input placeholder="如果審核不通過，請填寫打回理由，理由將透過實名認證頁面發送給客戶"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="editDialogVisible = false">打 回</el-button>
-          <el-button type="primary">審核通過</el-button>
-        </span>
-      </el-dialog> -->
     </el-card>
   </div>
 </template>
 
 <script>
-import { KycList } from '../../api/index.js'
+import { KycSuccess, KycFail } from '../../api/index.js'
 export default {
   data () {
     return {
@@ -111,10 +99,11 @@ export default {
         enable: '',
         date: []
       },
-      queryData: {},
+      getdata: '',
       total: 0,
       form: {
-        username: ''
+        username: '',
+        desc: ''
       },
       searchlist: '',
       /*  editDialogVisible: false, */
@@ -130,7 +119,7 @@ export default {
           value: 'en'
         }
       ],
-      nameList: [ ]
+      nameList: []
       /*       nameList: [
         {
           uuid: 10025,
@@ -148,40 +137,11 @@ export default {
     }
   },
   created () {
-    this.getnameList()
-    console.log('123', this.$route.query)
+    console.log('query', this.$route.query)
   },
 
   methods: {
-    async getnameList () {
-      let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        paginate: this.queryInfo.pagesize,
-        page: this.queryInfo.pagenum,
-        searchValue: this.searchlist,
-        kycStartTime: this.queryInfo.date[0],
-        kycEndTime: this.queryInfo.date[1],
-        searchUuid: ''
-      }
-      await KycList(data).then(res => {
-        console.log(res)
-        console.log(res.data)
-        this.nameList = res.data
-        this.total = res.pagination.total_record
-      })
-    },
-    ttt () {
 
-    },
-    /*    showEditDialog (index, row) {
-      this.editForm = row
-      this.editDialogVisible = true
-    },
-    editDialogClosed () {
-      this.$refs.editFormRef.resetFields()
-    }, */
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
@@ -191,7 +151,51 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getFaqList()
+    },
+
+    /* 實名認證失敗 */
+    async Submitunpass () {
+      var data = {
+        uuid: this.$route.query.uuid,
+        reason: this.form.desc,
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state')
+      }
+      await KycFail(data).then(res => {
+        console.log('reason', this.form.desc)
+        console.log('data', data)
+        if (res.error_code === 0) {
+          this.$message.success('送出審核失敗原因')
+          this.$router.push('/realname')
+        } else {
+          this.$message.error('格式不符，送出失敗')
+        }
+      })
+    },
+    uppage () {
+      this.$router.push('/realname')
+    },
+    /* 實名認證通過 */
+    async Submitpass () {
+      console.log(this.$route.query.uuid)
+      let data = {
+        uuid: this.$route.query.uuid,
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state')
+      }
+      console.log('data', data)
+      await KycSuccess(data).then(res => {
+        if (res.error_code === 0) {
+          this.$message.success('審核成功')
+          this.$router.push('/realname')
+        } else {
+          this.$message.error('審核失敗')
+        }
+      })
     }
+
   }
 }
 </script>
@@ -201,5 +205,10 @@ export default {
   display: inline-block;
   margin: 0 5px;
   font-size: 12px;
+}
+table, th, td {
+  border: 1px solid #dddddd;
+  border-collapse: collapse;
+  padding: 10px;
 }
 </style>
