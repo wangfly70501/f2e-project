@@ -16,7 +16,7 @@
         <el-option v-for="item in enable" :key="item.id" :label="item.label" :value="item.value"></el-option>
       </el-select>
 
-      <el-button type="primary" @click="Search">搜尋</el-button>
+      <el-button type="primary"  @click="Search">搜尋</el-button>
       <el-button type="primary" @click="ExportSavePdf()">匯出</el-button>
       <el-button type="primary" @click="downExcel()">匯出excel</el-button>
       <!-- 列表数据 -->
@@ -111,12 +111,22 @@ export default {
       this.getRevenueList()
     },
     async Search () {
-      console.log()
       this.queryInfo.pagenum = 1
-      await this.getRevenueList()
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        searchMonth: this.queryInfo.date,
+        opcode: this.queryInfo.enable.toString()
+      }
+      await revenuedata(data).then(res => {
+        this.revenueList = res.data
+        this.total = res.pagination.total_record
+      })
     },
     async Exportfile () {
-      console.log()
       this.queryInfo.pagenum = 1
       await this.getRevenueList()
     },

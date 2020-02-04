@@ -19,6 +19,7 @@
 
       <el-button type="primary" @click="Search">搜尋</el-button>
       <el-button type="primary" @click="ExportSavePdf()">匯出</el-button>
+      <el-button type="primary" @click="downExcel()">匯出excel</el-button>
       <!-- 列表数据 -->
       <div ref="pdfContent" id="pdfContent">
         <div class="font">
@@ -104,6 +105,8 @@ export default {
       }
 
       await transactiondata(data).then(res => {
+        console.log(this.queryInfo.date[1])
+        console.log(this.queryInfo.date[0])
         this.transactionList = res.data
         this.total = res.pagination.total_record
       })
@@ -117,14 +120,37 @@ export default {
       this.getTransactionList()
     },
     async Search () {
-      console.log()
       this.queryInfo.pagenum = 1
-      await this.getTransactionList()
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        starttime: this.queryInfo.date[0],
+        endtime: this.queryInfo.date[1],
+        opcode: this.queryInfo.enable
+      }
+
+      await transactiondata(data).then(res => {
+        console.log('123', res)
+        console.log(this.queryInfo.date[1])
+        console.log(this.queryInfo.date[0])
+        this.transactionList = res.data
+        this.total = res.pagination.total_record
+      })
     },
     async Exportfile () {
       console.log()
       this.queryInfo.pagenum = 1
       await this.getTransactionList()
+    },
+    async  downExcel () {
+      const th = ['UID', '會員帳號', '身分證', '銀行卡號', '交易額', '交易日期']
+      const filterVal = ['uuid', 'account', 'identityid', 'bankcard_uuid', 'quota_after', 'txdate']
+      const data = this.transactionList.map(v => filterVal.map(k => v[k]))
+      const [fileName, fileType, sheetName] = ['測試下載', 'xlsx', '測試頁']
+      this.$toExcel({ th, data, fileName, fileType, sheetName })
     }
   }
 }

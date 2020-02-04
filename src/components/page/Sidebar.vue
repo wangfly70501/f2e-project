@@ -89,12 +89,13 @@ export default {
         {
           icon: 'iconfont icon-danju',
           index: '4',
-          title: '項目管理',
+          title: '財務管理',
           subs: [
             /*  { index: 'receipt', title: '發票設置' }, */
             { index: 'bankset', title: '銀行設置' },
             { index: 'charge', title: '手續費設置' },
-            { index: 'faq', title: 'FaQ' }
+            { index: 'revenue', title: '營收報表' },
+            { index: 'transaction', title: '交易報表' }
           ]
         },
         {
@@ -119,10 +120,11 @@ export default {
         {
           icon: 'iconfont icon-baobiao',
           index: '7',
-          title: '報表',
+          title: '項目管理',
           subs: [
-            { index: 'revenue', title: '營收報表' },
-            { index: 'transaction', title: '交易報表' }
+
+            { index: 'faq', title: 'FaQ' },
+            { index: 'lockup', title: '鎖倉' }
           ]
         }
       ],

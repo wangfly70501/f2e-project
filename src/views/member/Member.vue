@@ -15,10 +15,10 @@
         <el-table-column label="會員帳號" prop="account"></el-table-column>
  <el-table-column label="金錢" prop="amount"></el-table-column>
 
-        <el-table-column label="是否付款" prop="status">
+        <el-table-column label="啟用狀態" prop="status">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status =='1'">未開通</el-tag>
-            <el-tag type="success" v-else>已開通</el-tag>
+            <el-tag type="danger" v-if="scope.row.status =='0'">未啟用</el-tag>
+            <el-tag type="success" v-else>已啟用</el-tag>
           </template>
         </el-table-column>
 

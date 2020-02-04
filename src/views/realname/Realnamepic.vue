@@ -51,27 +51,27 @@
     {{this.$route.query.username}}
   </el-form-item>
   <el-form-item label="狀態:">
-<div style="color:warm" v-if="this.$route.query.auth_status === 0">未審核</div>
-<div style="color:green" v-else-if="this.$route.query.auth_status  === 1">審核通過</div>
+<div style="color:brown" v-if="this.$route.query.auth_status == '0'">未審核</div>
+<div style="color:green" v-else-if="this.$route.query.auth_status  == '1'">審核通過</div>
 <div v-else style="color:red">審核不通過</div>
        <!--  <div style="color:green" v-else>啟用</div> -->
   </el-form-item>
  <el-form-item label="證件類型:">
-        <div v-if="this.$route.query.certificate_type === 1">身分證</div>
-        <div v-else-if="this.$route.query.certificate_type === 2">護照</div>
+        <div v-if="this.$route.query.certificate_type == '1'">身分證</div>
+        <div v-else-if="this.$route.query.certificate_type == '2'">護照</div>
         <div v-else>居留證</div>
   </el-form-item>
    <el-form-item label="身分證正面照片:">
-<img :src="this.$route.query.first_photo" />
+<img :src="this.$route.query.first_photo" style="max-width:50%"/>
   </el-form-item>
      <el-form-item label="身分證反面照片:">
-<img :src="this.$route.query.second_photo" />
+<img :src="this.$route.query.second_photo" style="max-width:50%"/>
   </el-form-item>
      <el-form-item label="手寫姓名照片:">
- <img :src="this.$route.query.third_photo" />
+ <img :src="this.$route.query.third_photo" style="max-width:50%"/>
   </el-form-item>
        <el-form-item label="身分證照片:">
- <img :src="this.$route.query.fourth_photo" />
+ <img :src="this.$route.query.fourth_photo" style="max-width:50%"/>
   </el-form-item>
   <el-form-item label="審核不過說明：">
     <el-input type="textarea" v-model="form.desc"></el-input>
@@ -138,6 +138,7 @@ export default {
   },
   created () {
     console.log('query', this.$route.query)
+    console.log('123', this.$route.query.auth_status)
   },
 
   methods: {

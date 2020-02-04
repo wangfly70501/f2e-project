@@ -215,6 +215,39 @@ export const KycFail = query => {
     data: query
   })
 }
+// 鎖倉列表
+export const Lockupdata = query => {
+  return request({
+    url: './bankendapi?method=getActivityList',
+    method: 'post',
+    data: query
+  })
+}
+
+// 鎖倉編輯
+export const Lockupedit = query => {
+  return request({
+    url: './bankendapi?method=setActivity',
+    method: 'post',
+    data: query
+  })
+}
+// 新增鎖倉
+export const addActivity = query => {
+  return request({
+    url: './bankendapi?method=addActivity',
+    method: 'post',
+    data: query
+  })
+}
+// 鎖倉參加者
+export const getActivityJoin = query => {
+  return request({
+    url: './bankendapi?method=getActivityJoin',
+    method: 'post',
+    data: query
+  })
+}
 
 // export const fetchData = query => {
 //   return request({

@@ -127,9 +127,9 @@
 
     <!--修改設置 -->
     <el-dialog
-      title="修改設置"
+      title="修改FAQ"
       :visible.sync="editDialogVisible"
-      width="50%"
+      width="60%"
       @close="editDialogClosed"
     >
       <el-form :model="editForm" ref="editFormRef" label-width="100px">
@@ -248,15 +248,21 @@ export default {
       editForm: {
         lang: []
       },
-
+      /*   <el-radio label="el_GR">繁體中文</el-radio>
+      <el-radio label="zh_CN">简体中文</el-radio>
+      <el-radio label="en_US">Engilsh</el-radio> */
       enable: [
         {
-          label: 'zh',
-          value: 'zh'
+          label: '繁體中文',
+          value: 'el_GR'
         },
         {
-          label: 'en',
-          value: 'en'
+          label: '简体中文',
+          value: 'zh_CN'
+        },
+        {
+          label: 'Engilsh',
+          value: 'en_US'
         }
       ],
       nowTime: moment(new Date()).format('YYYY-MM-DD'),
@@ -306,8 +312,6 @@ export default {
         langSearch: this.enable.value
       }
       await faqdata(data).then(res => {
-        console.log(res)
-        console.log(res.data)
         this.faqlist = res.data
         this.total = res.pagination.total_record
       })
@@ -373,7 +377,6 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
-      console.log('ccc', this.$refs.md)
       await faqadd(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')
@@ -387,7 +390,6 @@ export default {
       })
     },
     async Search () {
-      console.log(this.queryInfo.date[0])
       this.queryInfo.pagenum = 1
       await this.getFaqList()
     },

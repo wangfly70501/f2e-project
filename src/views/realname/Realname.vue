@@ -34,10 +34,10 @@
         <el-table-column label="狀態審核" >
           <template slot-scope="scope">
 
-            <div  v-if="scope.row.auth_status === 0"><el-button  @click="jump(scope.$index, scope.row)" size="mini"  type="warm">未審核</el-button></div>
-            <div  v-else-if="scope.row.auth_status === 1"><el-button  @click="jump(scope.$index, scope.row)" size="mini"  type="success">審核通過</el-button></div>
+            <div  v-if="scope.row.auth_status === 0"><el-button  @click="jump(scope.$index, scope.row)" size="mini"   type="warning" plain>未審核</el-button></div>
+            <div  v-else-if="scope.row.auth_status === 1"><el-button  @click="jump(scope.$index, scope.row)" size="mini"  type="success" plain>審核通過</el-button></div>
             <div  v-else><!-- <router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >啟用</router-link> -->
-            <el-button  @click="jump(scope.$index, scope.row)" size="mini" type="danger">審核不通過</el-button>
+            <el-button  @click="jump(scope.$index, scope.row)" size="mini" type="danger" plain>審核不通過</el-button>
             </div>
           </template>
         </el-table-column>
@@ -105,7 +105,7 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        searchValue: 'b',
+
         kycStartTime: this.queryInfo.date[0],
         kycEndTime: this.queryInfo.date[1],
         searchUuid: this.searchlist
