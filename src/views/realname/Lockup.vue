@@ -25,7 +25,7 @@
                         </el-select>&nbsp;
                          <el-button type="primary" @click="clear">清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
-        <el-button type="primary" @click="addDialogVisible = true">新增</el-button>
+        <el-button type="info" @click="addDialogVisible = true" class="btn_right">建立活動</el-button>
 
       </div>
       <!-- 列表 -->
@@ -36,23 +36,26 @@
     </el-table-column>
         <el-table-column label="ID" prop="id" width="40px"></el-table-column> -->
         <el-table-column label="ID" prop="id"  width="40%"></el-table-column>
-        <el-table-column label="活定名稱" prop="title" ></el-table-column>
+        <el-table-column label="活動名稱" prop="title" ></el-table-column>
         <el-table-column label="利率" prop="rate" width="50%"></el-table-column>
         <el-table-column label="幣種" prop="currency"  width="50%"></el-table-column>
-         <el-table-column label="最小金額" prop="minAmount"></el-table-column>
-         <el-table-column label="最大金額" prop="maxAmount"></el-table-column>
+         <el-table-column label="申購單位">
+            <template slot-scope="scope">
+            {{scope.row.minAmount |  NumFormat}} ~ {{scope.row.maxAmount |  NumFormat }}
+            </template>
+         </el-table-column>
         <el-table-column label="天數" prop="days" width="50%"></el-table-column>
         <el-table-column label="開始時間">
             <template slot-scope="scope">
-            {{scope.row.beginTime | dateFormat}}
+            {{scope.row.beginTime | datefformat}}
             </template>
         </el-table-column>
-        <el-table-column label="結束方式" >
+        <el-table-column label="活動方式" >
             <template slot-scope="scope">
 
          <div v-if="scope.row.type ===1" style="color:gray"> </div>
             <div  v-else>
-            {{scope.row.endTime | dateFormat}} <p style="color:gray">日期到期即結束</p>
+            {{scope.row.endTime | datefformat}} <p style="color:gray">日期到期即結束</p>
             </div>
 
                 <div v-if="scope.row.type ===1" >{{scope.row.people_limit}}  <p style="color:gray">人數到達即結束</p></div>
@@ -151,6 +154,7 @@
           <el-date-picker
           type="datetime"
           v-model="queryInfo.beginTime"
+          format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm"
           style="width:100%"
         ></el-date-picker></el-form-item>
@@ -158,6 +162,7 @@
         <el-date-picker
           type="datetime"
           v-model="queryInfo.endTime"
+          format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm"
           style="width:100%"
         ></el-date-picker> </el-form-item>
@@ -220,8 +225,9 @@
          <div class="form-right">
              <el-form-item label="活動開始日期"  >
           <el-date-picker
+          type="datetime"
           format="yyyy-MM-dd HH:mm"
-          value-format="yyyy-MM-dd HH:mm"
+
           v-model="editForm.beginTime"
 
           style="width:100%"
@@ -230,8 +236,9 @@
         <el-date-picker
 
           v-model="editForm.endTime"
+          type="datetime"
             format="yyyy-MM-dd HH:mm"
-          value-format="yyyy-MM-dd HH:mm"
+
           style="width:100%"
         ></el-date-picker> </el-form-item>
         </div>
@@ -314,9 +321,17 @@ export default {
 
     }
   },
-  /*   components: {
-    mavonEditor
-  }, */
+  Filter: {
+    commaFormat: function (value) {
+      // 加上千分位符號
+      return value
+        .toString()
+        .replace(/^(-?\d+?)((?:\d{3})+)(?=\.\d+$|$)/, function (all, pre, groupOf3Digital) {
+          return pre + groupOf3Digital.replace(/\d{3}/g, ',$&')
+        })
+    }
+  },
+
   created () {
     this.getLockupList()
     console.log(this.Lockuplist)
@@ -447,11 +462,20 @@ export default {
 
   }
 }
+/* 數字千分位 */
+
 </script>
 
 <style>
    .form-right {
     width:50%; padding-left:1rem; padding-right:1rem; padding-top:1rem;
 
+  }
+  .btn_right{
+    float: right;
+    left: 50px;
+  }
+  .el-dialog__header{
+    background-color: #F2F2F2;
   }
 </style>

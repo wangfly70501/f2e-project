@@ -5,7 +5,7 @@
     <el-card>
       <el-button  @click="uppage">上一頁</el-button>
       <!-- 列表 -->
-      <el-table :data="ActivityJoinlist" stripe border @selection-change="handleSelectionChange">
+      <el-table :data="ActivityJoinlist" stripe border>
         <el-table-column label="Id" prop="id" ></el-table-column>
         <el-table-column label="uuid" prop="uuid" ></el-table-column>
         <el-table-column label="幣種" prop="currency" ></el-table-column>
@@ -59,7 +59,7 @@ export default {
         placeholder: '開始編輯'
       },
       date: [],
-      faqlist: [],
+      ActivityJoinlist: [],
 
       total: 0, // 总用户数
       delDialogVisible: false,

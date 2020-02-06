@@ -107,15 +107,15 @@ export default {
 
           ]
         },
-        /*       {
+        {
           icon: 'iconfont icon-baobiao',
           index: '5',
           title: 'CMS系統',
           subs: [
-            { index: 'indexmenu', title: '公告管理' },
+            /*  { index: 'indexmenu', title: '公告管理' }, */
             { index: 'banner', title: 'banner管理' }
           ]
-        } */
+        },
 
         {
           icon: 'iconfont icon-baobiao',

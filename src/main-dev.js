@@ -62,6 +62,32 @@ Vue.filter('dateFormat', function (val) {
   return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
 })
 
+Vue.filter('datefformat', function (val) {
+  const dt = new Date(val)
+
+  const y = dt.getFullYear()
+  const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+  const d = (dt.getDate() + '').padStart(2, '0')
+
+  const hh = (dt.getHours() + '').padStart(2, '0')
+  const mm = (dt.getMinutes() + '').padStart(2, '0')
+
+  return `${y}-${m}-${d} ${hh}:${mm}`
+})
+
+// 千分位
+Vue.filter('NumFormat', function (value) {
+  if (!value) return ' '
+
+  var intPart = Number(value).toFixed(0) // 获取整数部分
+
+  var intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,') // 将整数部分逢三一断
+
+  return intPartFormat
+}
+
+)
+
 Vue.config.productionTip = false
 
 new Vue({

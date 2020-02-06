@@ -67,10 +67,10 @@
      <el-form-item label="身分證反面照片:">
 <img :src="this.$route.query.second_photo" style="max-width:50%"/>
   </el-form-item>
-     <el-form-item label="手寫姓名照片:">
+     <el-form-item label="第二證件照:">
  <img :src="this.$route.query.third_photo" style="max-width:50%"/>
   </el-form-item>
-       <el-form-item label="身分證照片:">
+       <el-form-item label="手寫簽名照:">
  <img :src="this.$route.query.fourth_photo" style="max-width:50%"/>
   </el-form-item>
   <el-form-item label="審核不過說明：">

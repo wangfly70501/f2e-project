@@ -29,7 +29,7 @@
 
       </div>
       <!-- 列表 -->
-      <el-table :data="faqlist" stripe border @selection-change="handleSelectionChange">
+      <el-table :data="faqlist" stripe border>
         <!-- <el-table-column
       type="selection"
       width="40px">
@@ -335,7 +335,6 @@ export default {
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
-
       this.getFaqList()
     },
 
@@ -398,9 +397,6 @@ export default {
 
       this.queryInfo.pagenum = 1
       await this.getFaqList()
-    },
-    handleSelectionChange (val) {
-      this.multipleSelection = val
     },
     async clear () {
       this.$refs.enableValue.resetFields()

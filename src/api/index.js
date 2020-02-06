@@ -249,6 +249,38 @@ export const getActivityJoin = query => {
   })
 }
 
+// CMS系統
+export const getcmslist = query => {
+  return request({
+    url: './bankendapi?method=cmsList',
+    method: 'post',
+    data: query
+  })
+}
+// 新增列表
+export const uploadban = query => {
+  return request({
+    url: './bankendapi?method=cmsUpload',
+    method: 'post',
+    data: query
+  })
+}
+// 修改廣告
+export const editban = query => {
+  return request({
+    url: './bankendapi?method=cmsSet',
+    method: 'post',
+    data: query
+  })
+}
+// 刪除廣告
+export const delban = query => {
+  return request({
+    url: './bankendapi?method=cmsDelete',
+    method: 'post',
+    data: query
+  })
+}
 // export const fetchData = query => {
 //   return request({
 //     url: './table.json',
