@@ -260,7 +260,7 @@ export const getcmslist = query => {
 // 新增列表
 export const uploadban = query => {
   return request({
-    url: './bankendapi?method=cmsUpload',
+    url: './bankendapi?method=cmsUpload64',
     method: 'post',
     data: query
   })

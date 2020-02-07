@@ -1,6 +1,3 @@
-// Created by 王晓波.
-// 上传图片
-// *****************************
 <template>
   <div>
     <input class="input_upload_file" type="file"
@@ -14,7 +11,8 @@
 </template>
 
 <script>
-
+import { uploadAuthImg } from '@/api/backendAPI';
+import {uploadban } from '../../api/index.js'
 export default {
   name: 'uploadFile',
   props: {
@@ -62,6 +60,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    userUuid: {
+      type: Number,
+      default: null,
+    },
+    imgOrder: {
+      type: String,
+      default: '1',
+    },
   },
   data() {
     return {
@@ -69,6 +75,8 @@ export default {
       size: '',
       // 真实文件格式
       realFormatValue: '',
+      // 上傳 url
+      uploadImgUrl: ''
     };
   },
   mounted() {
@@ -84,6 +92,8 @@ export default {
     },
     tellFun(e) {
       const val = e.target.files[0];
+      let self = this;
+
       if (val.size > this.maxSize * 1024 * 1024) {
         this.$emit('tellMessage', {
           error: '图片尺寸过大',
@@ -94,7 +104,16 @@ export default {
           name: this.name,
         });
         const formData = new FormData();
-        formData.append(this.name, val);
+
+      formData.append('title', this.addForm.title)
+      formData.append('lang', this.addForm.lang)
+      formData.append('type', this.addForm.type)
+      formData.append('publicPic', file)
+      formData.append('classify', this.addForm.classify)
+      formData.append('sort', this.addForm.sort)
+      formData.append('mg_name', localStorage.getItem('mg_name'))
+      formData.append('mg_pwd', localStorage.getItem('mg_pwd'))
+      formData.append('mg_state', localStorage.getItem('mg_state'))
         // 添加水印
         if (this.isWaterMark) {
           formData.append('isWaterMark', 1);
@@ -104,20 +123,27 @@ export default {
             formData.append(Object.keys(item)[0], item[Object.keys(item)[0]]);
           });
         }
-        this.axios({
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          method: 'post',
-          url: this.url,
-          hostType: (Number(this.isOpenUploadImg) === 1) ? 'upload' : null,
-          params: formData,
-        }).then((res) => {
+
+
+        // console.log(this.userUuid, this.imgOrder);
+
+        uploadban(formData).then((res)=>{
           if (!Number(res.code) || String(res.code) === '0') {
             const { data } = res;
-            const fileName = data.filenameStr ? data.filenameStr : data.filename;
-            this.$emit('uploadFinish', { url: data.base_image_url + fileName, fileName });
+            const fileName = data.data.picName;
+    
             e.target.value = '';
+            console.log(res);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(val);
+            reader.onload = () => {
+              this.$emit('uploadFinish', { 
+                url: '', 
+                fileName,
+                b64: reader.result });
+            };
+
           } else {
             this.$emit('uploadFinish', { error: this.$t('common.imgFiail') });
           }

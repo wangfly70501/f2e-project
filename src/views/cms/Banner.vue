@@ -50,6 +50,16 @@
             </template>
         </el-table-column>
       </el-table>
+         <!-- 分页组件 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[1, 2, 5, 10]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
       <!-- 新增 -->
       <el-dialog title="新增" :visible.sync="addDialogVisible" width="80%" @close="addDialogClosed">
         <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px">
@@ -92,19 +102,33 @@
                 :http-request="addBanner"
                 ref="upload"
               >
-                <i class="el-icon-plus"></i> -->
-              <!-- </el-upload>  -->
-                      <el-upload
+                <i class="el-icon-plus"></i>
+           </el-upload>-->
+             <el-upload
           class="upload-demo"
           action="string"
           :auto-upload="false"
           :limit="1"
           ref="upload"
           :http-request="addBanner"
+          naem="publicPic"
           multiple>
          <el-button size="small" type="primary">點擊上傳</el-button>
         </el-upload>
+<!--         <el-upload
+  ref='upload'
+  :auto-upload='false'
+  :file-list="fileList"
+  :multiple='false'
+  :limit="1"
+  :http-request="addBanner"
+  accept="image/jpeg,image/gif,image/png"
+  action=''
 
+  >
+   <el-button slot="trigger" size="mini" type="primary">選取圖片</el-button>
+</el-upload> -->
+<!--  <input type="file"  id="file" @change="addBanner($event)"> -->
             </template>
 
           </el-form-item>
@@ -112,9 +136,10 @@
         <!-- 底部区域 -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="addDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="addBanner">確定</el-button>
+           <el-button type="primary" @click="addBanner">確定</el-button>
         </span>
       </el-dialog>
+
    <!--修改設置 -->
     <el-dialog
       title="編輯"
@@ -187,7 +212,7 @@ import { getcmslist, editban, delban, uploadban } from '../../api/index.js'
 export default {
   data () {
     return {
-
+      fileList: [],
       name: 'upload',
       queryInfo: {
         pagenum: 1,
@@ -200,7 +225,17 @@ export default {
       total: 0,
 
       editForm: {},
-      addForm: {},
+      addForm: {
+        /*      mg_name: 'cccc',
+        mg_pwd: '12345',
+        mg_state: '1',
+        title: 'dada',
+        type: '1',
+        lang: 'el_GR',
+        classify: '1',
+        sort: '1' */
+
+      },
       addFormRules: {},
       editDialogVisible: false,
       addDialogVisible: false,
@@ -222,10 +257,10 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
-        page: this.queryInfo.pagenum
-        /* type: '2',
+        page: this.queryInfo.pagenum,
+        type: '',
         lang: '',
-        classify: '' */
+        classify: ''
       }
       await getcmslist(data).then(res => {
         this.bannerList = res.data
@@ -248,61 +283,51 @@ export default {
     addDialogClosed () {
       this.$refs.addForm.resetFields()
     },
-    async addBanner () {
+    addBanner () {
       this.addDialogVisible = false
       /*    let formData = new FormData()
       const file = this.$refs.upload.uploadFiles[0]
       formData.append('file', file.raw)
       formData.append('name', this.name) */
-      console.log('refs', this.$refs.upload.uploadFiles[0].raw)
+      /*  */
+
+      /* var file = this.$refs.upload.uploadFiles[0].raw */
+      /*  console.log('publicPic', reader) */
+      let reader = new FileReader()
+      reader.readAsDataURL(this.$refs.upload.uploadFiles[0].raw)
+      console.log('123', reader.result)
+      console.log('1111', this.addForm.title)
+
       var data = {
-        title: this.addForm.title,
-        lang: this.addForm.lang,
-        type: this.addForm.type,
-        publicPic: this.$refs.upload.uploadFiles[0].raw,
-        classify: this.addForm.classify,
-        sort: this.addForm.sort,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
+        mg_state: localStorage.getItem('mg_state'),
+        title: this.addForm.title,
+        lang: this.addForm.lang,
+        type: this.addForm.type.toString(),
+
+        classify: this.addForm.classify.toString(),
+        sort: this.addForm.sort
       }
-      await uploadban(data).then(res => {
-        if (res.error_code === '0') {
-          this.$message.success('新增成功')
-          this.$refs.addForm.resetFields()
-        } else {
-          this.$message.error('格式不符，新增失敗')
-        }
-        this.getbannerList()
-      })
+
+      reader.onload = function (e) {
+        var imgFile = e.target.result
+
+        data.publicPic = imgFile
+
+        console.log('ddd', data)
+        uploadban(data).then(res => {
+          /*        console.log('rrr', res)
+          if (res.error_code === 0) {
+            this.$message.success('新增成功')
+          } else {
+            this.$message.error('格式不符，新增失敗')
+          }
+          this.getbannerList() */
+        })
+      }
     },
-    /*  addBanner () {
-      this.addDialogVisible = false
-      var formData = new FormData()
 
-      formData.append('file', this.$refs.upload.files[0])
-      console.log(this.$refs.upload.files[0])
-      axios({
-
-        method: 'post',
-
-        url: 'http://192.168.50.105:7777/bankendapi?method=cmsUpload',
-
-        title: this.addForm.title,
-        lang: this.addForm.lang,
-        type: this.addForm.type,
-        publicPic: formData,
-        classify: this.addForm.classify,
-        sort: this.addForm.sort,
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
-
-      }).then(function (res) {
-        console.log(res)
-      })
-    },
- */
     onChangeFileFun (obj) {
       this.uploadName = obj.name
       this[`${this.uploadName}Loading`] = true
@@ -367,6 +392,7 @@ export default {
 
       }
       await delban(data).then(res => {
+        console.log(res)
         if (res.error_code === 0) {
           this.$message.success('刪除成功')
         } else {
