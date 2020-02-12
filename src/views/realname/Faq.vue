@@ -84,11 +84,11 @@
 
     <!-- 新增 -->
     <el-dialog title="新增" :visible.sync="addDialogVisible" width="80%" @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-        <el-form-item label="標題" >
+      <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px">
+        <el-form-item label="標題" prop="addtitle">
           <el-input v-model="addForm.addtitle"></el-input>
             </el-form-item>
-         <el-form-item label="語系">
+         <el-form-item label="語系" prop="lang">
     <el-radio-group v-model="addForm.lang">
       <el-radio label="el_GR">繁體中文</el-radio>
       <el-radio label="zh_CN">简体中文</el-radio>
@@ -107,7 +107,7 @@
 
           />
         </el-form-item> -->
-               <el-form-item label="內容">
+               <el-form-item label="內容" prop="addtitle">
 
          <quill-editor
             v-model="addForm.addcontent"
@@ -229,17 +229,15 @@ export default {
         lang: []
       },
       addFormRules: {
-        addbanken: [
-          { required: true, message: '請輸入銀行英文名稱', trigger: 'blur' },
-          { min: 3, max: 12, message: '長度在 3 到 12 個字元', trigger: 'blur' }
+        addtitle: [
+          { required: true, message: '請輸入標題', trigger: 'blur' }
         ],
-        addbankcode: [
-          { required: true, message: '請輸入銀行英文名稱', trigger: 'blur' },
-          { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
+        lang: [
+          { required: true, message: '請選擇語言', trigger: 'blur' }
         ],
-        addbankch: [
-          { required: true, message: '請輸入銀行中文名稱', trigger: 'blur' },
-          { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
+        addcontent: [
+          { required: true, message: '請輸入內容', trigger: 'blur' }
+
         ]
       },
 
@@ -271,8 +269,9 @@ export default {
         .format('YYYY-MM-DD')
     }
   },
-  /*   components: {
-    mavonEditor
+  /* components: {
+     mavonEditor
+
   }, */
   created () {
     this.getFaqList()
@@ -329,7 +328,7 @@ export default {
     },
 
     addDialogClosed () {
-      this.$refs.addFormRef.resetFields()
+      this.$refs.addForm.resetFields()
     },
 
     showEditDialog (index, row) {
@@ -382,6 +381,7 @@ export default {
           this.addForm.addtitle = ''
           this.addForm.addcontent = ''
           this.addForm.lang = ''
+          this.$refs.addForm.resetFields()
         } else {
           this.$message.error('格式不符，新增失敗')
         }
@@ -399,7 +399,9 @@ export default {
       await this.getFaqList()
     },
     async clear () {
-      this.$refs.enableValue.resetFields()
+      this.queryInfo.date = null
+      this.searchlist = null
+      this.enable.value = null
     }
 
   }

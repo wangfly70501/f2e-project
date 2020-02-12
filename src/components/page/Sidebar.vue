@@ -70,7 +70,7 @@ export default {
           ]
         }, */
         {
-          icon: 'iconfont icon-users',
+
           index: '2',
           title: '會員管理',
           subs: [
@@ -87,7 +87,7 @@ export default {
           subs: [{ index: 'deposit', title: '出入金列表' }]
         }, */
         {
-          icon: 'iconfont icon-danju',
+
           index: '4',
           title: '財務管理',
           subs: [
@@ -99,7 +99,7 @@ export default {
           ]
         },
         {
-          icon: 'iconfont icon-danju',
+
           index: '6',
           title: '實名認證',
           subs: [
@@ -108,7 +108,7 @@ export default {
           ]
         },
         {
-          icon: 'iconfont icon-baobiao',
+
           index: '5',
           title: 'CMS系統',
           subs: [
@@ -118,7 +118,7 @@ export default {
         },
 
         {
-          icon: 'iconfont icon-baobiao',
+          /*  icon: 'iconfont icon-baobiao', */
           index: '7',
           title: '項目管理',
           subs: [

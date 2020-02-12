@@ -76,7 +76,6 @@
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
         <el-form-item label="選擇銀行">
           <!--  <el-input v-model="addForm.addbank"></el-input> -->
-
           <el-select v-model="addForm.addbank" placeholder="請選擇">
             <el-option
               v-for="item in bankList"

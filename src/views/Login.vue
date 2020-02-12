@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
-        <div class="avatar-box">
+<!--         <div class="avatar-box">
         <img src="../assets/btcbox_icon.jpg" />
-      </div>
+      </div> -->
     <div class="login-box">
 
     <el-tabs v-model="activeName">
@@ -66,7 +66,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item prop="checkpwd" label="確認密碼" label-width="20%">
+        <el-form-item prop="checkpass" label="確認密碼" label-width="20%">
           <el-input
             v-model="signupForm.checkpass"
             type="password"
@@ -125,7 +125,7 @@ export default {
           { min: 3, max: 10, message: '長度在 3 到 10 個字元', trigger: 'blur' }
         ],
         password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
-        checkpwd: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
+        checkpass: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
         mobile: [ { required: true, message: '請輸入手機', trigger: 'blur' },
           { required: true,
             type: Number,
@@ -186,11 +186,7 @@ export default {
           // 登陆成功，保存token到sessionStorage，并跳转到首页
           this.$message.success('註冊成功,請洽管理員新增權限')
           window.sessionStorage.setItem('token', res.data.token)
-          this.signupForm.username = ''
-          this.signupForm.password = ''
-          this.signupForm.checkpass = ''
-          this.signupForm.mobile = ''
-          this.signupForm.email = ''
+          this.$refs.signupForm.resetFields()
           this.$router.push('/login')
         }
       })
@@ -232,7 +228,7 @@ export default {
   padding: 20px;
 }
 
-.avatar-box {
+/* .avatar-box {
   height: 130px;
   width: 130px;
   background: white;
@@ -251,7 +247,7 @@ export default {
     border-radius: 50%;
     background-color: #eee;
   }
-}
+} */
 
 .login-form {
   padding: 30px 20px;

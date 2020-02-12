@@ -281,6 +281,15 @@ export const delban = query => {
     data: query
   })
 }
+
+/// ///幣種/////
+export const currencyList = query => {
+  return request({
+    url: './bankendapi?method=getCurrencyList',
+    method: 'post',
+    data: query
+  })
+}
 // export const fetchData = query => {
 //   return request({
 //     url: './table.json',

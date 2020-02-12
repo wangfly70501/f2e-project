@@ -119,7 +119,7 @@ export default {
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
         searchMonth: this.queryInfo.date,
-        opcode: this.queryInfo.enable.toString()
+        opcode: this.queryInfo.enable
       }
       await revenuedata(data).then(res => {
         this.revenueList = res.data
