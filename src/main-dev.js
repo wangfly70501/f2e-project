@@ -10,7 +10,8 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css' // 阿里巴巴图标库
-import VueQuillEditor from 'vue-quill-editor' // 富文本编辑器
+/* import VueQuillEditor from 'vue-quill-editor' // 富文本编辑器 */
+
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
@@ -43,7 +44,7 @@ axios.interceptors.response.use(response => {
 Vue.prototype.$http = axios
 
 // 注册富文本编辑器为全局组件
-Vue.use(VueQuillEditor)
+/* Vue.use(VueQuillEditor) */
 
 Vue.component('TopBreadcrumb', TopBreadcrumb)
 Vue.component('SearchTool', SearchTool)

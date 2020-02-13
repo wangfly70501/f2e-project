@@ -400,11 +400,11 @@ export default {
       this.delDialogVisible = false
     },
     async clear () {
-      this.enable.value = null
+      this.enable.value = ''
     },
     async Search () {
       this.queryInfo.pagenum = 1
-      await this.getbannerList()
+      this.getbannerList()
     }
   }
 }

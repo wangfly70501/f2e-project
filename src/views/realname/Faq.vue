@@ -83,7 +83,7 @@
     </el-card>
 
     <!-- 新增 -->
-    <el-dialog title="新增" :visible.sync="addDialogVisible" width="80%" @close="addDialogClosed">
+    <el-dialog title="新增" :visible.sync="addDialogVisible"  @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px">
         <el-form-item label="標題" prop="addtitle">
           <el-input v-model="addForm.addtitle"></el-input>
@@ -197,14 +197,43 @@
 
 <script>
 import { faqdata, faqadd, faqedit } from '../../api/index.js'
+import { quillEditor, Quill } from 'vue-quill-editor'
+import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
 
-import moment from 'moment'
+Quill.register('modules/ImageExtend', ImageExtend)
+// use resize module
 
 export default {
+  components: { quillEditor },
   data () {
     return {
-
       content: '',
+      editorOption: {
+        theme: 'snow',
+        placeholder: '開始編輯',
+        modules: {
+
+          ImageExtend: {
+            loading: true,
+            name: 'img',
+            size: 2, // 单位为M, 1M = 1024KB
+            action: '',
+            headers: (xhr) => {
+            },
+            response: (res) => {
+              return res.info
+            }
+          },
+          toolbar: {
+            container: container,
+            handlers: {
+              'image': function () {
+                QuillWatch.emit(this.quill.id)
+              }
+            }
+          }
+        }
+      },
       html: '',
       configs: {},
       searchlist: '',
@@ -216,9 +245,30 @@ export default {
         date: []
 
       },
-      editorOption: {
-        placeholder: '開始編輯'
-      },
+      /*       editorOption: {
+        placeholder: '開始編輯',
+        uplpadConfig: {
+          size: 1024,
+          accept: 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon'
+        }
+
+      }, */
+      /*    editorOption: {
+        modules: {
+          ImageExtend: {
+            loading: true,
+            name: 'img',
+            size: 3,
+            action: '',
+            headers: (xhr) => {
+            },
+            response: (res) => {
+              return res.info
+            }
+          }
+        }
+      }, */
+
       date: [],
       faqlist: [],
 
@@ -262,36 +312,21 @@ export default {
           label: 'Engilsh',
           value: 'en_US'
         }
-      ],
-      nowTime: moment(new Date()).format('YYYY-MM-DD'),
-      nowTimeSubTract: moment(new Date())
-        .subtract(7, 'days')
-        .format('YYYY-MM-DD')
+      ]
+
     }
   },
   /* components: {
      mavonEditor
 
   }, */
+
   created () {
     this.getFaqList()
   },
 
   methods: {
 
-    $imgAdd (pos, $file) {
-      var formdata = new FormData()
-      formdata.append('file', $file)
-      // 这里没有服务器供大家尝试，可将下面上传接口替换为你自己的服务器接口
-      this.$axios({
-        url: '/common/upload',
-        method: 'post',
-        data: formdata,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then(url => {
-        this.$refs.md.$img2Url(pos, url)
-      })
-    },
     change (value, render) {
       // render 为 markdown 解析后的结果
       this.html = render
@@ -329,11 +364,13 @@ export default {
 
     addDialogClosed () {
       this.$refs.addForm.resetFields()
+      this.addForm.addcontent = ''
     },
 
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
+      console.log('1111111111', row)
       this.getFaqList()
     },
 
@@ -358,7 +395,7 @@ export default {
         if (res.error_code === 0) {
           this.$message.success('修改成功')
         } else {
-          this.$message.error('格式不符，修改失敗')
+          this.$message.error('修改失敗')
         }
         this.getFaqList()
       })
@@ -375,6 +412,7 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
+      console.log(this.addForm.addcontent)
       await faqadd(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')
@@ -383,7 +421,7 @@ export default {
           this.addForm.lang = ''
           this.$refs.addForm.resetFields()
         } else {
-          this.$message.error('格式不符，新增失敗')
+          this.$message.error('新增失敗')
         }
         this.getFaqList()
       })

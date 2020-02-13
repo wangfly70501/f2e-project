@@ -90,9 +90,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="建立時間">
+      <!--   <el-table-column label="建立時間">
           <template slot-scope="scope">{{scope.row.beginTime | datefformat}}</template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="活動創建者" prop="creator" width="90%"></el-table-column>
         <el-table-column label="啟用狀態" width="80%">
           <template slot-scope="scope">
@@ -261,7 +261,7 @@
 
     <!--編輯活動 -->
     <el-dialog title="編輯活動" :visible.sync="editDialogVisible" width="60%" @close="editDialogClosed">
-      <el-form :model="editForm" ref="editFormRef" label-width="100px">
+      <el-form :model="editForm" ref="editFormRef" label-width="100px" :rules="Rules">
         <el-form-item label="活動名稱" prop="title">
           <el-input v-model="editForm.title"></el-input>
         </el-form-item>
@@ -278,10 +278,9 @@
 
         <el-form-item label="申購單位"  prop="Amount" >
 
-          <el-form-item prop="minAmount" >
+          <el-form-item  >
           <el-input v-model="editForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>
-           </el-form-item>~
-      <el-form-item prop="maxAmount">
+          ~
           <el-input v-model="editForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
       </el-form-item>
         </el-form-item>
@@ -384,6 +383,7 @@ import {
 } from '../../api/index.js'
 
 export default {
+
   data () {
     return {
       people_limit: '',
@@ -403,9 +403,7 @@ export default {
         endTime: '',
         date: []
       },
-      editorOption: {
-        placeholder: '開始編輯'
-      },
+
       date: [],
       Lockuplist: [],
 
@@ -422,9 +420,7 @@ export default {
           { required: true, message: '請選擇活動幣種', trigger: 'blur' }
 
         ],
-        Amount: [
-          { required: true, trigger: 'blur' }
-        ],
+        Amount: [{ required: true, trigger: 'blur' }],
 
         rate: [
           { required: true, message: '請輸入活動利率', trigger: 'blur' }
@@ -479,7 +475,6 @@ export default {
 
   created () {
     this.getLockupList()
-    console.log(this.Lockuplist)
     this.getCurrencyList()
   },
 
@@ -528,6 +523,11 @@ export default {
 
     addDialogClosed () {
       this.$refs.addFormref.resetFields()
+      this.addForm.minAmount = ''
+      this.addForm.maxAmount = ''
+      this.addForm.people_limit = ''
+      this.addForm.beginTime = ''
+      this.addForm.endTime = ''
     },
 
     showEditDialog (index, row) {
@@ -546,7 +546,8 @@ export default {
 
     async saveEdit () {
       this.editDialogVisible = false
-
+      var ddd = this.editForm.type
+      this.editForm.type = Number(ddd)
       var data = {
         id: this.editForm.id,
         title: this.editForm.title,
@@ -599,6 +600,11 @@ export default {
         if (res.error_code === 0) {
           this.$message.success('新增成功')
           this.$refs.addFormref.resetFields()
+          this.addForm.minAmount = ''
+          this.addForm.maxAmount = ''
+          this.addForm.people_limit = ''
+          this.addForm.beginTime = ''
+          this.addForm.endTime = ''
         } else {
           this.$message.error('格式不符，新增失敗')
         }
@@ -607,22 +613,24 @@ export default {
     },
     async Search () {
       this.queryInfo.pagenum = 1
-      await this.getLockupList()
+      this.getLockupList()
     },
 
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
     async clear () {
-      this.searchlist = null
-      this.enable.value = null
+      this.searchlist = ''
+      this.enable.value = ''
       this.queryInfo.date = ''
+      this.getLockupList()
     },
     jump (index, row) {
       let queryData = {}
       queryData = row
       this.$router.push({ path: '/lockuplist', query: queryData })
     }
+
   }
 }
 /* 數字千分位 */
