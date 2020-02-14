@@ -175,6 +175,14 @@ export const faqdata = query => {
     data: query
   })
 }
+// faq img
+export const faqimg = query => {
+  return request({
+    url: './bankendapi?method=faqTest',
+    method: 'post',
+    data: query
+  })
+}
 // faq新增
 export const faqadd = query => {
   return request({
@@ -261,6 +269,14 @@ export const getcmslist = query => {
 export const uploadban = query => {
   return request({
     url: './bankendapi?method=cmsUpload64',
+    method: 'post',
+    data: query
+  })
+}
+// 新增列表
+export const uploadban1 = query => {
+  return request({
+    url: './bankendapi?method=cmsUpload',
     method: 'post',
     data: query
   })

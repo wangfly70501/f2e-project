@@ -55,7 +55,7 @@
       <el-form :model="addressForm" :rules="addressFormRules"
         ref="addressFormRef" label-width="100px">
         <el-form-item label="省市区/县" prop="city">
-          <el-cascader :options="cityData" v-model="addressForm.city"></el-cascader>
+          <el-cascader  v-model="addressForm.city"></el-cascader>
         </el-form-item>
         <el-form-item label="详细地址" prop="addressDetail">
           <el-input v-model="addressForm.addressDetail"></el-input>
@@ -80,12 +80,11 @@
 </template>
 
 <script>
-import cityData from '../../plugins/citydata.js'
 
 export default {
   data () {
     return {
-      cityData: cityData,
+
       queryInfo: {
         query: '',
         pagenum: 1,

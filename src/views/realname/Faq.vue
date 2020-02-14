@@ -212,12 +212,11 @@ export default {
         theme: 'snow',
         placeholder: '開始編輯',
         modules: {
-
           ImageExtend: {
             loading: true,
             name: 'img',
-            size: 2, // 单位为M, 1M = 1024KB
-            action: '',
+            size: 3, // 单位为M, 1M = 1024KB
+            action: 'http://192.168.50.105:7777/bankendapi?method=faqTest',
             headers: (xhr) => {
             },
             response: (res) => {
@@ -245,29 +244,6 @@ export default {
         date: []
 
       },
-      /*       editorOption: {
-        placeholder: '開始編輯',
-        uplpadConfig: {
-          size: 1024,
-          accept: 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon'
-        }
-
-      }, */
-      /*    editorOption: {
-        modules: {
-          ImageExtend: {
-            loading: true,
-            name: 'img',
-            size: 3,
-            action: '',
-            headers: (xhr) => {
-            },
-            response: (res) => {
-              return res.info
-            }
-          }
-        }
-      }, */
 
       date: [],
       faqlist: [],
@@ -296,9 +272,7 @@ export default {
       editForm: {
         lang: []
       },
-      /*   <el-radio label="el_GR">繁體中文</el-radio>
-      <el-radio label="zh_CN">简体中文</el-radio>
-      <el-radio label="en_US">Engilsh</el-radio> */
+
       enable: [
         {
           label: '繁體中文',
@@ -437,10 +411,38 @@ export default {
       await this.getFaqList()
     },
     async clear () {
-      this.queryInfo.date = null
-      this.searchlist = null
-      this.enable.value = null
+      this.queryInfo.date = ''
+      this.searchlist = ''
+      this.enable.value = ''
     }
+    /*     async addfaqimg () {
+      this.addDialogVisible = false
+
+      var data = {
+        title: 'tesr4545',
+        type: '1',
+        lang: 'el_GR',
+        sort: '1',
+        classify: '1',
+        publicPic: this.file,
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state')
+      }
+      console.log(this.addForm.addcontent)
+      await faqimg(data).then(res => {
+        if (res.error_code === 0) {
+          this.$message.success('新增成功')
+          this.addForm.addtitle = ''
+          this.addForm.addcontent = ''
+          this.addForm.lang = ''
+          this.$refs.addForm.resetFields()
+        } else {
+          this.$message.error('新增失敗')
+        }
+        this.getFaqList()
+      })
+    } */
 
   }
 }

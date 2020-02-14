@@ -19,22 +19,16 @@ import VueRouter from 'vue-router'
 const Login = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Login.vue')
 const Home = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Home.vue')
 const Welcome = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Welcome.vue')
-
 const Users = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/user/Users.vue')
 const Rights = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/access/Rights.vue')
 const Roles = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../views/access/Roles.vue')
-
 // const Categories = () => import(/* webpackChunkName: "Categories_Params" */ '../views/goods/Categories.vue')
 // const Params = () => import(/* webpackChunkName: "Categories_Params" */ '../views/goods/Params.vue')
-
 const GoodsList = () => import(/* webpackChunkName: "GoodsList_GoodsAdd" */ '../views/goods/List.vue')
 const GoodsAdd = () => import(/* webpackChunkName: "GoodsList_GoodsAdd" */ '../views/goods/Add.vue')
-
 const Orders = () => import(/* webpackChunkName: "Orders_Report" */ '../views/order/Orders.vue')
-// const Report = () => import(/* webpackChunkName: "Orders_Report" */ '../views/report/Report.vue')
 const Charge = () => import(/* webpackChunkName: "service_Charges" */ '../views/charge/Charge.vue')
 const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views/deposit/Deposit.vue')
-const Bankaccont = () => import(/* webpackChunkName: "service_Charges" */ '../views/bankaccont/Bankaccont.vue')
 const Receipt = () => import(/* webpackChunkName: "service_Charges" */ '../views/receipt/Receipt.vue')
 const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Member.vue')
 const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/banner/Banner.vue')

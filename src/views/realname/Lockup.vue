@@ -90,9 +90,9 @@
             </div>
           </template>
         </el-table-column>
-      <!--   <el-table-column label="建立時間">
+        <!--   <el-table-column label="建立時間">
           <template slot-scope="scope">{{scope.row.beginTime | datefformat}}</template>
-        </el-table-column> -->
+        </el-table-column>-->
         <el-table-column label="活動創建者" prop="creator" width="90%"></el-table-column>
         <el-table-column label="啟用狀態" width="80%">
           <template slot-scope="scope">
@@ -174,7 +174,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="申購單位" prop="Amount">
-          <el-input v-model="addForm.minAmount" placeholder="最低申購" style="width:200px" ></el-input>~
+          <el-input v-model="addForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>~
           <el-input v-model="addForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
         </el-form-item>
         <el-form-item label="活動利率" prop="rate">
@@ -196,7 +196,7 @@
           </el-radio-group>
         </el-form-item>
         <!-- 時間限制:人數可以不用填寫 -->
-        <el-form-item label="人數限制" v-if="addForm.type===1" >
+        <el-form-item label="人數限制" v-if="addForm.type===1">
           <el-input v-model="addForm.people_limit" style="width:180px" placeholder="請輸限制入數"></el-input>人
         </el-form-item>
         <el-form-item label="人數限制" v-else-if="addForm.type===2">
@@ -210,47 +210,87 @@
         <el-form-item label="人數限制" v-else>
           <el-input v-model="addForm.people_limit" style="width:180px"></el-input>人
         </el-form-item>
-         <!-- 人數限制:時間限制可以不用填寫 -->
-        <div style="display: flex">
-          <el-form-item label="活動開始日期">
-            <el-date-picker
-              type="datetime"
-              v-model="addForm.beginTime"
-              format="yyyy-MM-dd HH:mm"
-              value-format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-if="addForm.type===1">
-            <el-date-picker
-              type="datetime"
-              v-model="addForm.endTime"
-              format="yyyy-MM-dd HH:mm"
-              value-format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-              disabled
-              placeholder="人數限制可以不用填寫"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-else-if="addForm.type===2">
-            <el-date-picker
-              type="datetime"
-              v-model="addForm.endTime"
-              format="yyyy-MM-dd HH:mm"
-              value-format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-else>
-            <el-date-picker
-              type="datetime"
-              v-model="addForm.endTime"
-              format="yyyy-MM-dd HH:mm"
-              value-format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-        </div>
+        <!-- 人數限制:時間限制可以不用填寫 -->
+        <!--    <div style="display: flex"> -->
+        <el-form-item label="活動開始日期">
+          <el-date-picker
+            type="date"
+            v-model="addForm.beginTime"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="addForm.starttime"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+          ></el-time-select>
+        </el-form-item>
+        <el-form-item label="活動結束日期" v-if="addForm.type===1">
+          <el-date-picker
+            type="date"
+            v-model="addForm.endTime"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+            disabled
+            placeholder="人數限制可以不用填寫"
+            picker-options:step
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="addForm.endtimes"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+            disabled
+          ></el-time-select>
+        </el-form-item>
+        <el-form-item label="活動結束日期" v-else-if="addForm.type===2">
+          <el-date-picker
+            type="date"
+            v-model="addForm.endTime"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+            picker-options:step
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="addForm.endtimes"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+          ></el-time-select>
+        </el-form-item>
+
+        <el-form-item label="活動結束日期" v-else>
+          <el-date-picker
+            type="date"
+            v-model="addForm.endTime"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="addForm.endtimes"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+          ></el-time-select>
+        </el-form-item>
+        <!--  </div> -->
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
@@ -276,19 +316,17 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="申購單位"  prop="Amount" >
-
-          <el-form-item  >
-          <el-input v-model="editForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>
-          ~
-          <el-input v-model="editForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
-      </el-form-item>
+        <el-form-item label="申購單位" prop="Amount">
+          <el-form-item>
+            <el-input v-model="editForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>~
+            <el-input v-model="editForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
+          </el-form-item>
         </el-form-item>
         <el-form-item label="活動利率" prop="rate">
           <el-input v-model="editForm.rate" style="width:180px"></el-input>%
         </el-form-item>
 
-        <el-form-item label="增值期間"  prop="days">
+        <el-form-item label="增值期間" prop="days">
           <el-input v-model="editForm.days" style="width:180px"></el-input>天
         </el-form-item>
         <el-form-item label="派息方式" prop="type">
@@ -319,52 +357,88 @@
           <el-input v-model="editForm.people_limit" style="width:180px" placeholder="請輸限制入數"></el-input>人
         </el-form-item>
         <el-form-item label="人數限制" v-else-if="editForm.type===2">
-          <el-input
-            v-model="people_limit"
-            style="width:180px"
-            placeholder="時間限制可以不用填寫"
-            disabled
-          ></el-input>人
+          <el-input v-model="people_limit" style="width:180px" placeholder="時間限制可以不用填寫" disabled></el-input>人
         </el-form-item>
         <el-form-item label="人數限制" v-else>
           <el-input v-model="editForm.people_limit" style="width:180px"></el-input>人
         </el-form-item>
 
-        <div style="display:flex">
-          <el-form-item label="活動開始日期" >
-            <el-date-picker
-              type="datetime"
-              format="yyyy-MM-dd HH:mm"
-              v-model="editForm.beginTime"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-if="editForm.type===1">
-            <el-date-picker
-              v-model="endTime"
-              type="datetime"
-              format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-              disabled
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-else-if="editForm.type===2">
-            <el-date-picker
-              v-model="editForm.endTime"
-              type="datetime"
-              format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="活動結束日期" v-else>
-            <el-date-picker
-              v-model="editForm.endTime"
-              type="datetime"
-              format="yyyy-MM-dd HH:mm"
-              style="width:100%"
-            ></el-date-picker>
-          </el-form-item>
-        </div>
+        <!--   <div style="display:flex"> -->
+        <el-form-item label="活動開始日期">
+          <el-date-picker
+            type="date"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            v-model="editForm.beginTime"
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="editForm.startTime"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+          ></el-time-select>
+        </el-form-item>
+        <el-form-item label="活動結束日期" v-if="editForm.type===1">
+          <el-date-picker
+            v-model="endTime"
+            type="date"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+            disabled
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="endTime"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+            disabled
+          ></el-time-select>
+        </el-form-item>
+        <el-form-item label="活動結束日期" v-else-if="editForm.type===2">
+          <el-date-picker
+            v-model="editForm.endTime"
+            type="date"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="editForm.endTimes"
+            :picker-options="{
+            start: '00:00',
+            step: '00:30',
+            end: '23:30'
+            }"
+          ></el-time-select>
+        </el-form-item>
+        <el-form-item label="活動結束日期" v-else>
+          <el-date-picker
+            v-model="editForm.endTime"
+            type="date"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="editForm.endTimes"
+            :picker-options="{
+            start: '00:00',
+            step: '00:30',
+            end: '23:30'
+           }"
+          ></el-time-select>
+        </el-form-item>
+        <!--    </div> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -383,7 +457,6 @@ import {
 } from '../../api/index.js'
 
 export default {
-
   data () {
     return {
       people_limit: '',
@@ -413,27 +486,16 @@ export default {
         lang: []
       },
       Rules: {
-        title: [
-          { required: true, message: '請輸入活動名稱', trigger: 'blur' }
-        ],
+        title: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
         currency: [
           { required: true, message: '請選擇活動幣種', trigger: 'blur' }
-
         ],
         Amount: [{ required: true, trigger: 'blur' }],
 
-        rate: [
-          { required: true, message: '請輸入活動利率', trigger: 'blur' }
-        ],
-        days: [
-          { required: true, message: '請輸入增值期間', trigger: 'blur' }
-        ],
-        mode: [
-          { required: true, trigger: 'blur' }
-        ],
-        type: [
-          { required: true, trigger: 'blur' }
-        ]
+        rate: [{ required: true, message: '請輸入活動利率', trigger: 'blur' }],
+        days: [{ required: true, message: '請輸入增值期間', trigger: 'blur' }],
+        mode: [{ required: true, trigger: 'blur' }],
+        type: [{ required: true, trigger: 'blur' }]
       },
 
       editDialogVisible: false,
@@ -506,6 +568,7 @@ export default {
 
       await Lockupdata(data).then(res => {
         this.Lockuplist = res.data
+        console.log('datalist', this.Lockuplist)
         this.total = res.pagination.total_record
       })
     },
@@ -527,7 +590,9 @@ export default {
       this.addForm.maxAmount = ''
       this.addForm.people_limit = ''
       this.addForm.beginTime = ''
+      this.addForm.starttime = ''
       this.addForm.endTime = ''
+      this.addForm.endTimes = ''
     },
 
     showEditDialog (index, row) {
@@ -556,8 +621,8 @@ export default {
         currency: this.editForm.currency,
         minAmount: this.editForm.minAmount,
         maxAmount: this.editForm.maxAmount,
-        beginTime: this.editForm.beginTime,
-        endTime: this.editForm.endTime,
+        beginTime: this.editForm.beginTime + this.editForm.startTime,
+        endTime: this.editForm.endTime + this.editForm.endTimes,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
@@ -590,8 +655,8 @@ export default {
         currency: this.addForm.currency,
         minAmount: this.addForm.minAmount,
         maxAmount: this.addForm.maxAmount,
-        beginTime: this.addForm.beginTime,
-        endTime: this.addForm.endTime,
+        beginTime: this.addForm.beginTime + this.addForm.starttime,
+        endTime: this.addForm.endTime + this.addForm.endtimes,
         days: this.addForm.days,
         mode: this.addForm.mode.toString()
       }
@@ -605,6 +670,8 @@ export default {
           this.addForm.people_limit = ''
           this.addForm.beginTime = ''
           this.addForm.endTime = ''
+          this.addForm.starttime = ''
+          this.addForm.endTimes = ''
         } else {
           this.$message.error('格式不符，新增失敗')
         }
@@ -630,7 +697,6 @@ export default {
       queryData = row
       this.$router.push({ path: '/lockuplist', query: queryData })
     }
-
   }
 }
 /* 數字千分位 */

@@ -74,7 +74,6 @@ export default {
           index: '2',
           title: '會員管理',
           subs: [
-            /* { index: 'bankaccont', title: '銀行帳號綁定' }, */
             { index: 'member', title: '會員列表' },
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
@@ -123,8 +122,8 @@ export default {
           title: '項目管理',
           subs: [
 
-            { index: 'faq', title: 'FaQ' },
-            { index: 'lockup', title: '鎖倉' }
+            { index: 'faq', title: 'FaQ管理' },
+            { index: 'lockup', title: '鎖倉管理' }
           ]
         }
       ],

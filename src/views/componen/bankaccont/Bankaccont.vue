@@ -49,12 +49,11 @@ layout="total, sizes, prev, pager, next, jumper"
 </template>
 
 <script>
-import cityData from '../../plugins/citydata.js'
 
 export default {
   data () {
     return {
-      cityData: cityData,
+
       queryInfo: {
         query: '',
         pagenum: 1,

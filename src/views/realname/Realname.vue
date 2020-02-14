@@ -28,7 +28,7 @@
       <el-table :data="nameList" stripe border>
         <el-table-column label="UID" prop="uuid"></el-table-column>
         <el-table-column label="使用者姓名" prop="username"></el-table-column>
-         <el-table-column label="手機號碼" prop="mobile"></el-table-column>
+        <!--  <el-table-column label="手機號碼" prop="mobile"></el-table-column> -->
         <el-table-column label="信箱" prop="email"></el-table-column>
         <el-table-column label="提交時間" prop="ctime"></el-table-column>
         <el-table-column label="狀態審核" >
@@ -112,6 +112,7 @@ export default {
       }
       await KycList(data).then(res => {
         this.nameList = res.data
+        console.log('1323', this.nameList)
         this.total = res.pagination.total_record
       })
     },
