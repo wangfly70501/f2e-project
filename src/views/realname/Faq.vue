@@ -109,13 +109,13 @@
         </el-form-item> -->
                <el-form-item label="內容" prop="addtitle">
 
-         <quill-editor
+ <!--         <quill-editor
             v-model="addForm.addcontent"
             ref="myQuillEditor"
             :options="editorOption"
 
            >
-        </quill-editor>
+        </quill-editor> -->
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -168,12 +168,13 @@
         </el-form-item> -->
        <el-form-item label="內容">
 
-         <quill-editor
+     <!--     <quill-editor
             v-model="editForm.content"
             ref="myQuillEditor"
             :options="editorOption"
           >
-        </quill-editor>
+        </quill-editor> -->
+
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -197,18 +198,21 @@
 
 <script>
 import { faqdata, faqadd, faqedit } from '../../api/index.js'
-import { quillEditor, Quill } from 'vue-quill-editor'
+import YimoVueEditor from 'yimo-vue-editor'
+/* import { quillEditor, Quill } from 'vue-quill-editor'
 import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
 
-Quill.register('modules/ImageExtend', ImageExtend)
+Quill.register('modules/ImageExtend', ImageExtend) */
 // use resize module
 
 export default {
-  components: { quillEditor },
+   components: {
+    YimoVueEditor
+  },
   data () {
     return {
       content: '',
-      editorOption: {
+      /*     editorOption: {
         theme: 'snow',
         placeholder: '開始編輯',
         modules: {
@@ -232,7 +236,7 @@ export default {
             }
           }
         }
-      },
+      }, */
       html: '',
       configs: {},
       searchlist: '',
@@ -290,10 +294,7 @@ export default {
 
     }
   },
-  /* components: {
-     mavonEditor
 
-  }, */
 
   created () {
     this.getFaqList()

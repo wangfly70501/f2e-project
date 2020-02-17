@@ -59,8 +59,7 @@ export default {
           index: 'welcome',
           title: '系统首頁'
         }, */
-        /*    {
-          icon: 'iconfont icon-user',
+        {
           index: '1',
           title: '管理者管理',
           subs: [
@@ -68,14 +67,13 @@ export default {
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' }
           ]
-        }, */
+        },
         {
 
           index: '2',
           title: '會員管理',
           subs: [
             { index: 'member', title: '會員列表' },
-          /*   { index: 'roles', title: '角色管理' }, */
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
           ]
