@@ -35,6 +35,7 @@
 <script>
 import { faqadd } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
+
 export default {
   components: {
     YimoVueEditor

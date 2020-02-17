@@ -42,7 +42,7 @@
         <el-table-column label="ID" prop="id" width="40%"></el-table-column>
         <el-table-column label="活動名稱" prop="title"></el-table-column>
 
-        <el-table-column label="幣種" width="80%">
+        <el-table-column label="幣種" >
           <template slot-scope="scope">
             <div
               v-for="item in currencyList"
@@ -60,7 +60,7 @@
             <p>最高 {{scope.row.maxAmount | NumFormat }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="利率" prop="rate" width="60%">
+        <el-table-column label="利率" prop="rate" width="80%">
           <template slot-scope="scope">{{scope.row.rate*100 }} %</template>
         </el-table-column>
         <el-table-column label="增值期間" width="80%">
@@ -112,7 +112,8 @@
         <el-table-column label="活動類型" width="80%">
           <template slot-scope="scope">
             <div v-if="scope.row.type === 1">人數限制</div>
-            <div v-else>時間限制</div>
+            <div v-else-if="scope.row.type ===2">時間限制</div>
+            <div v-else-if="scope.row.type ===3">活動常駐</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180px">
@@ -193,6 +194,7 @@
           <el-radio-group v-model="addForm.type">
             <el-radio :label="1">人數限制</el-radio>
             <el-radio :label="2">時間限制</el-radio>
+            <el-radio :label="3">活動常駐</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- 時間限制:人數可以不用填寫 -->
@@ -204,6 +206,14 @@
             v-model="addForm.people_limit"
             style="width:180px"
             placeholder="時間限制可以不用填寫"
+            disabled
+          ></el-input>人
+        </el-form-item>
+               <el-form-item label="活動常駐" v-else-if="addForm.type===3">
+          <el-input
+            v-model="addForm.people_limit"
+            style="width:180px"
+            placeholder="活動常駐可以不用填寫"
             disabled
           ></el-input>人
         </el-form-item>
@@ -264,6 +274,27 @@
           <el-time-select
             style="width:30%"
             v-model="addForm.endtimes"
+            :picker-options="{
+    start: '00:00',
+    step: '00:30',
+    end: '23:30'
+  }"
+          ></el-time-select>
+        </el-form-item>
+                <el-form-item label="活動結束日期" v-else-if="addForm.type===3">
+          <el-date-picker
+            type="date"
+            v-model="addForm.endTime"
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+            picker-options:step
+            disabled
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            v-model="addForm.endtimes"
+            disabled
             :picker-options="{
     start: '00:00',
     step: '00:30',
@@ -349,6 +380,7 @@
           <el-radio-group v-model="editForm.type">
             <el-radio :label="1">人數限制</el-radio>
             <el-radio :label="2">時間限制</el-radio>
+            <el-radio :label="3">活動常駐</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -358,6 +390,9 @@
         </el-form-item>
         <el-form-item label="人數限制" v-else-if="editForm.type===2">
           <el-input v-model="people_limit" style="width:180px" placeholder="時間限制可以不用填寫" disabled></el-input>人
+        </el-form-item>
+              <el-form-item label="人數限制" v-else-if="editForm.type===3">
+          <el-input v-model="people_limit" style="width:180px" placeholder="活動常駐可以不用填寫" disabled></el-input>人
         </el-form-item>
         <el-form-item label="人數限制" v-else>
           <el-input v-model="editForm.people_limit" style="width:180px"></el-input>人
@@ -413,6 +448,26 @@
           <el-time-select
             style="width:30%"
             v-model="editForm.endTimes"
+            :picker-options="{
+            start: '00:00',
+            step: '00:30',
+            end: '23:30'
+            }"
+          ></el-time-select>
+        </el-form-item>
+                <el-form-item label="活動結束日期" v-else-if="editForm.type===3">
+          <el-date-picker
+            v-model="endTime"
+            type="date"
+            disabled
+            format="yyyy-MM-dd "
+            value-format="yyyy-MM-dd "
+            style="width:30%"
+          ></el-date-picker>&nbsp;
+          <el-time-select
+            style="width:30%"
+            disabled
+            v-model="endTime"
             :picker-options="{
             start: '00:00',
             step: '00:30',
@@ -501,6 +556,7 @@ export default {
       editDialogVisible: false,
       table: {},
       editForm: {
+        startTime: [],
         lang: []
       },
 
@@ -602,8 +658,11 @@ export default {
       this.editForm.currency = Number(ccc)
       var bbb = this.editForm.rate
       this.editForm.rate = Number(bbb) * 100
-      /*       var strtime = this.editForm.beginTime
-      this.editForm.beginTime = strtime.substring(0, str.length - 8) */
+      var zzz = this.editForm.beginTime
+      this.editForm.startTime = zzz.substring(10)
+
+      var xxx = this.editForm.endTime
+      this.editForm.endTimes = xxx.substring(10)
     },
 
     editDialogClosed () {
@@ -618,6 +677,7 @@ export default {
       this.editForm.endTime = str.substring(0, str.length - 8)
       /*    var strtime = this.editForm.beginTime
       this.editForm.beginTime = strtime.substring(0, str.length - 8) */
+
       var data = {
         id: this.editForm.id,
         title: this.editForm.title,

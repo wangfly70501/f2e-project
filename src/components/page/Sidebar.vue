@@ -62,6 +62,7 @@ export default {
         {
           index: '1',
           title: '管理者管理',
+          icon: 'iconfont icon-user',
           subs: [
             { index: 'users', title: '管理者列表' },
             { index: 'roles', title: '角色列表' },
@@ -72,6 +73,7 @@ export default {
 
           index: '2',
           title: '會員管理',
+          icon: 'iconfont icon-users',
           subs: [
             { index: 'member', title: '會員列表' },
             { index: 'blackmember', title: '黑名單會員列表' },
@@ -88,6 +90,7 @@ export default {
 
           index: '4',
           title: '財務管理',
+          icon: 'iconfont icon-baobiao',
           subs: [
             /*  { index: 'receipt', title: '發票設置' }, */
             { index: 'bankset', title: '銀行設置' },
@@ -96,7 +99,7 @@ export default {
             { index: 'transaction', title: '交易報表' }
           ]
         },
-        {
+        /*      {
 
           index: '6',
           title: '實名認證',
@@ -104,24 +107,26 @@ export default {
             { index: 'realname', title: '實名認證' }
 
           ]
-        },
+        }, */
         {
 
           index: '5',
           title: 'CMS系統',
+          icon: 'iconfont icon-tijikongjian',
           subs: [
             /*  { index: 'indexmenu', title: '公告管理' }, */
+            { index: 'faq', title: 'FaQ管理' },
             { index: 'banner', title: 'banner管理' }
+
           ]
         },
 
         {
-          /*  icon: 'iconfont icon-baobiao', */
+          icon: 'iconfont icon-danju',
           index: '7',
           title: '項目管理',
           subs: [
-
-            { index: 'faq', title: 'FaQ管理' },
+            { index: 'realname', title: '實名認證' },
             { index: 'lockup', title: '鎖倉管理' }
           ]
         }
