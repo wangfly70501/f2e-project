@@ -25,7 +25,7 @@
                         </el-select>&nbsp;
                          <el-button type="primary" @click="clear">清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
-        <el-button type="primary" @click="addDialogVisible = true">新增</el-button>
+        <el-button type="primary" @click="addjump">新增</el-button>
 
       </div>
       <!-- 列表 -->
@@ -109,13 +109,19 @@
         </el-form-item> -->
                <el-form-item label="內容" prop="addtitle">
 
- <!--         <quill-editor
+            <template>
+  <yimo-vue-editor v-model="addForm.addcontent"> </yimo-vue-editor>
+</template>
+
+<!--          <quill-editor
             v-model="addForm.addcontent"
             ref="myQuillEditor"
             :options="editorOption"
 
            >
+
         </quill-editor> -->
+
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -166,6 +172,7 @@
 
           />
         </el-form-item> -->
+
        <el-form-item label="內容">
 
      <!--     <quill-editor
@@ -174,6 +181,9 @@
             :options="editorOption"
           >
         </quill-editor> -->
+            <template>
+  <yimo-vue-editor v-model="editForm.content"> </yimo-vue-editor>
+</template>
 
         </el-form-item>
       </el-form>
@@ -206,7 +216,7 @@ Quill.register('modules/ImageExtend', ImageExtend) */
 // use resize module
 
 export default {
-   components: {
+  components: {
     YimoVueEditor
   },
   data () {
@@ -294,7 +304,6 @@ export default {
 
     }
   },
-
 
   created () {
     this.getFaqList()
@@ -415,6 +424,9 @@ export default {
       this.queryInfo.date = ''
       this.searchlist = ''
       this.enable.value = ''
+    },
+    addjump () {
+      this.$router.push({ path: '/faqadd' })
     }
     /*     async addfaqimg () {
       this.addDialogVisible = false
