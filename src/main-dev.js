@@ -21,6 +21,26 @@ import './assets/fonts/icon.css'
 import htmlToPdf from './htmlToPdf.js'
 import locale from 'element-ui/lib/locale/lang/zh-TW.js'
 import toExcel from './json2excel'
+import VEditor from 'yimo-vue-editor'
+
+Vue.use(VEditor, {
+  name: 'v-editor-app', // 自定义名称
+  config: {}, // wagnEditor 配置
+  uploadHandler: (type, resTxt) => { // 上传处理钩子
+    if (type === 'success') {
+      var res = JSON.parse(resTxt)// 不处理默认认为返回值位图片路径
+      if (res.status !== 1) {
+        return null
+      }
+      return res.data
+    } else if (type === 'error') {
+      // todo toast
+    } else if (type === 'timeout') {
+      // todo toast
+    }
+    return '上传失败__'
+  }
+})
 
 Vue.prototype.$toExcel = toExcel
 Vue.use(htmlToPdf)

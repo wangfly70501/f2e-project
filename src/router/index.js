@@ -31,6 +31,7 @@ const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views
 const Transaction = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Transaction.vue')
 const Markdown = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Markdown.vue')
 const Faq = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Faq.vue')
+const faqadd = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/faqadd.vue')
 const Lockup = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockup.vue')
 const Lockuplist = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockuplist.vue')
 Vue.use(VueRouter)
@@ -72,6 +73,7 @@ const routes = [
       { path: '/transaction', component: Transaction },
       { path: '/userlevel', component: Userlevel },
       { path: '/faq', component: Faq },
+      { path: '/faqadd', component: faqadd },
       { path: '/lockup', component: Lockup },
       { path: '/lockuplist', component: Lockuplist },
       { path: '/markdown', component: Markdown }
