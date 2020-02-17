@@ -206,7 +206,7 @@ Quill.register('modules/ImageExtend', ImageExtend) */
 // use resize module
 
 export default {
-   components: {
+  components: {
     YimoVueEditor
   },
   data () {
@@ -294,7 +294,6 @@ export default {
 
     }
   },
-
 
   created () {
     this.getFaqList()
