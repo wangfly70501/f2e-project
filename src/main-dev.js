@@ -21,14 +21,18 @@ import './assets/fonts/icon.css'
 import htmlToPdf from './htmlToPdf.js'
 import locale from 'element-ui/lib/locale/lang/zh-TW.js'
 import toExcel from './json2excel'
-import VEditor from 'yimo-vue-editor'
+import YimoVueEditor from 'yimo-vue-editor'
 
-Vue.use(VEditor, {
-  name: 'v-editor-app', // 自定义名称
-  config: {}, // wagnEditor 配置
-  uploadHandler: (type, resTxt) => { // 上传处理钩子
+Vue.use(YimoVueEditor, {
+  name: 'v-editor-app', // Custom name
+  config: {
+    uploadImgUrl: 'http://192.168.50.105:7777/bankendapi?method=faqTest', // upload api
+    printLog: false // disabled console.log
+    // lang config
+  }, // wagnEditor config
+  uploadHandler: (type, resTxt) => { // Upload processing hook
     if (type === 'success') {
-      var res = JSON.parse(resTxt)// 不处理默认认为返回值位图片路径
+      var res = JSON.parse(resTxt)// Do not process the default look at the return value bit image path
       if (res.status !== 1) {
         return null
       }
@@ -38,10 +42,9 @@ Vue.use(VEditor, {
     } else if (type === 'timeout') {
       // todo toast
     }
-    return '上传失败__'
+    return 'upload failed__'
   }
 })
-
 Vue.prototype.$toExcel = toExcel
 Vue.use(htmlToPdf)
 Vue.use(ElementUI, { locale })

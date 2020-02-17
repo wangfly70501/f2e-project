@@ -82,55 +82,6 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 新增 -->
-    <el-dialog title="新增" :visible.sync="addDialogVisible"  @close="addDialogClosed">
-      <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px">
-        <el-form-item label="標題" prop="addtitle">
-          <el-input v-model="addForm.addtitle"></el-input>
-            </el-form-item>
-         <el-form-item label="語系" prop="lang">
-    <el-radio-group v-model="addForm.lang">
-      <el-radio label="el_GR">繁體中文</el-radio>
-      <el-radio label="zh_CN">简体中文</el-radio>
-      <el-radio label="en_US">Engilsh</el-radio>
-    </el-radio-group>
-  </el-form-item>
-
-  <!--       <el-form-item label="內容" >
-          <mavon-editor
-            v-model="addForm.addcontent"
-            ref="md"
-            @imgAdd="$imgAdd"
-            @change="change"
-            style="min-height: 400px"
-            placeholder="開始編輯"
-
-          />
-        </el-form-item> -->
-               <el-form-item label="內容" prop="addtitle">
-
-            <template>
-  <yimo-vue-editor v-model="addForm.addcontent"> </yimo-vue-editor>
-</template>
-
-<!--          <quill-editor
-            v-model="addForm.addcontent"
-            ref="myQuillEditor"
-            :options="editorOption"
-
-           >
-
-        </quill-editor> -->
-
-        </el-form-item>
-      </el-form>
-      <!-- 底部区域 -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addFaq">確定</el-button>
-      </span>
-    </el-dialog>
-
     <!--修改設置 -->
     <el-dialog
       title="修改FAQ"
@@ -207,7 +158,7 @@
 </template>
 
 <script>
-import { faqdata, faqadd, faqedit } from '../../api/index.js'
+import { faqdata, faqedit } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
 /* import { quillEditor, Quill } from 'vue-quill-editor'
 import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
@@ -346,11 +297,6 @@ export default {
       this.getFaqList()
     },
 
-    addDialogClosed () {
-      this.$refs.addForm.resetFields()
-      this.addForm.addcontent = ''
-    },
-
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
@@ -385,31 +331,6 @@ export default {
       })
     },
 
-    async addFaq () {
-      this.addDialogVisible = false
-      /*  this.addForm.addcontent = this.$refs.md.d_render */
-      var data = {
-        title: this.addForm.addtitle,
-        content: this.addForm.addcontent,
-        lang: this.addForm.lang,
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
-      }
-      console.log(this.addForm.addcontent)
-      await faqadd(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('新增成功')
-          this.addForm.addtitle = ''
-          this.addForm.addcontent = ''
-          this.addForm.lang = ''
-          this.$refs.addForm.resetFields()
-        } else {
-          this.$message.error('新增失敗')
-        }
-        this.getFaqList()
-      })
-    },
     async Search () {
       this.queryInfo.pagenum = 1
       await this.getFaqList()
