@@ -596,13 +596,14 @@ export default {
     },
 
     showEditDialog (index, row) {
+      this.editDialogVisible = true
       this.editForm = row
       var ccc = this.editForm.currency
       this.editForm.currency = Number(ccc)
-      this.editDialogVisible = true
       var bbb = this.editForm.rate
       this.editForm.rate = Number(bbb) * 100
-      this.getLockupList()
+      /*       var strtime = this.editForm.beginTime
+      this.editForm.beginTime = strtime.substring(0, str.length - 8) */
     },
 
     editDialogClosed () {
@@ -613,6 +614,10 @@ export default {
       this.editDialogVisible = false
       var ddd = this.editForm.type
       this.editForm.type = Number(ddd)
+      var str = this.editForm.endTime
+      this.editForm.endTime = str.substring(0, str.length - 8)
+      /*    var strtime = this.editForm.beginTime
+      this.editForm.beginTime = strtime.substring(0, str.length - 8) */
       var data = {
         id: this.editForm.id,
         title: this.editForm.title,

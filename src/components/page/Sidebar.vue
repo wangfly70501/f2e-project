@@ -75,6 +75,7 @@ export default {
           title: '會員管理',
           subs: [
             { index: 'member', title: '會員列表' },
+          /*   { index: 'roles', title: '角色管理' }, */
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
           ]
