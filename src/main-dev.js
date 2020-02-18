@@ -26,7 +26,7 @@ import YimoVueEditor from 'yimo-vue-editor'
 Vue.use(YimoVueEditor, {
   name: 'v-editor-app', // Custom name
   config: {
-    uploadImgUrl: 'http://192.168.50.105:7777/bankendapi?method=faqTest', // upload api
+    uploadImgUrl: 'http://192.168.50.105:7777//bankendapi?method=getFaqPic', // upload api
     printLog: false // disabled console.log
     // lang config
   }, // wagnEditor config

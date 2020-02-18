@@ -3,8 +3,8 @@
     <TopBreadcrumb :titles="['會員管理', '會員列表']"></TopBreadcrumb>
 
     <el-card>
-      <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
-      </SearchTool>
+   <!--    <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
+      </SearchTool> -->
 
       <!-- 會員列表数据 -->
       <el-table :data="userList" border stripe>
@@ -72,7 +72,8 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
-      userList: [],
+      userList: {},
+
       addressVisible: false
 
     }
