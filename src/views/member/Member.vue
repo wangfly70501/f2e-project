@@ -8,19 +8,31 @@
 
       <!-- 會員列表数据 -->
       <el-table :data="userList" border stripe>
-        <el-table-column type="index"></el-table-column>
-        <el-table-column label="會員姓名" prop="username"></el-table-column>
-        <el-table-column label="會員層級" prop="level"></el-table-column>
-        <el-table-column label="身分證字號" prop="identityid"></el-table-column>
-        <el-table-column label="會員帳號" prop="account"></el-table-column>
- <el-table-column label="金錢" prop="amount"></el-table-column>
-
-        <el-table-column label="啟用狀態" prop="status">
+        <el-table-column type="index" ></el-table-column>
+        <el-table-column label="狀態" prop="status" width="50px">
           <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status =='0'">未啟用</el-tag>
-            <el-tag type="success" v-else>已啟用</el-tag>
+            <div  v-if="scope.row.status =='0'"><i class="fas fa-circle"  color="red"></i></div>
+            <div   v-else color="#00EC00"><i class="fas fa-circle"  color="#00EC00"></i></div>
           </template>
         </el-table-column>
+
+        <el-table-column label="UUID" >10025</el-table-column>
+        <el-table-column label="會員姓名" prop="username"></el-table-column>
+
+        <el-table-column label="身分證字號" prop="identityid"></el-table-column>
+        <el-table-column label="手機" >0911111111</el-table-column>
+        <!-- <el-table-column label="會員帳號" prop="account"></el-table-column> -->
+
+        <el-table-column label="會員等級" prop="level"></el-table-column>
+
+        <el-table-column label="安全等級" >
+           <template slot-scope="scope">
+           LV{{scope.row.level }}
+          </template></el-table-column>
+
+ <el-table-column label="台幣資產" > <template slot-scope="scope">
+            {{scope.row.amount | NumFormat}}
+          </template></el-table-column>
 
         <el-table-column label="登入時間" prop="lg_in_time">
           <template slot-scope="scope">
@@ -32,14 +44,14 @@
             {{scope.row.lg_out_time | dateFormat}}
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+<!--         <el-table-column label="操作">
           <template>
             <el-button size="mini" type="primary" icon="el-icon-edit"
           :disabled="isDisabl"></el-button>
             <el-button size="mini" type="success" icon="el-icon-location"
               :disabled="isDisabl"></el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
 
       <!-- 分页区域 -->
@@ -95,7 +107,7 @@ export default {
       }
       await userData(data).then(res => {
         this.userList = res.data
-
+        console.log('1323', this.userList)
         this.total = res.pagination.total_record
       })
     },

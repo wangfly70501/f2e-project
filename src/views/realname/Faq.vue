@@ -26,12 +26,6 @@
                          <el-button type="primary" @click="clear" size="mini">清除</el-button>
         <el-button type="primary" @click="Search" size="mini">搜尋</el-button>
         <el-button type="primary" @click="addjump" size="mini">新增</el-button>
-        <!--                <el-button
-              type="primary"
-              icon="el-icon-picture"
-              size="mini"
-              @click="piclist()"
-            >圖片列表</el-button> -->
 
       </div>
       <!-- 列表 -->
@@ -115,11 +109,16 @@
               :inactive-value="0"
             ></el-switch>
         </el-form-item>
+                           <el-button
+              type="primary"
+              icon="el-icon-picture"
+              size="mini"
+              @click="piclist()"
+            >圖片列表</el-button>
        <el-form-item label="內容">
             <template>
   <yimo-vue-editor v-model="editForm.content"> </yimo-vue-editor>
 </template>
-
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -182,7 +181,7 @@
 </template>
 
 <script>
-import { faqdata, faqedit } from '../../api/index.js'
+import { faqdata, faqedit, faqimglist } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
 /* import { quillEditor, Quill } from 'vue-quill-editor'
 import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
@@ -372,8 +371,8 @@ export default {
       this.picDialogVisible = true
       this.queryInfo.pagenum = 1
       await this.getFaqList()
-    }
-    /*
+    },
+
     async getimgList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
@@ -385,7 +384,7 @@ export default {
         this.imgList = res.data
         console.log('123', res)
       })
-    } */
+    }
 
   }
 }

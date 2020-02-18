@@ -11,7 +11,7 @@ import 'nprogress/nprogress.css'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css' // 阿里巴巴图标库
 /* import VueQuillEditor from 'vue-quill-editor' // 富文本编辑器 */
-
+import './assets/fonts/fontawes.js'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '鎖倉']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '鎖倉管理']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
@@ -69,12 +69,12 @@
         <el-table-column label="派息方式/時間">
           <template slot-scope="scope">
             <div v-if="scope.row.mode ===1">
-              <p>每天:</p>
-              <p>08：00</p>
+
+              <p>每天派息</p>
             </div>
             <div v-else>
-              <p>期滿:</p>
-              <p>第 {{scope.row.days}} 天 08：00</p>
+
+              <p>期滿隔天派息 </p>
             </div>
           </template>
         </el-table-column>
@@ -455,19 +455,19 @@
             }"
           ></el-time-select>
         </el-form-item>
-                <el-form-item label="活動結束日期" v-else-if="editForm.type===3">
+                <el-form-item label="活動結束日期" v-else>
           <el-date-picker
-            v-model="endTime"
+            v-model="editForm.endTime"
             type="date"
-            disabled
+
             format="yyyy-MM-dd "
             value-format="yyyy-MM-dd "
             style="width:30%"
           ></el-date-picker>&nbsp;
           <el-time-select
             style="width:30%"
-            disabled
-            v-model="endTime"
+
+            v-model="editForm.endTimes"
             :picker-options="{
             start: '00:00',
             step: '00:30',
@@ -475,24 +475,7 @@
             }"
           ></el-time-select>
         </el-form-item>
-        <el-form-item label="活動結束日期" v-else>
-          <el-date-picker
-            v-model="editForm.endTime"
-            type="date"
-            format="yyyy-MM-dd "
-            value-format="yyyy-MM-dd "
-            style="width:30%"
-          ></el-date-picker>&nbsp;
-          <el-time-select
-            style="width:30%"
-            v-model="editForm.endTimes"
-            :picker-options="{
-            start: '00:00',
-            step: '00:30',
-            end: '23:30'
-           }"
-          ></el-time-select>
-        </el-form-item>
+
         <!--    </div> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -572,6 +555,10 @@ export default {
         {
           label: '時間限制',
           value: '2'
+        },
+        {
+          label: '活動常駐',
+          value: '3'
         }
       ]
     }
@@ -623,7 +610,8 @@ export default {
 
       await Lockupdata(data).then(res => {
         this.Lockuplist = res.data
-
+        console.log(this.Lockuplist)
+        console.log(this.Lockuplist.endTime)
         this.total = res.pagination.total_record
       })
     },
@@ -657,11 +645,12 @@ export default {
       this.editForm.currency = Number(ccc)
       var bbb = this.editForm.rate
       this.editForm.rate = Number(bbb) * 100
-      var zzz = this.editForm.beginTime
-      this.editForm.startTime = zzz.substring(10)
-
+    /*   var zzz = this.editForm.beginTime
+      this.editForm.startTime = zzz.substr(11, 5)
+      console.log(this.editForm.startTime)
       var xxx = this.editForm.endTime
-      this.editForm.endTimes = xxx.substring(10)
+      this.editForm.endTimes = xxx.substr(11, 5)
+      console.log('565', this.editForm) */
     },
 
     editDialogClosed () {
@@ -672,8 +661,8 @@ export default {
       this.editDialogVisible = false
       var ddd = this.editForm.type
       this.editForm.type = Number(ddd)
-      var str = this.editForm.endTime
-      this.editForm.endTime = str.substring(0, str.length - 8)
+      /*  var str = this.editForm.endTime
+      this.editForm.endTime = str.substring(0, str.length - 8) */
       /*    var strtime = this.editForm.beginTime
       this.editForm.beginTime = strtime.substring(0, str.length - 8) */
 

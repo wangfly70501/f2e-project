@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['CMS系統', 'Banner管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['CMS系統', 'banner管理']"></TopBreadcrumb>
     <el-button type="info" @click="addDialogVisible = true" class="el-icon-plus" size="min">新增</el-button>&nbsp;
           <!-- 搜索工具 -->
                         <el-select  v-model="enable.value" placeholder="請選擇語系"  clearable
@@ -40,8 +40,8 @@
         <el-table-column label="位置" prop="classify">
           <template slot-scope="scope">
             <span v-if="scope.row.classify ===1">BANNER</span>
-
-            <span v-else>FOOTER</span>
+             <span v-else-if="scope.row.classify ===2">FOOTER</span>
+            <span v-else>FaQ</span>
           </template>
         </el-table-column>
         <el-table-column label="排序" prop="sort"></el-table-column>

@@ -59,7 +59,7 @@ export default {
           index: 'welcome',
           title: '系统首頁'
         }, */
-        /*    {
+        {
           index: '1',
           title: '管理者管理',
           icon: 'iconfont icon-user',
@@ -68,7 +68,7 @@ export default {
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' }
           ]
-        }, */
+        },
         {
 
           index: '2',
