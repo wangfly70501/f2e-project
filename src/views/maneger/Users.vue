@@ -205,7 +205,7 @@ export default {
       }
       await userData(data).then(res => {
         this.userList = res.data.users
-        console.log('res', this.res.data)
+
         this.total = res.pagination.total_record
       })
     },

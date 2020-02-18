@@ -112,7 +112,7 @@ export default {
       }
       await KycList(data).then(res => {
         this.nameList = res.data
-        console.log('1323', this.nameList)
+
         this.total = res.pagination.total_record
       })
     },

@@ -60,6 +60,12 @@
               size="mini"
               @click="showEditDialog(scope.$index, scope.row)"
             >編輯</el-button>
+                 <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="showEditDialog(scope.$index, scope.row)"
+            >圖片</el-button>
             <!--     <el-button
               type="danger"
               icon="el-icon-delete"
@@ -300,7 +306,6 @@ export default {
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
-      console.log('1111111111', row)
       this.getFaqList()
     },
 
@@ -349,34 +354,6 @@ export default {
     addjump () {
       this.$router.push({ path: '/faqadd' })
     }
-    /*     async addfaqimg () {
-      this.addDialogVisible = false
-
-      var data = {
-        title: 'tesr4545',
-        type: '1',
-        lang: 'el_GR',
-        sort: '1',
-        classify: '1',
-        publicPic: this.file,
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
-      }
-      console.log(this.addForm.addcontent)
-      await faqimg(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('新增成功')
-          this.addForm.addtitle = ''
-          this.addForm.addcontent = ''
-          this.addForm.lang = ''
-          this.$refs.addForm.resetFields()
-        } else {
-          this.$message.error('新增失敗')
-        }
-        this.getFaqList()
-      })
-    } */
 
   }
 }

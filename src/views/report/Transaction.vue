@@ -105,8 +105,6 @@ export default {
       }
 
       await transactiondata(data).then(res => {
-        console.log(this.queryInfo.date[1])
-        console.log(this.queryInfo.date[0])
         this.transactionList = res.data
         this.total = res.pagination.total_record
       })
@@ -133,15 +131,11 @@ export default {
       }
 
       await transactiondata(data).then(res => {
-        console.log('123', res)
-        console.log(this.queryInfo.date[1])
-        console.log(this.queryInfo.date[0])
         this.transactionList = res.data
         this.total = res.pagination.total_record
       })
     },
     async Exportfile () {
-      console.log()
       this.queryInfo.pagenum = 1
       await this.getTransactionList()
     },

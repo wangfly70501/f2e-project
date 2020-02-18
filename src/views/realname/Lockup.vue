@@ -605,7 +605,6 @@ export default {
       }
       await currencyList(data).then(res => {
         this.currencyList = res.data
-        console.log('4565', this.currencyList)
       })
     },
     // 获取列表
@@ -624,7 +623,7 @@ export default {
 
       await Lockupdata(data).then(res => {
         this.Lockuplist = res.data
-        console.log('datalist', this.Lockuplist)
+
         this.total = res.pagination.total_record
       })
     },
@@ -697,7 +696,6 @@ export default {
         mode: this.editForm.mode.toString()
       }
       await Lockupedit(data).then(res => {
-        console.log('editdata', data)
         if (res.error_code === 0) {
           this.$message.success('修改成功')
         } else {
@@ -725,7 +723,7 @@ export default {
         days: this.addForm.days,
         mode: this.addForm.mode.toString()
       }
-      console.log('adddata', data)
+
       await addActivity(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')

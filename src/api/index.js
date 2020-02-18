@@ -52,15 +52,7 @@ export const chargeData = query => {
     data: query
   })
 }
-/*
-export const searchCharge = query => {
-  // console.log('create')
-  return request({
-    url: './bankendapi?method=ex_fee',
-    method: 'post',
-    data: query
-  })
-} */
+
 export const changeSw = query => {
   return request({
     url: './bankendapi?method=ex_feeSetRate',

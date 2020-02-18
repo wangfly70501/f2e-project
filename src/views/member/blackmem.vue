@@ -90,8 +90,7 @@ export default {
       }
       await blackmemData(data).then(res => {
         this.blackmemList = res.data
-        console.log(res.data)
-        console.log(res)
+
         this.total = res.pagination.total_record
       })
     },

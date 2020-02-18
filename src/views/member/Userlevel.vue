@@ -133,8 +133,6 @@ export default {
       }
       await userlevelData(data).then(res => {
         this.userlevelList = res.data
-        console.log(res.data)
-        console.log(res)
       })
     },
     showEditDialog (index, row) {
@@ -155,7 +153,7 @@ export default {
         mg_state: localStorage.getItem('mg_state')
 
       }
-      console.log('asd', data)
+
       await userlevelSet(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('修改成功')
@@ -176,11 +174,7 @@ export default {
       }
 
       await adduserlevel(data).then(res => {
-        console.log('asdsad', data)
-        console.log(typeof res.error_code)
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('新增成功')
         } else {
           this.$message.error('格式不符，新增失敗')

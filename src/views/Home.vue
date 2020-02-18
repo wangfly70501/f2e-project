@@ -34,8 +34,6 @@ export default {
   },
 
   created () {
-    console.log('test babel-plugin (remove console.xxx at production environment)')
-
     bus.$on('collapse-content', msg => {
       this.collapse = msg
     })
