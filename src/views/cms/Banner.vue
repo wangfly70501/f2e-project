@@ -88,6 +88,7 @@
             <el-radio-group v-model="addForm.classify">
               <el-radio label="1">BANNER</el-radio>
               <el-radio label="2">FOOTER</el-radio>
+              <el-radio label="3">FaQ</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="語系:" prop="lang">
@@ -141,6 +142,7 @@
             <el-radio-group v-model="editForm.classify">
               <el-radio :label="1">BANNER</el-radio>
               <el-radio :label="2">FOOTER</el-radio>
+               <el-radio :label="3">FaQ</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="語系:" prop="lang">
@@ -269,6 +271,7 @@ export default {
       await getcmslist(data).then(res => {
         this.bannerList = res.data
         this.total = res.pagination.total_record
+        console.log('12323', this.bannerList)
       })
     },
 

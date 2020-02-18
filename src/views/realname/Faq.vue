@@ -26,12 +26,12 @@
                          <el-button type="primary" @click="clear" size="mini">清除</el-button>
         <el-button type="primary" @click="Search" size="mini">搜尋</el-button>
         <el-button type="primary" @click="addjump" size="mini">新增</el-button>
-    <!--                   <el-button
+                       <el-button
               type="primary"
               icon="el-icon-picture"
               size="mini"
               @click="piclist()"
-            >圖片列表</el-button> -->
+            >圖片列表</el-button>
 
       </div>
       <!-- 列表 -->
@@ -379,12 +379,11 @@ export default {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-
-        lang: ''
+        lang: 'el_GR'
       }
       await faqimglist(data).then(res => {
         this.imgList = res.data
-        /*  console.log('123', this.imgList) */
+        console.log('123', res)
       })
     }
 
