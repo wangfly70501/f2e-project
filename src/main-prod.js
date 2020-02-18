@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 // 为减小打包的体积, 可通过cdn引用element-ui,
 // 但其实需要加载的总体积会变大, 因为无法按需导入
- import './plugins/element.js'
- import axios from 'axios' 
+import './plugins/element.js'
+import axios from 'axios'
 import ZkTable from 'vue-table-with-tree-grid'
 import TopBreadcrumb from './components/TopBreadcrumb.vue'
 import SearchTool from './components/SearchTool.vue'
- import NProgress from 'nprogress' 
+import NProgress from 'nprogress'
 import './assets/css/global.css'
 import './assets/fonts/iconfont.css' // 阿里巴巴图标库
 import VueQuillEditor from 'vue-quill-editor' // 富文本编辑器
@@ -18,7 +18,7 @@ Vue.use(ZkTable)
 
 // axios处理
 // 在 request 拦截器中，展示进度条 NProgress.start()
- axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 axios.interceptors.request.use(config => {
   NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem('token')
@@ -28,7 +28,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   NProgress.done()
   return response
-}) 
+})
 Vue.prototype.$http = axios
 
 // 注册富文本编辑器为全局组件
@@ -50,15 +50,6 @@ Vue.filter('dateFormat', function (val) {
 
   return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
 })
-
-
-
-  
-
-
-
-
-
 
 Vue.config.productionTip = false
 
