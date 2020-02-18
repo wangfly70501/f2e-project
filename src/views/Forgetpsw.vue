@@ -63,7 +63,6 @@ export default {
       }
 
       await forgetpsw(data).then(res => {
-        console.log(res)
         if (res.error_code !== 0) {
           return this.$message.error('失敗，請確認帳號或信箱')
         } else if (res.error_code === 0) {

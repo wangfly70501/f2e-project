@@ -71,7 +71,7 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
-      console.log(this.addForm.addcontent)
+
       await faqadd(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')

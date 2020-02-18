@@ -270,8 +270,6 @@ export default {
 
     showEditDialog (index, row) {
       this.editForm = row
-      console.log('123', this.editForm)
-      console.log('stasus', this.editForm.status, typeof this.editForm.status)
 
       this.editDialogVisible = true
     },
@@ -294,11 +292,7 @@ export default {
         id: this.editForm.id
       }
       await editchargedata(data).then(res => {
-        console.log('data', data)
-
         if (res.error_code === 0) {
-          console.log('res', res)
-
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
@@ -342,11 +336,7 @@ export default {
       }
 
       await createCharge(data).then(res => {
-        console.log('asdsad', data)
-        console.log(typeof res.error_code)
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('新增成功')
         } else {
           this.$message.error('此銀行新增過了，請使用編輯修改')
@@ -355,7 +345,6 @@ export default {
       })
     },
     async Search () {
-      console.log()
       this.queryInfo.pagenum = 1
       await this.getChargeList()
     }
