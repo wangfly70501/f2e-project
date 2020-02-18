@@ -104,7 +104,6 @@ export default {
       }
 
       await resetpsw(data).then(res => {
-        console.log(res)
         if (res.error_code !== 0) {
           return this.$message.error('失敗，請重新確認')
         } else if (res.error_code === 0) {

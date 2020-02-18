@@ -198,29 +198,6 @@ export default {
 
   methods: {
     async changeSwitch (index, row) {
-      console.log('index', index)
-      console.log('row', row)
-      /* changeSw(b).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('修改成功')
-        } else {
-          let newData = b
-          newData.status = newData.status === 0 ? '1' : '0'
-          this.chargeList[index] = newData
-        }
-      }) */
-
-      /* changesw(a).then(res => {
-        if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
-          this.$message.success('修改成功')
-        } else {
-          let newData = a
-          newData.status = newData.status === 0 ? '1' : '0'
-          this.chargeList[index] = newData
-        }
-      }) */
       let data = {
         bank_en: this.editForm.bank_en,
         bank_ch: this.editForm.bank_ch,
@@ -230,8 +207,6 @@ export default {
       }
       await editbankData(data).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
@@ -293,8 +268,6 @@ export default {
       }
       await editbankData(data).then(res => {
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('修改成功')
         } else {
           this.$message.error('格式不符，修改失敗')
@@ -339,11 +312,7 @@ export default {
       }
 
       await createBank(data).then(res => {
-        console.log('asdsad', data)
-        console.log(typeof res.error_code)
         if (res.error_code === 0) {
-          console.log('1', res)
-          console.log('2', res)
           this.$message.success('新增成功')
         } else {
           this.$message.error('格式不符，新增失敗')
@@ -352,7 +321,6 @@ export default {
       })
     },
     async Search () {
-      console.log()
       this.queryInfo.pagenum = 1
       await this.getbankList()
     }

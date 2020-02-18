@@ -137,8 +137,7 @@ export default {
     }
   },
   created () {
-    console.log('query', this.$route.query)
-    console.log('123', this.$route.query.auth_status)
+
   },
 
   methods: {
@@ -164,8 +163,6 @@ export default {
         mg_state: localStorage.getItem('mg_state')
       }
       await KycFail(data).then(res => {
-        console.log('reason', this.form.desc)
-        console.log('data', data)
         if (res.error_code === 0) {
           this.$message.success('送出審核失敗原因')
           this.$router.push('/realname')
@@ -179,14 +176,13 @@ export default {
     },
     /* 實名認證通過 */
     async Submitpass () {
-      console.log(this.$route.query.uuid)
       let data = {
         uuid: this.$route.query.uuid,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
-      console.log('data', data)
+
       await KycSuccess(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('審核成功')

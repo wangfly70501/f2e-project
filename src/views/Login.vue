@@ -152,7 +152,6 @@ export default {
       }
 
       await login(data).then(res => {
-        console.log(res)
         if (res.error_code !== 0) {
           return this.$message.error('登入失敗，請確認帳號密碼')
         } else if (res.error_code === 0) {
@@ -179,7 +178,6 @@ export default {
       }
 
       await signup(data).then(res => {
-        console.log(res)
         if (res.error_code !== 0) {
           return this.$message.error('註冊失敗，請確認資料')
         } else {

@@ -96,7 +96,7 @@ export default {
         searchMonth: this.queryInfo.date,
         opcode: this.queryInfo.enable
       }
-      console.log(this.queryInfo.date)
+
       await revenuedata(data).then(res => {
         this.revenueList = res.data
         this.total = res.pagination.total_record

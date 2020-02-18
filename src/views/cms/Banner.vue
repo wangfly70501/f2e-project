@@ -292,8 +292,7 @@ export default {
       this.addDialogVisible = false
       let reader = new FileReader()
       reader.readAsDataURL(this.$refs.upload.uploadFiles[0].raw)
-      console.log('123', reader)
-      console.log('1111', this.addForm.title)
+
       var data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -330,9 +329,7 @@ export default {
       this.uploadName = obj.name
       this[`${this.uploadName}Loading`] = true
     },
-    handleRemove (file, fileList) {
-      console.log(file, fileList)
-    },
+
     handlePictureCardPreview (file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
@@ -374,7 +371,7 @@ export default {
     deleteUserById (index, row) {
       this.deldata = row
       this.delDialogVisible = true
-      console.log('fqf', this.deldata)
+
       this.getbannerList()
     },
     async savedel () {
@@ -387,7 +384,6 @@ export default {
         mg_state: localStorage.getItem('mg_state')
       }
       await delban(data).then(res => {
-        console.log(res)
         if (res.error_code === 0) {
           this.$message.success('刪除成功')
         } else {

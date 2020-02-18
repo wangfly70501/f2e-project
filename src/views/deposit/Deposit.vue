@@ -86,7 +86,6 @@ export default {
 
   created () {
     this.getOrderList()
-    console.log('123', this.orderList)
   },
 
   methods: {
@@ -94,19 +93,17 @@ export default {
       const { data: res } = await this.$http.get('amount', {
         params: this.queryInfo
       })
-      console.log('res.meta.status', res.meta.status)
+
       if (res.meta.status !== 200) {
         return this.$message.error('獲取列表失败')
       }
-      console.log('123', res)
-      console.log('res.data', res.data)
+
       this.total = res.data.length
-      console.log('total111', this.total)
+
       /* this.orderList = res.data */
 
       /* Object.keys(res.data).map(k => res.data[k].status === 3 && delete res.data[k]) */
       this.orderList = res.data.slice(this.total / this.queryInfo.pagesize * this.pagenum, 10)
-      console.log('res.data.length', res)
     },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize

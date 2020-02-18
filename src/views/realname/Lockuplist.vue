@@ -81,7 +81,6 @@ export default {
   }, */
   created () {
     this.getActivityJoin()
-    console.log('query', this.$route.query)
   },
 
   methods: {
@@ -100,7 +99,7 @@ export default {
       }
       await getActivityJoin(data).then(res => {
         this.ActivityJoinlist = res.data
-        console.log('123', this.ActivityJoinlist)
+
         this.total = res.pagination.total_record
       })
     },
