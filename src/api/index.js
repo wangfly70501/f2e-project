@@ -191,6 +191,15 @@ export const faqedit = query => {
     data: query
   })
 }
+// faq列表
+export const faqimglist = query => {
+  return request({
+    url: './bankendapi?method=getFaqPicList',
+    method: 'post',
+    data: query
+  })
+}
+
 // 實名認證
 export const KycList = query => {
   return request({

@@ -23,9 +23,15 @@
                                 v-bind:value="enableValue.value"
                             >{{enableValue.label}}</el-option>
                         </el-select>&nbsp;
-                         <el-button type="primary" @click="clear">清除</el-button>
-        <el-button type="primary" @click="Search">搜尋</el-button>
-        <el-button type="primary" @click="addjump">新增</el-button>
+                         <el-button type="primary" @click="clear" size="mini">清除</el-button>
+        <el-button type="primary" @click="Search" size="mini">搜尋</el-button>
+        <el-button type="primary" @click="addjump" size="mini">新增</el-button>
+    <!--                   <el-button
+              type="primary"
+              icon="el-icon-picture"
+              size="mini"
+              @click="piclist()"
+            >圖片列表</el-button> -->
 
       </div>
       <!-- 列表 -->
@@ -52,7 +58,7 @@
             <el-tag type="success" v-else>啟用</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180px">
+        <el-table-column label="操作" >
           <template v-slot="scope">
             <el-button
               type="primary"
@@ -60,12 +66,6 @@
               size="mini"
               @click="showEditDialog(scope.$index, scope.row)"
             >編輯</el-button>
-                 <el-button
-              type="primary"
-              icon="el-icon-edit"
-              size="mini"
-              @click="showEditDialog(scope.$index, scope.row)"
-            >圖片</el-button>
             <!--     <el-button
               type="danger"
               icon="el-icon-delete"
@@ -115,29 +115,7 @@
               :inactive-value="0"
             ></el-switch>
         </el-form-item>
-
-<!--         <el-form-item label="內容">
-
-          <mavon-editor
-          placeholder="開始編輯"
-
-            @imgAdd="$imgAdd"
-            @change="change"
-            style="min-height: 400px"
-            ref="md"
-            v-model="editForm.content"
-
-          />
-        </el-form-item> -->
-
        <el-form-item label="內容">
-
-     <!--     <quill-editor
-            v-model="editForm.content"
-            ref="myQuillEditor"
-            :options="editorOption"
-          >
-        </quill-editor> -->
             <template>
   <yimo-vue-editor v-model="editForm.content"> </yimo-vue-editor>
 </template>
@@ -150,13 +128,53 @@
       </span>
     </el-dialog>
 
-          <!-- 刪除 -->
-    <el-dialog  :visible.sync="delDialogVisible" width="30%" >
-          <span>確定要刪除？刪除後資料無法復原</span>
+          <!-- 圖片列表 -->
+    <el-dialog  :visible.sync="picDialogVisible" width="30%" >
+         <el-table :data="imgList" stripe border>
+        <!-- <el-table-column
+      type="selection"
+      width="40px">
+    </el-table-column>
+        <el-table-column label="ID" prop="id" width="40px"></el-table-column> -->
+        <el-table-column label="標題" prop="title" ></el-table-column>
+        <!-- <el-table-column label="內容" prop="content"></el-table-column> -->
+        <el-table-column label="發布時間" prop="ctime"></el-table-column>
+        <el-table-column label="語系" prop="lang">
+          <template slot-scope="scope">
+            <span   v-if="scope.row.lang ==='el_GR'">繁體中文</span>
+            <span   v-else-if="scope.row.lang ==='zh_CN'">简体中文</span>
+            <span   v-else>Engilsh</span>
+          </template>
+
+        </el-table-column>
+            <el-table-column label="狀態" >
+          <template slot-scope="scope">
+            <el-tag type="danger" v-if="scope.row.status === 0">棄用</el-tag>
+            <el-tag type="success" v-else>啟用</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" >
+          <template v-slot="scope">
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="showEditDialog(scope.$index, scope.row)"
+            >編輯</el-button>
+
+            <!--     <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="deleteUserById(scope.row.id)"
+            ></el-button>-->
+          </template>
+        </el-table-column>
+      </el-table>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer" >
-        <el-button @click="delDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="Delete">確定</el-button>
+        <el-button @click="picDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="piclist">確定</el-button>
       </span>
     </el-dialog>
 
@@ -164,7 +182,7 @@
 </template>
 
 <script>
-import { faqdata, faqedit } from '../../api/index.js'
+import { faqdata, faqedit, faqimglist } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
 /* import { quillEditor, Quill } from 'vue-quill-editor'
 import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
@@ -220,7 +238,7 @@ export default {
       faqlist: [],
 
       total: 0, // 总用户数
-      delDialogVisible: false,
+      picDialogVisible: false,
       addDialogVisible: false,
       addForm: {
         lang: []
@@ -237,7 +255,7 @@ export default {
 
         ]
       },
-
+      imgList: [],
       editDialogVisible: false,
       table: {},
       editForm: {
@@ -264,6 +282,7 @@ export default {
 
   created () {
     this.getFaqList()
+    this.getimgList()
   },
 
   methods: {
@@ -340,12 +359,6 @@ export default {
       this.queryInfo.pagenum = 1
       await this.getFaqList()
     },
-    async Delete () {
-      this.delDialogVisible = false
-
-      this.queryInfo.pagenum = 1
-      await this.getFaqList()
-    },
     async clear () {
       this.queryInfo.date = ''
       this.searchlist = ''
@@ -353,6 +366,26 @@ export default {
     },
     addjump () {
       this.$router.push({ path: '/faqadd' })
+    },
+    // cms列表
+    async piclist () {
+      this.picDialogVisible = true
+      this.queryInfo.pagenum = 1
+      await this.getFaqList()
+    },
+
+    async getimgList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+
+        lang: ''
+      }
+      await faqimglist(data).then(res => {
+        this.imgList = res.data
+        /*  console.log('123', this.imgList) */
+      })
     }
 
   }
