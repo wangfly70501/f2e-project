@@ -13,6 +13,7 @@ const Charge = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const Bankset = () => import(/* webpackChunkName: "service_Charges" */ '../views/charge/Bankset.vue')
 const Deposit = () => import(/* webpackChunkName: "service_Charges" */ '../views/deposit/Deposit.vue')
 const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Member.vue')
+const Membercatch = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Membercatch.vue')
 const Blackmember = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/blackmem.vue')
 const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Banner.vue')
 const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realname.vue')
@@ -47,6 +48,7 @@ const routes = [
       { path: '/charge', component: Charge },
       { path: '/deposit', component: Deposit },
       { path: '/member', component: Member },
+      { path: '/membercatch', component: Membercatch },
       { path: '/blackmember', component: Blackmember },
       { path: '/banner', component: Banner },
       { path: '/bankset', component: Bankset },

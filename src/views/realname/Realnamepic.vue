@@ -18,7 +18,7 @@
           <td>{{ this.$route.query.username }}</td>
           <td>{{ this.$route.query.mobile }}</td>
           <td>{{this.$route.query.email }}</td>
-          <td>{{ this.$route.query.ctime }}</td>
+          <td>{{ this.$route.query.ctime |dateFormat}}</td>
         </tr>
       </table>
 
@@ -64,7 +64,7 @@
    <el-form-item label="身分證正面照片:">
 <img :src="this.$route.query.first_photo" style="max-width:50%"/>
   </el-form-item>
-     <el-form-item label="身分證反面照片:">
+     <el-form-item label="身分證背面照片:">
 <img :src="this.$route.query.second_photo" style="max-width:50%"/>
   </el-form-item>
      <el-form-item label="第二證件照:">
@@ -120,38 +120,13 @@ export default {
         }
       ],
       nameList: []
-      /*       nameList: [
-        {
-          uuid: 10025,
-          auth_status: 0,
-          email: 'ekko@btcbox.com.tw',
-          mobile: '0900123123',
-          ctime: '2020-01-08 11:26:31',
-          username: 'ekko',
-          certificate_type: 2,
-          first_photo: 'https://images.app.goo.gl/Yc5hbJ6kJsm9Yb4A6',
-          second_photo: 'https://images.app.goo.gl/A6JYRZSJYwXfnEubA',
-          third_photo: 'https://images.app.goo.gl/rKPEbJxV5Pv3HupM7'
-        }
-      ] */
     }
   },
   created () {
-
+    console.log('1223', this.$route.query)
   },
 
   methods: {
-
-    handleSizeChange (newSize) {
-      this.queryInfo.pagesize = newSize
-      this.queryInfo.pagenum = 1
-      this.getFaqList()
-    },
-
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getFaqList()
-    },
 
     /* 實名認證失敗 */
     async Submitunpass () {
@@ -164,10 +139,10 @@ export default {
       }
       await KycFail(data).then(res => {
         if (res.error_code === 0) {
-          this.$message.success('送出審核失敗原因')
+          this.$message.success('送出審核失敗')
           this.$router.push('/realname')
         } else {
-          this.$message.error('格式不符，送出失敗')
+          this.$message.error('請填寫失敗原因,送出失敗')
         }
       })
     },
@@ -182,13 +157,12 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state')
       }
-
       await KycSuccess(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('審核成功')
           this.$router.push('/realname')
         } else {
-          this.$message.error('審核失敗')
+          this.$message.error('送出失敗')
         }
       })
     }

@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <TopBreadcrumb :titles="['會員管理', '會員列表']"></TopBreadcrumb>
 
     <el-card>
    <!--    <SearchTool v-model="queryInfo.query" placeholder="暫不支持搜索">
@@ -18,7 +16,7 @@
 
         <el-table-column label="UUID" prop="uuid">
                 <template slot-scope="scope">
-                  <router-link  :to="{path:'/membercatch'}" > {{scope.row.uuid}}</router-link>
+                  <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" > {{scope.row.uuid}}</router-link>
                 </template>
         </el-table-column>
         <el-table-column label="會員姓名" prop="username"></el-table-column>
@@ -70,11 +68,10 @@
       </el-pagination>
     </el-card>
 
-  </div>
 </template>
 
 <script>
-import { userData } from '../../api/index.js'
+/* import { userData } from '../../api/index.js' */
 
 export default {
   data () {
@@ -88,7 +85,7 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
-      /*    userList: [{
+      userList: [{
         status: 1,
         uuid: '10080',
         username: '測試資料',
@@ -98,10 +95,9 @@ export default {
         amount: 10000,
         lg_in_time: '2020-02-19 11:03',
         lg_out_time: '2020-02-19 11:03'
-
       },
       {
-        status: 0,
+        status: 2,
         uuid: '10081',
         username: '測試資料2',
         identityid: 'b123456789',
@@ -111,7 +107,7 @@ export default {
         lg_in_time: '2020-02-19 11:03',
         lg_out_time: '2020-02-19 11:03'
       }
-      ], */
+      ],
 
       addressVisible: false
 
@@ -123,7 +119,7 @@ export default {
   },
 
   methods: {
-    async getUserList () {
+    /*     async getUserList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -137,7 +133,7 @@ export default {
         console.log('1323', this.userList)
         this.total = res.pagination.total_record
       })
-    },
+    }, */
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.getUserList()

@@ -655,6 +655,7 @@ export default {
 
     editDialogClosed () {
       this.$refs.editFormRef.resetFields()
+      this.getLockupList()
     },
 
     async saveEdit () {
