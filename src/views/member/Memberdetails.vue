@@ -14,18 +14,19 @@
           <el-button  type="primary" size="mini" style="float:right"  @click="showToggle"  v-show="!isShow" plain>取消</el-button>
 
       </p>
-           <template v-for="item in userList">
+   <!--         <template v-for="item in userList">
           <template v-if="item.status===0" >帳號停用中</template>
           <template v-else>帳號啟用中</template>
-        </template>
+        </template> -->
     </div>
-    <table class="tabletxt">
-          <tr  v-show="!isShow" style="background-color:#FFFF6F">
-        <td>
-          <p>帳號狀態：</p>
+
+    <table class="tabletxt"  v-for="(item,index) in userList"  :key="index">
+          <tr  v-show="!isShow" style="background-color:#FFFF6F" >
+        <td >
+          <p>帳號狀態：{{item.uuid}}</p>
         </td>
         <td>
-                        <el-select  v-model="enable.value" placeholder="請選擇狀態"
+                        <el-select  v-model="enable.value" placeholder="請選擇狀態"  style="width:40% "
                          >
                             <el-option
                                 v-for="(enableValue,index) in enable"
@@ -70,7 +71,7 @@
           <p>
             <template v-for="(item) in userList">{{item.email}}</template>
           </p>
-          <template v-for="(item) in userList">{{item.mobile}}</template>
+          <p> <template v-for="(item) in userList">{{item.mobile}}</template> </p>
         </td>
       </tr>
       <tr>
@@ -83,7 +84,7 @@
           <p>
             <template v-for="(item) in userList">{{item.username}}</template>
           </p>
-          <template v-for="(item) in userList">{{item.identityid}}</template>
+           <p><template v-for="(item) in userList">{{item.identityid}}</template> </p>
         </td>
       </tr>
       <tr>
@@ -96,7 +97,7 @@
           <p>
             <template v-for="(item) in userList">{{item.bankacount}}</template>
           </p>
-          <template v-for="(item) in userList">{{item.bankusrname}}</template>
+          <p> <template v-for="(item) in userList">{{item.bankusrname}}</template> </p>
         </td>
       </tr>
     </table>
@@ -111,35 +112,67 @@
       </p>
     </div>
     <table class="tabletxt">
+          <!-- 隱藏顯示 -->
             <tr v-show="!ssShow" style="background-color:#FFFF6F">
         <td>
           <p>永久上限:</p>
-          <p>臨時上限:</p>
-          <p>調整原因:</p>
         </td>
         <td>
-          <p><template v-for="(item) in userList">
-            <template v-if="item.awlimit!=''">{{item.awlimit |NumFormat}}</template>
-            <template v-else>{{item.awlimit |NumFormat}}</template>
-          </template></p>
-          <p><template v-for="(item) in userList">{{item.uuid}}</template></p>
-          <p><template v-for="(item) in userList">{{item.uuid}}</template></p>
+         <template v-for="(item, index) in userList">
+            <div  v-if="item.awlimit!=''" :key="index">{{item.awlimit |NumFormat}}</div>
+            <div  v-else :key="index">
+               <el-select  v-model="awlist.value" placeholder="預設值">
+                            <el-option
+                                v-for="(awlistValue,index) in awlist"
+                                :key="index"
+                                v-bind:label="awlistValue.label"
+                                v-bind:value="awlistValue.value"
+                            >{{awlistValue.label |NumFormat}} TWD(會員等級{{item.level}})</el-option>
+                        </el-select>
+                        <div style="color:red;font-size:10px">僅能設定一次，請謹慎確認 </div>
+                        </div>
+          </template>
+        </td>
+            </tr>
+              <tr v-show="!ssShow"  style="background-color:#FFFF6F">
+        <td>
+          <p>臨時上限:</p>
+        </td>
+        <td>
+                 <template v-for="(item, index) in userList">
+                          <el-select  v-model="awlist.value" placeholder="預設值" :key="index">
+                            <el-option
+                                v-for="(awlistValue,index) in awlist"
+                                :key="index"
+                                v-bind:label="awlistValue.label"
+                                v-bind:value="awlistValue.value"
+                            >{{awlistValue.label |NumFormat}} TWD(會員等級{{item.level}})</el-option>
+                        </el-select>
+              </template>
+
         </td>
       </tr>
-      <tr v-show="ssShow">
+            <!-- 直接顯示 -->
+              <tr v-show="ssShow">
         <td>
           <p>永久上限:</p>
-          <p>臨時上限:</p>
         </td>
         <td>
           <p>
             <template v-for="(item) in userList">{{item.awlimit |NumFormat}} TWD(會員等級{{item.level}})</template>
           </p>
-          <p>
-            <template v-for="(item) in userList">{{item.uuid|NumFormat}}</template>
-          </p>
         </td>
       </tr>
+
+        <tr v-show="ssShow">
+          <td>
+          <p>臨時上限:</p>
+        </td>
+             <td>
+         <p><template v-for="(item) in userList">{{item.uuid}}</template></p>
+        </td>
+      </tr>
+
     </table>
   </el-card>
 </template>
@@ -173,7 +206,7 @@ export default {
           bankacount: '111111111111',
           bank: '國泰世華',
           bankusrname: '測試資料',
-          awlimit: '1000000'
+          awlimit: ''
         }
       ],
       isShow: true,
@@ -187,6 +220,16 @@ export default {
         {
           label: '帳號啟用',
           value: '1'
+        }
+      ],
+      awlist: [
+        {
+          label: '1000000',
+          value: '1000000'
+        },
+        {
+          label: '2000000',
+          value: '2000000'
         }
       ]
     }
