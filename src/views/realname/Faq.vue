@@ -109,12 +109,12 @@
               :inactive-value="0"
             ></el-switch>
         </el-form-item>
-                           <el-button
+<!--                            <el-button
               type="primary"
               icon="el-icon-picture"
               size="mini"
               @click="piclist()"
-            >圖片列表</el-button>
+            >圖片列表</el-button> -->
        <el-form-item label="內容">
             <template>
   <yimo-vue-editor v-model="editForm.content"> </yimo-vue-editor>
@@ -324,6 +324,7 @@ export default {
     showEditDialog (index, row) {
       this.editForm = row
       this.editDialogVisible = true
+      console.log('123', this.editForm)
       this.getFaqList()
     },
 
@@ -335,8 +336,8 @@ export default {
       this.editDialogVisible = false
       /* this.editForm.addcontent = this.$refs.md.d_value */
       var data = {
-
         id: this.editForm.id,
+        title: this.editForm.title,
         content: this.editForm.content,
         lang: this.editForm.lang,
         mg_name: localStorage.getItem('mg_name'),
@@ -345,6 +346,7 @@ export default {
         status: this.editForm.status.toString()
       }
       await faqedit(data).then(res => {
+        console.log('456', data)
         if (res.error_code === 0) {
           this.$message.success('修改成功')
         } else {
