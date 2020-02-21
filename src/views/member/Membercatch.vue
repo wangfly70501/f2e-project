@@ -31,14 +31,8 @@ export default {
     return {
 
     }
-  },
-
-  methods: {
-    logout () {
-      window.sessionStorage.clear()
-      this.$router.push('/login')
-    }
   }
+
 }
 </script>
 <style>
