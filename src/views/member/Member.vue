@@ -12,7 +12,7 @@
         <el-table-column label="狀態" prop="status" width="50px">
           <template slot-scope="scope">
             <div  v-if="scope.row.status =='0'"><i class="fas fa-circle"  color="red"></i></div>
-            <div   v-else color="#00EC00"><i class="fas fa-circle"  color="#00EC00"></i></div>
+            <div  v-else color="#00EC00"><i class="fas fa-circle"  color="#00EC00"></i></div>
           </template>
         </el-table-column>
 
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { userData } from '../../api/index.js'
+/* import { userData } from '../../api/index.js' */
 
 export default {
   data () {
@@ -88,10 +88,10 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
-      /*    userList: [{
+      userList: [{
         status: 1,
         uuid: '10080',
-        username: '測試資料',
+        username: '測試帳號',
         identityid: 'b123456789',
         mobile: '0911111111',
         level: 1,
@@ -103,7 +103,7 @@ export default {
       {
         status: 0,
         uuid: '10081',
-        username: '測試資料2',
+        username: '測試帳號',
         identityid: 'b123456789',
         mobile: '0911111111',
         level: 2,
@@ -111,7 +111,7 @@ export default {
         lg_in_time: '2020-02-19 11:03',
         lg_out_time: '2020-02-19 11:03'
       }
-      ], */
+      ],
 
       addressVisible: false
 
@@ -123,7 +123,7 @@ export default {
   },
 
   methods: {
-    async getUserList () {
+    /*     async getUserList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -137,7 +137,7 @@ export default {
         console.log('1323', this.userList)
         this.total = res.pagination.total_record
       })
-    },
+    }, */
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.getUserList()

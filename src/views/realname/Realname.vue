@@ -26,11 +26,15 @@
       <el-button type="primary" @click="Search">搜尋</el-button>
 
       <el-table :data="nameList" stripe border>
-        <el-table-column label="UID" prop="uuid"></el-table-column>
+        <el-table-column label="UUID" prop="uuid"></el-table-column>
         <el-table-column label="使用者姓名" prop="username"></el-table-column>
         <!--  <el-table-column label="手機號碼" prop="mobile"></el-table-column> -->
         <el-table-column label="信箱" prop="email"></el-table-column>
-        <el-table-column label="提交時間" prop="ctime"></el-table-column>
+        <el-table-column label="提交時間" >
+            <template slot-scope="scope">
+                {{scope.row.ctime |dateFormat}}
+            </template>
+        </el-table-column>
         <el-table-column label="狀態審核" >
           <template slot-scope="scope">
 
@@ -74,7 +78,9 @@ export default {
       },
       queryData: {},
       query: {},
-      nameList: [],
+      nameList: [
+
+      ],
       total: 0,
       realname: [],
       list: '',

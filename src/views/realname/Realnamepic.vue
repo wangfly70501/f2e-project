@@ -52,7 +52,7 @@
   </el-form-item>
   <el-form-item label="狀態:">
 <div style="color:brown" v-if="this.$route.query.auth_status == '0'">未審核</div>
-<div style="color:green" v-else-if="this.$route.query.auth_status  == '1'">審核通過</div>
+<div style="color:green" v-else-if="this.$route.query.auth_status  == '1'" >審核通過</div>
 <div v-else style="color:red">審核不通過</div>
        <!--  <div style="color:green" v-else>啟用</div> -->
   </el-form-item>
@@ -79,7 +79,7 @@
   <el-form-item style="text-align:center">
     <el-button  @click="uppage">上一頁</el-button>
     <el-button  @click="Submitunpass"  type="danger">審核不通過</el-button>
-    <el-button type="primary" @click="Submitpass">審核通過</el-button>
+    <el-button type="primary" @click.once="Submitpass">審核通過</el-button>
   </el-form-item>
 </el-form>
 
@@ -109,16 +109,6 @@ export default {
       /*  editDialogVisible: false, */
       editForm: {},
       realname: {},
-      enable: [
-        {
-          label: 'zh',
-          value: 'zh'
-        },
-        {
-          label: 'en',
-          value: 'en'
-        }
-      ],
       nameList: []
     }
   },
@@ -139,8 +129,9 @@ export default {
       }
       await KycFail(data).then(res => {
         if (res.error_code === 0) {
-          this.$message.success('送出審核失敗')
+          this.$message.success('已送出審核不通過原因')
           this.$router.push('/realname')
+          this.form.desc = ''
         } else {
           this.$message.error('請填寫失敗原因,送出失敗')
         }
@@ -160,6 +151,7 @@ export default {
       await KycSuccess(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('審核成功')
+          this.form.desc = ''
           this.$router.push('/realname')
         } else {
           this.$message.error('送出失敗')

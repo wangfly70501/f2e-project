@@ -12,7 +12,7 @@ module.exports = {
 
     // 指定生产环境相关配置
     config.when(process.env.NODE_ENV === 'production', config => {
-      config.entry('app').clear().add('./src/main-prod.js')
+      config.entry('app').clear().add('./src/main-dev.js')
 
       // 在html中嵌入一个 isProduction 变量, 可通过模板语法读取
       config.plugin('html').tap(args => {
