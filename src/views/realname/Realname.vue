@@ -99,6 +99,7 @@ export default {
 
     }
   },
+
   created () {
     this.getnameList()
   },
