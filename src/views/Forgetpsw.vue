@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
-    <div class="avatar-box">
+   <!--  <div class="avatar-box">
       <img src="../assets/btcbox_icon.jpg" />
-    </div>
+    </div> -->
     <div class="login-box">
       <div class="text">驗證帳號</div>
       <el-form ref="checkForm" :model="checkForm" :rules="rules" label-width="0" class="login-form">
@@ -18,9 +18,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item class="btns">
-          <el-button type="info" @click="signin">上一頁</el-button>
+              <el-button type="primary" @click="confirm">確認</el-button>
+
           <el-button type="info" @click="reset">清除</el-button>
-          <el-button type="primary" @click="confirm">確認</el-button>
+   <el-button type="info" @click="signin">上一頁</el-button>
         </el-form-item>
       </el-form>
     </div>
