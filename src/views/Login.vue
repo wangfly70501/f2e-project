@@ -1,102 +1,83 @@
 <template>
   <div class="login-container">
-<!--         <div class="avatar-box">
+    <!--         <div class="avatar-box">
         <img src="../assets/btcbox_icon.jpg" />
-      </div> -->
+    </div>-->
     <div class="login-box">
-
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="登入" name="signin">
-        <div class="text">歡迎登入
-        <el-form
-        ref="loginForm"
-        :model="loginForm"
-        :rules="rules"
-        label-width="0"
-        class="login-form"
-      >
-        <el-form-item prop="username">
-          <el-input
-            v-model="loginForm.username"
-            placeholder="帳號"
-            @keyup.enter.native="login"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            placeholder="密碼"
-            @keyup.enter.native="login"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="btns">
-          <el-button type="primary" @click="login">登入</el-button>
-          <el-button type="info" @click="reset(loginForm)">清除</el-button>
-            <router-link to="/forgetpsw">忘記密碼</router-link>
-        </el-form-item>
-
-      </el-form>
-        </div>
-      </el-tab-pane>
-       <el-tab-pane label="註冊" name="signup">
-          <div class="text">註冊</div>
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="登入" name="signin">
+          <div class="text">
+            歡迎登入
             <el-form
-        ref="signupForm"
-        :model="signupForm"
-        :rules="rules"
-        label-width="0"
-        class="login-form"
-      >
+              ref="loginForm"
+              :model="loginForm"
+              :rules="rules"
+              label-width="0"
+              class="login-form"
+            >
+              <el-form-item prop="username">
+                <el-input v-model="loginForm.username" placeholder="帳號" @keyup.enter.native="login"></el-input>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input
+                  v-model="loginForm.password"
+                  type="password"
+                  placeholder="密碼"
+                  @keyup.enter.native="login"
+                ></el-input>
+              </el-form-item>
+              <el-form-item class="btns">
+                <el-button type="primary" @click="login">登入</el-button>
+                <el-button type="primary" @click="forgetpsw">忘記密碼</el-button>
+                <el-button type="info" @click="reset(loginForm)">清除</el-button>
+                <!--  <router-link to="/forgetpsw">忘記密碼</router-link> -->
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="註冊" name="signup">
+          <div class="text">註冊</div>
+          <el-form
+            ref="signupForm"
+            :model="signupForm"
+            :rules="rules"
+            label-width="0"
+            class="login-form"
+          >
+            <el-form-item prop="username" label="帳號" label-width="20%">
+              <el-input v-model="signupForm.username" placeholder="帳號" @keyup.enter.native="signup"></el-input>
+            </el-form-item>
+            <el-form-item prop="password" label="密碼" label-width="20%">
+              <el-input
+                v-model="signupForm.password"
+                type="password"
+                placeholder="密碼"
+                @keyup.enter.native="signup"
+              ></el-input>
+            </el-form-item>
 
-        <el-form-item prop="username" label="帳號" label-width="20%">
-          <el-input
-            v-model="signupForm.username"
-            placeholder="帳號"
-            @keyup.enter.native="signup"
-
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="密碼" label-width="20%">
-          <el-input
-            v-model="signupForm.password"
-            type="password"
-            placeholder="密碼"
-            @keyup.enter.native="signup"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item prop="checkpass" label="確認密碼" label-width="20%">
-          <el-input
-            v-model="signupForm.checkpass"
-            type="password"
-            placeholder="確認密碼"
-            @keyup.enter.native="signup"
-          ></el-input>
-        </el-form-item>
-              <el-form-item prop="mobile" label="手機" label-width="20%">
-          <el-input
-            v-model="signupForm.mobile"
-            placeholder="手機"
-            @keyup.enter.native="signup"
-          ></el-input>
-        </el-form-item>
-                <el-form-item prop="email" label="email" label-width="20%">
-          <el-input
-            v-model="signupForm.email"
-            placeholder="email"
-            @keyup.enter.native="signup"
-          ></el-input>
-        </el-form-item>
-        <el-form-item class="btns">
-          <el-button type="primary" @click="signup">註冊</el-button>
-          <el-button type="info" @click="resetsignup">清除</el-button>
-        </el-form-item>
-      </el-form>
-          </el-tab-pane>
-
+            <el-form-item prop="checkpass" label="確認密碼" label-width="20%">
+              <el-input
+                v-model="signupForm.checkpass"
+                type="password"
+                placeholder="確認密碼"
+                @keyup.enter.native="signup"
+              ></el-input>
+            </el-form-item>
+            <el-form-item prop="mobile" label="手機" label-width="20%">
+              <el-input v-model="signupForm.mobile" placeholder="手機" @keyup.enter.native="signup"></el-input>
+            </el-form-item>
+            <el-form-item prop="email" label="email" label-width="20%">
+              <el-input v-model="signupForm.email" placeholder="email" @keyup.enter.native="signup"></el-input>
+            </el-form-item>
+            <el-form-item class="btns">
+              <el-button type="primary" @click="signup">註冊</el-button>
+              <el-button type="info" @click="resetsignup">清除</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -126,12 +107,16 @@ export default {
         ],
         password: [{ required: true, message: '請輸入密碼', trigger: 'blur' }],
         checkpass: [{ required: true, message: '請確認密碼', trigger: 'blur' }],
-        mobile: [ { required: true, message: '請輸入手機', trigger: 'blur' },
-          { required: true,
+        mobile: [
+          { required: true, message: '請輸入手機', trigger: 'blur' },
+          {
+            required: true,
             type: Number,
             pattern: /^[0-9]{10}$/,
             message: '目前只支持台灣手機,共10碼',
-            trigger: 'blur' }],
+            trigger: 'blur'
+          }
+        ],
         email: [
           { required: true, message: '請輸入信箱', trigger: 'blur' },
           {
@@ -140,7 +125,6 @@ export default {
             trigger: ['blur', 'change']
           }
         ]
-
       }
     }
   },
@@ -195,19 +179,22 @@ export default {
     },
     resetsignup () {
       this.$refs.signupForm.resetFields()
+    },
+    forgetpsw () {
+      this.$router.push('/forgetpsw')
     }
   }
 }
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
 </style>
 <style lang="less" scoped>
-.text{
-    font-size: 24px;
-    color: #5B5B5B;
-    text-align: center;
-     font-family: 'Noto Sans TC', sans-serif;
+.text {
+  font-size: 24px;
+  color: #5b5b5b;
+  text-align: center;
+  font-family: "Noto Sans TC", sans-serif;
 }
 .login-container {
   height: 100%;
