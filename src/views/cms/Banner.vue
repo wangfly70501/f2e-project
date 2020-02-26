@@ -111,7 +111,7 @@
                 :limit="1"
                 ref="upload"
                 :http-request="addBanner"
-                naem="publicPic"
+                name="publicPic"
                 multiple
               >
                 <el-button size="small" type="primary">點擊上傳</el-button>

@@ -11,7 +11,11 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column label="會員姓名" prop="username"></el-table-column>
         <el-table-column label="會員層級" prop="level"></el-table-column>
-        <el-table-column label="身分證字號" prop="identityid"></el-table-column>
+        <el-table-column label="身分證字號" prop="identityid">
+         <template slot-scope="scope">
+            {{scope.row.identityid | phoneformat}}          </template>
+
+        </el-table-column>
         <el-table-column label="會員帳號" prop="account"></el-table-column>
       <el-table-column label="狀態" prop="status">
           <template slot-scope="scope">

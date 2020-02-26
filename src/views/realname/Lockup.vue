@@ -28,12 +28,12 @@
             v-bind:value="enableValue.value"
           >{{enableValue.label}}</el-option>
         </el-select>&nbsp;
-        <el-button type="primary" @click="clear">清除</el-button>
+        <el-button type="info" @click="clear" size="small">清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
-        <el-button type="info" @click="addDialogVisible = true" class="btn_right">建立活動</el-button>
+        <el-button type="primary" @click="addDialogVisible = true" class="btn_right">建立活動</el-button>
       </div>
       <!-- 列表 -->
-      <el-table :data="Lockuplist" stripe border @selection-change="handleSelectionChange">
+      <el-table :data="Lockuplist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor" border>
         <!-- <el-table-column
       type="selection"
       width="40px">
@@ -749,6 +749,11 @@ export default {
       let queryData = {}
       queryData = row
       this.$router.push({ path: '/lockuplist', query: queryData })
+    },
+    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0) {
+        return 'background-color:#F2F2F2 ;color:#7B7B7B;font-size: 12px;'
+      }
     }
   }
 }
