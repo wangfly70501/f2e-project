@@ -16,6 +16,7 @@
       <el-radio label="en_US">Engilsh</el-radio>
     </el-radio-group>
   </el-form-item>
+
                <el-form-item label="內容" prop="addtitle">
             <template>
   <yimo-vue-editor v-model="addForm.addcontent"> </yimo-vue-editor>
@@ -88,7 +89,6 @@ export default {
     uppage () {
       this.$router.push('/faq')
     }
-
   }
 }
 </script>

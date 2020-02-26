@@ -5,8 +5,9 @@
 
     <!-- 會員詳細資料 -->
     <div>
-      <p class="txt">
+      <p class="txt" v-for="(item,index) in userList" :key="index">
         會員資料
+
         <el-button
           icon="el-icon-edit"
           type="primary"
@@ -25,6 +26,8 @@
           v-show="!isShow"
           plain
         >取消</el-button>
+            <el-tag v-if="item.status===1" type="success" style="float:right">帳號啟用中</el-tag>
+         <el-tag v-else type="danger">帳號停用中</el-tag>
       </p>
       <!--         <template v-for="item in userList">
           <template v-if="item.status===0" >帳號停用中</template>
@@ -88,7 +91,7 @@
            <p v-if="item.username===''" class="unbindtxt">(尚未實名驗證)</p>
           <p v-else>{{item.username}}</p>
            <p v-if="item.identityid===''" class="unbindtxt">(尚未實名驗證)</p>
-          <p v-else>{{item.identityid}}</p>
+          <p v-else>{{item.identityid |phoneformat}}</p>
         </td>
       </tr>
       <tr>
@@ -228,8 +231,8 @@ export default {
           status: 1,
           uuid: '10080',
           username: '',
-          identityid: '',
-          mobile: '',
+          identityid: 'B123456789',
+          mobile: '0912345678',
           level: 1,
           amount: 10000000,
           lg_in_time: '2020-02-19 11:03',

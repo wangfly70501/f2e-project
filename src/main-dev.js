@@ -72,6 +72,34 @@ Vue.prototype.$http = axios
 Vue.component('TopBreadcrumb', TopBreadcrumb)
 Vue.component('SearchTool', SearchTool)
 
+Vue.filter('phoneformat', function (val) {
+  let str = [null, undefined, '']
+  if (!str.includes(val) && val.length > 9) {
+    let valLen = val.length
+    const numt = 1
+    const num = 2
+    let numf = 2
+    if (valLen > 26) {
+      numf = numf * 2
+    }
+    if (valLen % 2 === 0) {
+      return val.substring(0, valLen / num - numf) + '****' + val.substring((valLen / num) + numf)
+    } else {
+      valLen += numt
+      return val.substring(0, (valLen / num) - numf - numt) + '****' + val.substring((valLen / num) + numf - numt)
+    }
+  } else {
+    return val
+  }
+})
+/* Vue.filter('phoneformat', function (param) {
+  var strlen = param.length
+  if (strlen < 9) {
+    return strlen
+  }
+  return param.replace(/^(.{6})(?:\d+)(.{4})$/, '$1******$2')
+}) */
+
 Vue.filter('dateFormat', function (val) {
   const dt = new Date(val)
 
