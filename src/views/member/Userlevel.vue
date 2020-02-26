@@ -9,7 +9,11 @@
       <el-table :data="userlevelList" border stripe>
         <el-table-column type="index"></el-table-column>
         <el-table-column label="會員層級" prop="level"></el-table-column>
-        <el-table-column label="限額" prop="limitamt"></el-table-column>
+        <el-table-column label="限額" prop="limitamt">
+          <template slot-scope="scope">
+              {{scope.row.limitamt|NumFormat}}
+          </template>
+        </el-table-column>
         <el-table-column label="是否開通" prop="status">
                 <template slot-scope="scope">
             <el-tag type="danger" v-if="scope.row.status === 0">禁用</el-tag>

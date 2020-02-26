@@ -5,17 +5,18 @@
     <el-card>
       <!-- 搜索工具 -->
       <div class="text">
-        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:10%" placeholder="請輸入標題"></el-input>&nbsp;
+        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:10%" placeholder="請輸入標題" size="small"></el-input>&nbsp;
         <el-date-picker
           type="daterange"
           start-placeholder="StartTime"
           end-placeholder="EndTime"
           v-model="queryInfo.date"
           value-format="yyyy-MM-dd"
-          style="width:15% "
+          style="width:15%"
+          size="small"
         ></el-date-picker>&nbsp;
                         <el-select  v-model="enable.value" placeholder="請選擇語系"
-                         style="width:8% ">
+                         style="width:8% " size="small">
                             <el-option
                                 v-for="(enableValue,index) in enable"
                                 :key="index"
@@ -23,10 +24,23 @@
                                 v-bind:value="enableValue.value"
                             >{{enableValue.label}}</el-option>
                         </el-select>&nbsp;
-                         <el-button type="primary" @click="clear" size="mini">清除</el-button>
-        <el-button type="primary" @click="Search" size="mini">搜尋</el-button>
-        <el-button type="primary" @click="addjump" size="mini">新增</el-button>
+                         <el-button type="primary" @click="clear" size="small">清除</el-button>
+        <el-button type="primary" @click="Search" size="small">搜尋</el-button>
+        <el-button type="primary" @click="addjump" size="small">新增</el-button>
 
+              <el-upload
+                class="upload-demo"
+                action="string"
+                :auto-upload="false"
+                :limit="1"
+                ref="upload"
+                :http-request="addBanner"
+                name="publicPic"
+                multiple
+              >
+                <el-button size="small" type="primary">點擊上傳</el-button>
+              </el-upload>
+              <el-button type="primary" @click="addBanner">確定</el-button>
       </div>
       <!-- 列表 -->
       <el-table :data="faqlist" stripe border>
@@ -181,13 +195,8 @@
 </template>
 
 <script>
-import { faqdata, faqedit, faqimglist } from '../../api/index.js'
+import { faqdata, faqedit, faqimglist, uploadban } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
-/* import { quillEditor, Quill } from 'vue-quill-editor'
-import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
-
-Quill.register('modules/ImageExtend', ImageExtend) */
-// use resize module
 
 export default {
   components: {
@@ -196,31 +205,7 @@ export default {
   data () {
     return {
       content: '',
-      /*     editorOption: {
-        theme: 'snow',
-        placeholder: '開始編輯',
-        modules: {
-          ImageExtend: {
-            loading: true,
-            name: 'img',
-            size: 3, // 单位为M, 1M = 1024KB
-            action: 'http://192.168.50.105:7777/bankendapi?method=faqTest',
-            headers: (xhr) => {
-            },
-            response: (res) => {
-              return res.info
-            }
-          },
-          toolbar: {
-            container: container,
-            handlers: {
-              'image': function () {
-                QuillWatch.emit(this.quill.id)
-              }
-            }
-          }
-        }
-      }, */
+
       html: '',
       configs: {},
       searchlist: '',
@@ -235,7 +220,6 @@ export default {
 
       date: [],
       faqlist: [],
-
       total: 0, // 总用户数
       picDialogVisible: false,
       addDialogVisible: false,
@@ -334,7 +318,6 @@ export default {
 
     async saveEdit () {
       this.editDialogVisible = false
-      /* this.editForm.addcontent = this.$refs.md.d_value */
       var data = {
         id: this.editForm.id,
         title: this.editForm.title,
@@ -386,6 +369,42 @@ export default {
         this.imgList = res.data
         console.log('123', res)
       })
+    },
+    async  addBanner () {
+      let _this = this
+      let reader = new FileReader()
+      reader.readAsDataURL(this.$refs.upload.uploadFiles[0].raw)
+      console.log('123')
+      var data = {
+        mg_name: 'cccc',
+        mg_pwd: '12345',
+        mg_state: '1',
+        title: 'faq圖片',
+        lang: 'el_GR',
+        type: '1',
+        classify: '3',
+        sort: '3'
+      }
+      reader.onload = function (e) {
+        var imgFile = e.target.result
+        data.publicPic = imgFile
+        console.log('123', data)
+        uploadban(data).then(res => {
+          if (res.error_code === 0) {
+            _this.$alert('', '新增成功', {
+              confirmButtonText: 'OK',
+              callback: action => {
+                _this.$message({
+                  type: 'success',
+                  message: '新增成功'
+                })
+              }
+            })
+          } else {
+            _this.$message.error('格式不符，新增失敗')
+          }
+        })
+      }
     }
 
   }
