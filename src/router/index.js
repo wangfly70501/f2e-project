@@ -70,7 +70,7 @@ const router = new VueRouter({
   routes
 })
 
-/* // 权限控制导航守卫
+// 权限控制导航守卫
 router.beforeEach((to, from, next) => {
   const tokenStr = window.sessionStorage.getItem('token')
 
@@ -78,9 +78,9 @@ router.beforeEach((to, from, next) => {
     if (tokenStr) return next('/home')
     next()
   } else {
-    if (!tokenStr) return next('/login')
+    /*  if (!tokenStr) return next('/login') */
     next()
   }
-}) */
+})
 
 export default router

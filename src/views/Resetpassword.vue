@@ -108,8 +108,6 @@ export default {
           return this.$message.error('失敗，請重新確認')
         } else if (res.error_code === 0) {
           this.data = res.data.mg_state
-
-          // 登陆成功，保存token到sessionStorage，并跳转到首页
           this.$message.success('重設成功')
           this.$router.push('/login')
         }

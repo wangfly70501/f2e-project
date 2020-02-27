@@ -127,7 +127,8 @@ export default {
           title: '項目管理',
           subs: [
             { index: 'realname', title: '實名認證' },
-            { index: 'lockup', title: '鎖倉管理' }
+            { index: 'lockup', title: '鎖倉管理' },
+            /*  { index: 'test', title: '測試' } */
           ]
         }
       ],
