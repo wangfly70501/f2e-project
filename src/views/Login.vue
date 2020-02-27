@@ -28,7 +28,7 @@
               </el-form-item>
               <el-form-item class="btns">
                 <el-button type="primary" @click="login">登入</el-button>
-                <el-button type="primary" @click="forgetpsw">忘記密碼</el-button>
+              <el-button type="primary" @click="forgetpsw">忘記密碼</el-button>
                 <el-button type="info" @click="reset(loginForm)">清除</el-button>
                 <!--  <router-link to="/forgetpsw">忘記密碼</router-link> -->
               </el-form-item>
@@ -143,7 +143,6 @@ export default {
           localStorage.setItem('mg_name', this.loginForm.username)
           localStorage.setItem('mg_pwd', this.loginForm.password)
           localStorage.setItem('mg_state', this.data)
-
           // 登陆成功，保存token到sessionStorage，并跳转到首页
           this.$message.success(' 登入成功')
           window.sessionStorage.setItem('token', res.data.token)
@@ -181,6 +180,7 @@ export default {
       this.$refs.signupForm.resetFields()
     },
     forgetpsw () {
+      console.log('123')
       this.$router.push('/forgetpsw')
     }
   }
