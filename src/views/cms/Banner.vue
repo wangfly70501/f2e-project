@@ -278,12 +278,12 @@ export default {
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
-      this.getFaqList()
+      this.getbannerList()
     },
 
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
-      this.getFaqList()
+      this.getbannerList()
     },
 
     /* 新增banner */

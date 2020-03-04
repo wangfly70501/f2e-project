@@ -307,7 +307,30 @@ export const currencyList = query => {
     data: query
   })
 }
-
+/// ///維護頁面/////
+export const maintainList = query => {
+  return request({
+    url: './bankendapi?method=notice_list',
+    method: 'post',
+    data: query
+  })
+}
+/// ///維護頁面修改/////
+export const maintainedit = query => {
+  return request({
+    url: './bankendapi?method=notice_config',
+    method: 'post',
+    data: query
+  })
+}
+/// 審核提領上限//
+export const withdrawlimit = query => {
+  return request({
+    url: './bankendapi?method=getMemberLvList',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({

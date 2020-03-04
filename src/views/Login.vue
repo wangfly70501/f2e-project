@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { login, signup } from '../api/index.js'
+import { signup } from '../api/index.js'
 
 export default {
   data () {
@@ -129,7 +129,7 @@ export default {
     }
   },
   methods: {
-    async login () {
+    /*         async login () {
       let data = {
         mg_name: this.loginForm.username,
         mg_pwd: this.loginForm.password
@@ -148,6 +148,23 @@ export default {
           window.sessionStorage.setItem('token', res.data.token)
           this.$router.push('/home')
         }
+      })
+    },  */
+    login () {
+      this.$refs.loginForm.validate(async valid => {
+        localStorage.setItem('mg_name', 'cccc')
+        localStorage.setItem('mg_pwd', '12345')
+        localStorage.setItem('mg_state', '1')
+
+        if (!valid) return
+
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        if (res.meta.status !== 200) return this.$message.error('登录失败：' + res.meta.msg)
+
+        // 登陆成功，保存token到sessionStorage，并跳转到首页
+        this.$message.success('登入成功')
+        window.sessionStorage.setItem('token', res.data.token)
+        this.$router.push('/home')
       })
     },
     // 註冊
