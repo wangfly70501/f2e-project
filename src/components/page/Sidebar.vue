@@ -99,15 +99,17 @@ export default {
             { index: 'transaction', title: '交易報表' }
           ]
         },
-        /*      {
+        {
 
           index: '6',
-          title: '實名認證',
+          title: '審核管理',
+          icon: 'iconfont icon-shangpin',
           subs: [
-            { index: 'realname', title: '實名認證' }
+            { index: 'withdrawlimit', title: '審核提領上限' },
+            { index: 'realname', title: '審核實名認證' }
 
           ]
-        }, */
+        },
         {
 
           index: '5',
@@ -126,9 +128,8 @@ export default {
           index: '7',
           title: '項目管理',
           subs: [
-            { index: 'realname', title: '實名認證' },
-            { index: 'lockup', title: '鎖倉管理' }
-            /*  { index: 'test', title: '測試' } */
+            { index: 'lockup', title: '鎖倉管理' },
+            { index: 'maintain', title: '維護管理' }
           ]
         }
       ],
