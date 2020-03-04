@@ -28,7 +28,7 @@
             v-bind:value="enableValue.value"
           >{{enableValue.label}}</el-option>
         </el-select>&nbsp;
-        <el-button type="info" @click="clear" size="small">清除</el-button>
+        <el-button type="info" @click="clear" >清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
         <el-button type="primary" @click="addDialogVisible = true" class="btn_right">建立活動</el-button>
       </div>
