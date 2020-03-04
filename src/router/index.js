@@ -16,8 +16,9 @@ const Member = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const Membercatch = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Membercatch.vue')
 const Blackmember = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/blackmem.vue')
 const Banner = () => import(/* webpackChunkName: "service_Charges" */ '../views/cms/Banner.vue')
-const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realname.vue')
-const Realnamepic = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Realnamepic.vue')
+const Realname = () => import(/* webpackChunkName: "service_Charges" */ '../views/review/Realname.vue')
+const Realnamepic = () => import(/* webpackChunkName: "service_Charges" */ '../views/review/Realnamepic.vue')
+const Withdrawlimit = () => import(/* webpackChunkName: "service_Charges" */ '../views/review/Withdrawlimit.vue')
 const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Userlevel.vue')
 const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Revenue.vue')
 const Transaction = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Transaction.vue')
@@ -26,6 +27,7 @@ const Faq = () => import(/* webpackChunkName: "service_Charges" */ '../views/rea
 const faqadd = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/faqadd.vue')
 const Lockup = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockup.vue')
 const Lockuplist = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockuplist.vue')
+const maintain = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/maintain.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -61,7 +63,9 @@ const routes = [
       { path: '/faqadd', component: faqadd },
       { path: '/lockup', component: Lockup },
       { path: '/lockuplist', component: Lockuplist },
-      { path: '/markdown', component: Markdown }
+      { path: '/markdown', component: Markdown },
+      { path: '/maintain', component: maintain },
+      { path: '/withdrawlimit', component: Withdrawlimit }
     ]
   }
 ]
@@ -78,7 +82,7 @@ router.beforeEach((to, from, next) => {
     if (tokenStr) return next('/home')
     next()
   } else {
-    /*  if (!tokenStr) return next('/login') */
+  /*   if (!tokenStr) return next('/login') */
     next()
   }
 })

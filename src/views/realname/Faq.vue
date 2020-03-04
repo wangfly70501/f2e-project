@@ -28,7 +28,7 @@
         <el-button type="primary" @click="Search" size="small">搜尋</el-button>
         <el-button type="primary" @click="addjump" size="small">新增</el-button>
 
-<!--               <el-upload
+<!--                <el-upload
                 class="upload-demo"
                 action="string"
                 :auto-upload="false"
