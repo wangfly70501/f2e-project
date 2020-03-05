@@ -152,8 +152,8 @@ export default {
     },  */
     login () {
       this.$refs.loginForm.validate(async valid => {
-        localStorage.setItem('mg_name', 'cccc')
-        localStorage.setItem('mg_pwd', '12345')
+        localStorage.setItem('mg_name', this.loginForm.username)
+        localStorage.setItem('mg_pwd', this.loginForm.password)
         localStorage.setItem('mg_state', '1')
 
         if (!valid) return
