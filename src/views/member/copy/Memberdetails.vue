@@ -5,7 +5,7 @@
 
     <!-- 會員詳細資料 -->
     <div>
-      <p class="txt">
+      <p class="txt" v-for="(item,index) in userList" :key="index">
         會員資料
 
         <el-button
@@ -17,7 +17,7 @@
           @click="showToggle"
         ></el-button>
 
-        <el-button type="primary" size="mini" style="float:right" v-show="!isShow"  @click="acmange">儲存</el-button>
+        <el-button type="primary" size="mini" style="float:right" v-show="!isShow">儲存</el-button>
         <el-button
           type="primary"
           size="mini"
@@ -26,8 +26,8 @@
           v-show="!isShow"
           plain
         >取消</el-button>
-            <el-tag v-if="userList.blacklist===0" type="success" style="float:right">帳號啟用中</el-tag>
-         <el-tag v-else type="danger" style="float:right">帳號停用中</el-tag>
+            <el-tag v-if="item.status===1" type="success" style="float:right">帳號啟用中</el-tag>
+         <el-tag v-else type="danger">帳號停用中</el-tag>
       </p>
       <!--         <template v-for="item in userList">
           <template v-if="item.status===0" >帳號停用中</template>
@@ -35,7 +35,7 @@
       </template>-->
     </div>
 
-    <table class="tabletxt">
+    <table class="tabletxt" v-for="(item,index) in userList" :key="index">
       <tr v-show="!isShow" style="background-color:#FFFF6F">
         <td>
           <p>帳號狀態：</p>
@@ -55,19 +55,19 @@
         <td>
           <p>UUID:</p>
         </td>
-        <td>{{userList.uuid}}</td>
+        <td>{{item.uuid}}</td>
       </tr>
       <tr>
         <td>
           <p>安全等級:</p>
         </td>
-        <td>LV{{userList.auth_status}}</td>
+        <td>LV{{item.level}}</td>
       </tr>
       <tr>
         <td>
           <p>台幣資產:</p>
         </td>
-        <td>{{userList.amount |NumFormat}} TWD</td>
+        <td>{{item.amount |NumFormat}} TWD</td>
       </tr>
       <tr>
         <td>
@@ -76,9 +76,9 @@
         </td>
 
         <td>
-          <p>{{userList.email}}</p>
-          <p v-if="userList.mobile===''" class="unbindtxt">(尚未綁定)</p>
-          <p v-else>{{userList.mobile}}</p>
+          <p>{{item.email}}</p>
+          <p v-if="item.mobile===''" class="unbindtxt">(尚未綁定)</p>
+          <p v-else>{{item.mobile}}</p>
         </td>
       </tr>
       <tr>
@@ -88,23 +88,23 @@
         </td>
 
         <td>
-           <p v-if="userList.username===''" class="unbindtxt">(尚未實名驗證)</p>
-          <p v-else>{{userList.username}}</p>
-           <p v-if="userList.identityid===''" class="unbindtxt">(尚未實名驗證)</p>
-          <p v-else>{{userList.identityid |phoneformat}}</p>
+           <p v-if="item.username===''" class="unbindtxt">(尚未實名驗證)</p>
+          <p v-else>{{item.username}}</p>
+           <p v-if="item.identityid===''" class="unbindtxt">(尚未實名驗證)</p>
+          <p v-else>{{item.identityid |phoneformat}}</p>
         </td>
       </tr>
       <tr>
         <td>
           <p>綁定銀行:</p>
-         <!--  <p>銀行戶名:</p> -->
+          <p>銀行戶名:</p>
         </td>
 
         <td>
-          <p v-if="userList.account===''" class="unbindtxt">(尚未綁定)</p>
-          <p v-else>{{userList.account}}</p>
-          <!--  <p v-if="userList.bankusrname===''" class="unbindtxt">(尚未綁定)</p>
-          <p v-else>{{userList.bankusrname}}</p> -->
+          <p v-if="item.bankacount===''" class="unbindtxt">(尚未綁定)</p>
+          <p v-else>{{item.bankacount}}</p>
+           <p v-if="item.bankusrname===''" class="unbindtxt">(尚未綁定)</p>
+          <p v-else>{{item.bankusrname}}</p>
         </td>
       </tr>
     </table>
@@ -121,7 +121,7 @@
           @click="showlimit"
         ></el-button>
 
-        <el-button type="primary" size="mini" style="float:right" v-show="!ssShow"  @click="wdlimitcap">儲存</el-button>
+        <el-button type="primary" size="mini" style="float:right" v-show="!ssShow">儲存</el-button>
         <el-button
           type="primary"
           size="mini"
@@ -139,17 +139,16 @@
           <p>永久上限:</p>
         </td>
         <td>
-          <template>
-            <div v-if="userList.limitday!=100000" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div>
-            <!--  <div v-else-if="userList.limitday='500000'" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div> -->
-            <div v-else >
-              <el-select v-model="awlist" placeholder="預設值" value-key="id">
+          <template v-for="(item, index) in userList">
+            <div v-if="item.awlimit!=''" :key="index">{{item.awlimit |NumFormat}}</div>
+            <div v-else :key="index">
+              <el-select v-model="awlist.value" placeholder="預設值">
                 <el-option
-                  v-for="(awlisttValue,index) in awlist"
+                  v-for="(awlistValue,index) in awlist"
                   :key="index"
-                  :label="awlisttValue.label"
-                  :value="awlisttValue.value"
-                >{{awlisttValue.label }} </el-option>
+                  v-bind:label="awlistValue.label"
+                  v-bind:value="awlistValue.value"
+                >{{awlistValue.label |NumFormat}} TWD(會員等級{{item.level}})</el-option>
               </el-select>
               <div style="color:red;font-size:10px">僅能設定一次，請謹慎確認</div>
             </div>
@@ -161,14 +160,14 @@
           <p>臨時上限:</p>
         </td>
         <td>
-          <template>
-            <el-select v-model="temlist" placeholder="預設值" value-key="id">
+          <template v-for="(item, index) in userList">
+            <el-select v-model="awlist.value" placeholder="預設值" :key="index">
               <el-option
-                v-for="(temlistValue,index) in temlist"
+                v-for="(awlistValue,index) in awlist"
                 :key="index"
-                v-bind:label="temlistValue.label"
-                v-bind:value="temlistValue"
-              >{{temlistValue.label }} </el-option>
+                v-bind:label="awlistValue.label"
+                v-bind:value="awlistValue.value"
+              >{{awlistValue.label |NumFormat}} TWD(會員等級{{item.level}})</el-option>
             </el-select>
           </template>
         </td>
@@ -190,7 +189,7 @@
         </td>
         <td>
           <p>
-             <template >{{userList.limitday |NumFormat}} TWD(會員等級 {{userList.level }})</template>
+             <template v-for="(item) in userList">{{item.awlimit |NumFormat}} TWD(會員等級{{item.level}})</template>
           </p>
         </td>
       </tr>
@@ -201,11 +200,9 @@
         </td>
         <td>
           <p>
-            <template>
-            <p v-if="userList.level===0" >未設定</p>
-            <p v-else-if="userList.level===1" >未設定</p>
-            <p v-else-if="userList.level===2" >未設定</p>
-             <p v-else>{{userList.amount }}</p>
+            <template v-for="(item,index) in userList">
+            <p v-if="item.amount===''"  :key="index">未設定</p>
+             <p v-else  :key="index">{{item.amount |NumFormat}}</p>
            </template>
           </p>
         </td>
@@ -215,7 +212,7 @@
 </template>
 
 <script>
-import { memberDetail, setMemberBlack, setMemberLv } from '../../api/index.js'
+import { memberDetail } from '../../api/index.js'
 
 export default {
   data () {
@@ -229,7 +226,7 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
-      /*     userList: [
+      /*      userList: [
         {
           status: 1,
           uuid: '10080',
@@ -248,59 +245,28 @@ export default {
         }
 
       ], */
-      userList: {
-        limitday: {}
-      },
+      userList: {},
       isShow: true,
       ssShow: true,
       addressVisible: false,
       enable: [
         {
           label: '帳號停用',
-          value: 1
+          value: '1'
         },
         {
           label: '帳號啟用',
-          value: 0
+          value: '0'
         }
       ],
       awlist: [
         {
-          id: 1,
-          label: '300,000 TWD(會員等級1)',
-          value: '300000',
-          level: 1,
-          levelType: 0
+          label: '1000000',
+          value: '1000000'
         },
         {
-          id: 2,
-          label: '500,000 TWD(會員等級2)',
-          value: '500000',
-          level: 2,
-          levelType: 0
-        }
-      ],
-      temlist: [
-        {
-          id: 3,
-          label: '1000000 TWD(會員等級3)',
-          value: '300000',
-          level: 3,
-          levelType: 1
-        },
-        {
-          id: 4,
-          label: '1500,000 TWD(會員等級4)',
-          value: '1500000',
-          level: 4,
-          levelType: 1
-        },
-        {
-          id: 5,
-          label: '2000,000 TWD(會員等級5)',
-          value: '2000000',
-          level: 5,
-          levelType: 1
+          label: '2000000',
+          value: '2000000'
         }
       ]
     }
@@ -323,7 +289,6 @@ export default {
       await memberDetail(data).then(res => {
         this.userList = res.data
         console.log('1323', this.userList)
-        console.log(typeof this.userList.limitday)
       })
     },
 
@@ -336,60 +301,7 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getUserList()
-    },
-    acmange () {
-      console.log('12456')
-      let data = {
-
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        uuid: this.$route.query.uuid,
-        blacklist: this.enable.value.toString()
-      }
-      console.log('456789', data)
-      setMemberBlack(data).then(res => {
-        if (data.blacklist === '0') {
-          this.$message.success('已啟用帳號')
-          this.getmemdetailList()
-          this.isShow = !this.isShow
-        } else {
-          this.$message.error('已停用帳號')
-          this.getmemdetailList()
-          this.isShow = !this.isShow
-        }
-      })
-    },
-    async wdlimitcap () {
-      if (this.awlist.levelType === '') {
-        this.leveltype = this.temlist.levelType
-      } else {
-        this.leveltype = this.awlist.levelType
-      }
-
-      let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        uuid: this.$route.query.uuid,
-        levelType: this.leveltype,
-        level: this.awlist.level.toString(),
-        reason: this.queryInfo.desc
-      }
-      console.log('456789', data)
-      await setMemberLv(data).then(res => {
-        console.log('1448565', data)
-        if (res.error_code === 0) {
-          this.$message.success('已送出提領上限申請')
-          this.getmemdetailList()
-          this.ssShow = !this.ssShow
-        } else {
-          this.$message.error('送出錯誤')
-          this.getmemdetailList()
-        }
-      })
     }
-
   }
 }
 </script>
@@ -397,7 +309,7 @@ export default {
 <style lang="less" scoped>
 .txt {
   color: #02a7f0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -405,7 +317,7 @@ td {
   border-bottom: 2px solid #f0f0f0;
 }
 .tabletxt {
-  font-size: 12px;
+  font-size: 14px;
   border-collapse: separate;
   border-spacing: 0px 10px;
   width: 100%;

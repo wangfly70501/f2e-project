@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['實名認證', '實名認證']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['審核管理', '審核提領上限']"></TopBreadcrumb>
 
     <el-card>
 
@@ -16,58 +16,58 @@
         style="width:30%"
       ></el-date-picker>&nbsp;
       <el-button type="primary" @click="Search">搜尋</el-button> -->
-      <el-table :data="withdrawlist" stripe border>
+      <el-table :data="withdrawlist" stripe border :default-sort="{prop: 'id', order: 'descending'}">
+       <el-table-column label="ID" prop="id" sortable></el-table-column>
         <el-table-column label="UUID/姓名">
             <template slot-scope="scope">
-                 <router-link  :to="{path:'/member'}" target='_blank'>{{scope.row.uuid }}/ {{scope.row.name }}</router-link>
+                 <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" target='_blank'>{{scope.row.uuid }}/ {{scope.row.username }}</router-link>
             </template>
         </el-table-column>
         <el-table-column label="調整提領上限/期限" >
               <template slot-scope="scope">
-                <div  v-if="scope.row.state===0">{{scope.row.limit |NumFormat }}/永久</div>
-                <div  v-else>{{scope.row.limit |NumFormat }}/ 臨時</div>
+                <div  v-if="scope.row.levelType===0">{{scope.row.limitday |NumFormat }}/永久</div>
+                <div  v-else>{{scope.row.limitday |NumFormat }}/ 臨時</div>
             </template></el-table-column>
 
         <el-table-column label="調整原因" prop="reason"></el-table-column>
         <el-table-column label="時間" >
             <template slot-scope="scope">
-                {{scope.row.time |dateFormat}}
+                {{scope.row.ctime |dateFormat}}
             </template>
         </el-table-column>
-        <el-table-column label="操作者" prop="user"></el-table-column>
-        <el-table-column label="審核" >
-
-         <el-button type="success"  size="mini" v-show="isShow">通過</el-button>
+        <el-table-column label="操作者" prop="cuser"></el-table-column>
+        <!-- <el-table-column label="審核" >
+                <template>
+          <div v-if="isShow">
+         <el-button type="success"  size="mini">通過</el-button>
         <el-button type="danger" size="mini"   @click="showToggle" >退回</el-button>
-
+          </div> -->
         <!-- 隱藏组件點擊顯示 -->
-      <!--   <el-input placeholder="退回原因(15字以內)" v-model="queryInfo.reason" @click="showToggle" v-show="!isShow" ></el-input>
-        <el-button v-if="queryInfo.reason===''" type="info"  size="mini"     v-show="!isShow">退回</el-button>
-        <el-button v-else type="danger" @click="addjump" size="mini"    v-show="!isShow">退回</el-button>
- -->
-        </el-table-column>
-            <el-table-column label="時間" >
+        <!-- <div v-else>
+         <el-input placeholder="退回原因(15字以內)" v-model="queryInfo.reason" @click="showToggle" ></el-input>
+         <el-button v-if="queryInfo.reason==''" type="info"  size="mini"   disabled  @click="addjump">退回</el-button>
+        <el-button v-else type="danger" @click="addjump" size="mini"    >退回</el-button>
+        </div>
+            </template>
+        </el-table-column> -->
 
-        </el-table-column>
+              <el-table-column label="審核" >
+               <template slot-scope="scope">
+                   <div  v-if="scope.row.status===0">
+                      <el-button type="success"  size="mini" @click.once="reviewpass(scope.$index,scope.row)">通過</el-button>
+                      <el-button type="danger" size="mini"   @click="addDialogVisible= true" >退回</el-button>
+                    </div>
+                     <div  v-else-if="scope.row.status===1">
+                      <el-tag type="success"  size="mini">已通過</el-tag>
+                    </div>
+                   <div  v-else>
+                     <el-tag  type="danger" size="mini"  >已退回</el-tag>
 
+                    </div>
+              </template>
+              </el-table-column>
       </el-table>
-         <el-button
-          icon="el-icon-edit"
-          type="primary"
-          size="mini"
-          style="float:right"
-          v-show="isShow"
-          @click="showToggle"
-        ></el-button>
-        <el-button type="primary" size="mini" style="float:right" v-show="!isShow">儲存</el-button>
-        <el-button
-          type="primary"
-          size="mini"
-          style="float:right"
-          @click="showToggle"
-          v-show="!isShow"
-          plain
-        >取消</el-button>
+
        <!-- 分页组件 -->
       <el-pagination
         @size-change="handleSizeChange"
@@ -78,13 +78,26 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
-
     </el-card>
+
+    <!-- 審核不通過訊息 -->
+    <el-dialog title="審核不通過訊息" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">
+      <el-form :model="addForm"  ref="addFormRef" label-width="100px">
+        <el-form-item label="請輸入不通過訊息">
+           <el-input v-model="form.reason"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="reviewfail(scope.$index,scope.row)">確定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { KycList } from '../../api/index.js'
+import { withdrawlimit, reviwlimit } from '../../api/index.js'
 export default {
   data () {
     return {
@@ -103,22 +116,28 @@ export default {
 
       ],
 
-      withdrawlist: [{
-        uuid: 10180,
-        name: 'test',
-        limit: 15000000,
-        state: 1,
-        reason: '123456789721264578',
-        time: '2020-03-04',
-        user: 'admin'
-      }
+      withdrawlist: [
+        {
+          /* id: 4,
+          uuid: 10185,
+          username: '',
+          levelType: 0,
+          level: 2,
+          limitday: 500000,
+          formerLevel: 2,
+          reason: '2020-01',
+          cuser: 'cccc',
+          verifier: '',
+          status: 0 */
+        }
       ],
 
       total: 0,
       realname: [],
       list: '',
-      editDialogVisible: false,
-      editForm: {},
+      addDialogVisible: false,
+      addForm: {},
+      form: {},
       enable: [
         {
           label: '未開通',
@@ -135,25 +154,23 @@ export default {
   },
 
   created () {
-    this.getnameList()
+    this.getwdlimitList()
   },
 
   methods: {
-    async getnameList () {
+    async getwdlimitList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-
-        kycStartTime: this.queryInfo.date[0],
-        kycEndTime: this.queryInfo.date[1],
-        searchUuid: this.searchlist
+        token: sessionStorage.getItem('token')
       }
-      await KycList(data).then(res => {
-        this.nameList = res.data
-        console.log(this.nameList)
+      await withdrawlimit(data).then(res => {
+        this.withdrawlist = res.data
+        console.log('45478', this.withdrawlist)
+        console.log('12245', data.token)
         this.total = res.pagination.total_record
       })
     },
@@ -162,7 +179,7 @@ export default {
       this.editForm = row
       this.editDialogVisible = true
     },
-    editDialogClosed () {
+    addDialogClosed () {
       this.$refs.editFormRef.resetFields()
     },
     handleSizeChange (newSize) {
@@ -175,27 +192,93 @@ export default {
       this.queryInfo.pagenum = newPage
       this.getnameList()
     },
-    jump (index, row) {
-      let queryData = {}
-      queryData = row
-      this.$router.push({ path: '/realnamepic', query: queryData })
-    },
     async Search () {
       this.queryInfo.pagenum = 1
       await this.getnameList()
     },
     showToggle () {
-      this.isShow = false
+      let _this = this
+      _this.isShow = !_this.isShow
       console.log('123456')
+    },
+    async reviewpass (index, row) {
+      console.log('1212', row)
+      this.form = row
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        id: this.form.id,
+        uuid: this.form.uuid,
+        levelType: this.form.levelType,
+        level: this.form.level,
+        status: 1
+      }
+      await reviwlimit(data).then(res => {
+        console.log('23234', data)
+        if (res.error_code === 0) {
+          this.$message.success('審核成功')
+        } else {
+          this.$message.error('送出失敗')
+        }
+      })
+      this.getwdlimitList()
+    },
+    async  reviewfail (index, row) {
+      this.form = row
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        id: this.form.id,
+        uuid: this.form.uuid,
+        levelType: this.form.levelType,
+        level: this.form.level,
+        status: 0,
+        reason: this.form.reason
+      }
+      await reviwlimit(data).then(res => {
+        console.log('23234', data)
+        if (res.error_code === 0) {
+          this.$message.success('審核成功')
+        } else {
+          this.$message.error('送出失敗')
+        }
+      })
+      this.getwdlimitList()
     }
+
+    /*    async saveEdit () {
+      this.editDialogVisible = false
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        bank_en: this.editForm.bank_en,
+        rate: this.editForm.rate,
+        txt_rate: this.editForm.txt_rate,
+        trans_type: this.editForm.trans_type.toString(),
+        status: this.editForm.status.toString(),
+        id: this.editForm.id
+      }
+      await editchargedata(data).then(res => {
+        if (res.error_code === 0) {
+          this.$message.success('修改成功')
+        } else {
+          this.$message.error('格式不符，修改失敗')
+        }
+        this.getChargeList()
+      })
+    }
+ */
   }
 }
 </script>
 
 <style lang="less" scoped>
-.text {
-  display: inline-block;
-  margin: 0 5px;
-  font-size: 12px;
-}
+
 </style>

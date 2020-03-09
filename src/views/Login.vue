@@ -159,7 +159,7 @@ export default {
         if (!valid) return
 
         const { data: res } = await this.$http.post('login', this.loginForm)
-        if (res.meta.status !== 200) return this.$message.error('登录失败：' + res.meta.msg)
+        if (res.meta.status !== 200) return this.$message.error('登入失敗請確認帳號或密碼')/* res.meta.msg */
 
         // 登陆成功，保存token到sessionStorage，并跳转到首页
         this.$message.success('登入成功')
