@@ -323,10 +323,43 @@ export const maintainedit = query => {
     data: query
   })
 }
-/// 審核提領上限//
+/// 審核提領上限列表//
 export const withdrawlimit = query => {
   return request({
     url: './bankendapi?method=getMemberLvList',
+    method: 'post',
+    data: query
+  })
+}
+/// 審核提領上限//
+export const reviwlimit = query => {
+  return request({
+    url: './bankendapi?method=verifyMemberLv',
+    method: 'post',
+    data: query
+  })
+}
+// 會員詳細列表//
+export const memberDetail = query => {
+  return request({
+    url: './bankendapi?method=getMemberDetail',
+    method: 'post',
+    data: query
+  })
+}
+// 會員帳號設置//
+export const setMemberBlack = query => {
+  return request({
+    url: './bankendapi?method=setMemberBlack',
+    method: 'post',
+    data: query
+  })
+}
+
+// 申請提領上限//
+export const setMemberLv = query => {
+  return request({
+    url: './bankendapi?method=setMemberLv',
     method: 'post',
     data: query
   })

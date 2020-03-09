@@ -33,6 +33,7 @@ export default {
 
     }
   },
+
   methods: {
     DialogClosed () {
       this.$router.push('/member')
