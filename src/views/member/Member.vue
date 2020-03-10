@@ -38,9 +38,9 @@
       <!-- 會員列表数据 -->
       <el-table :data="userList" :header-cell-style="tableHeaderColor">
         <el-table-column type="index" ></el-table-column>
-        <el-table-column label="狀態" prop="status" width="50px">
+        <el-table-column label="狀態" prop="blacklist" width="50px">
           <template slot-scope="scope">
-            <div  v-if="scope.row.status =='0'"><i class="fas fa-circle"  color="red"></i></div>
+            <div  v-if="scope.row.blacklist =='1'"><i class="fas fa-circle"  color="red"></i></div>
             <div  v-else color="#00EC00"><i class="fas fa-circle"  color="#00EC00"></i></div>
           </template>
         </el-table-column>
@@ -68,7 +68,7 @@
 
         <el-table-column label="安全等級" >
            <template slot-scope="scope">
-           LV{{scope.row.level }}
+           LV{{scope.row.securityLevel }}
           </template></el-table-column>
 
  <el-table-column label="台幣資產" > <template slot-scope="scope">
