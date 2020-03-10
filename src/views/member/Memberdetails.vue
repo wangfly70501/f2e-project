@@ -61,7 +61,7 @@
         <td>
           <p>安全等級:</p>
         </td>
-        <td>LV{{userList.auth_status}}</td>
+        <td>LV{{userList.securityLevel}}</td>
       </tr>
       <tr>
         <td>
@@ -143,12 +143,12 @@
             <div v-if="userList.limitday!=100000" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div>
             <!--  <div v-else-if="userList.limitday='500000'" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div> -->
             <div v-else >
-              <el-select v-model="awlist" placeholder="預設值" value-key="id">
+              <el-select v-model="awlist.level" placeholder="預設值" value-key="id">
                 <el-option
                   v-for="(awlisttValue,index) in awlist"
                   :key="index"
                   :label="awlisttValue.label"
-                  :value="awlisttValue.value"
+                  :value="awlisttValue.level"
                 >{{awlisttValue.label }} </el-option>
               </el-select>
               <div style="color:red;font-size:10px">僅能設定一次，請謹慎確認</div>
@@ -162,12 +162,12 @@
         </td>
         <td>
           <template>
-            <el-select v-model="temlist" placeholder="預設值" value-key="id">
+            <el-select v-model="temlist.level" placeholder="預設值" value-key="id">
               <el-option
                 v-for="(temlistValue,index) in temlist"
                 :key="index"
                 v-bind:label="temlistValue.label"
-                v-bind:value="temlistValue"
+                v-bind:value="temlistValue.level"
               >{{temlistValue.label }} </el-option>
             </el-select>
           </template>
@@ -175,10 +175,15 @@
       </tr>
             <tr v-show="!ssShow" style="background-color:#FFFF6F">
         <td>
-          <p>調整原因:</p>
+          <p>調整原因(*)</p>
         </td>
         <td>
-             <el-input type="textarea" v-model="queryInfo.desc"></el-input>
+             <el-input type="textarea" v-model="queryInfo.desc"  style="width:55%"></el-input>
+<!--           <el-form :rules="rules" style="width:55%">
+            <el-form-item prop="limit">
+
+               </el-form-item>
+            </el-form> -->
         </td>
       </tr>
       </table>
@@ -202,9 +207,9 @@
         <td>
           <p>
             <template>
-            <p v-if="userList.level===0" >未設定</p>
-            <p v-else-if="userList.level===1" >未設定</p>
-            <p v-else-if="userList.level===2" >未設定</p>
+            <p v-if="userList.level==0" >未設定</p>
+            <p v-else-if="userList.level==1" >未設定</p>
+            <p v-else-if="userList.level==2" >未設定</p>
              <p v-else>{{userList.amount }}</p>
            </template>
           </p>
@@ -266,43 +271,34 @@ export default {
       ],
       awlist: [
         {
-          id: 1,
           label: '300,000 TWD(會員等級1)',
-          value: '300000',
-          level: 1,
-          levelType: 0
+          level: 1
+
         },
         {
-          id: 2,
           label: '500,000 TWD(會員等級2)',
-          value: '500000',
-          level: 2,
-          levelType: 0
+          level: 2
+
         }
       ],
       temlist: [
         {
-          id: 3,
-          label: '1000000 TWD(會員等級3)',
-          value: '300000',
-          level: 3,
-          levelType: 1
+          label: '1000,000 TWD(會員等級3)',
+          level: 3
+
         },
         {
-          id: 4,
           label: '1500,000 TWD(會員等級4)',
-          value: '1500000',
-          level: 4,
-          levelType: 1
+          level: 4
+
         },
         {
-          id: 5,
           label: '2000,000 TWD(會員等級5)',
-          value: '2000000',
-          level: 5,
-          levelType: 1
+          level: 5
+
         }
       ]
+
     }
   },
 
@@ -338,9 +334,7 @@ export default {
       this.getUserList()
     },
     acmange () {
-      console.log('12456')
       let data = {
-
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
@@ -361,19 +355,32 @@ export default {
       })
     },
     async wdlimitcap () {
-      if (this.awlist.levelType === '') {
-        this.leveltype = this.temlist.levelType
+      console.log('check', this.awlist.level, this.temlist.level)
+      if (this.awlist.level !== undefined) {
+        if (this.awlist.level < this.temlist.level) {
+          this.levelType = 1
+          this.level = this.temlist.level
+        } else {
+          this.levelType = 0
+          this.level = this.awlist.level
+        }
+      } else if (this.temlist.level === undefined) {
+        this.$message.error('請選擇臨時上限')
+      } else if (this.queryInfo.desc === '') {
+        this.$message.error('請輸入調整原因')
       } else {
-        this.leveltype = this.awlist.levelType
+        this.levelType = 1
+        this.level = this.temlist.level
       }
-
+      console.log('bbbb', this.awlist.level)
+      console.log('tttt', this.level, this.levelType)
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         uuid: this.$route.query.uuid,
-        levelType: this.leveltype,
-        level: this.awlist.level.toString(),
+        levelType: this.levelType.toString(),
+        level: this.level.toString(),
         reason: this.queryInfo.desc
       }
       console.log('456789', data)
@@ -384,7 +391,7 @@ export default {
           this.getmemdetailList()
           this.ssShow = !this.ssShow
         } else {
-          this.$message.error('送出錯誤')
+          this.$message.error('送出錯誤,請確認資料是否遺漏或是重複申請')
           this.getmemdetailList()
         }
       })
