@@ -77,9 +77,15 @@
     <el-input type="textarea" v-model="form.desc"></el-input>
   </el-form-item>
   <el-form-item style="text-align:center">
-    <el-button  @click="uppage">上一頁</el-button>
+    <el-button  @click="uppage">上一頁</el-button>&nbsp;&nbsp;
+    <span v-if="this.$route.query.auth_status===0">
     <el-button  @click="Submitunpass"  type="danger" :disabled="fail">審核不通過</el-button>
     <el-button type="primary" @click.once="Submitpass" :disabled="Success">審核通過</el-button>
+    </span>
+        <span v-else>
+    <el-button  @click="Submitunpass"  type="danger" disabled>審核不通過</el-button>
+    <el-button type="primary" @click.once="Submitpass" disabled>審核通過</el-button>
+    </span>
   </el-form-item>
 </el-form>
 
@@ -116,6 +122,7 @@ export default {
   },
   created () {
     console.log('1223', this.$route.query)
+    this.form.desc = this.$route.query.reason
   },
 
   methods: {

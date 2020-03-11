@@ -39,9 +39,9 @@
           <template slot-scope="scope">
 
             <div  v-if="scope.row.auth_status === 0"><el-button  @click="jump(scope.$index, scope.row)" size="mini"   type="warning" plain>未審核</el-button></div>
-            <div  v-else-if="scope.row.auth_status === 1"><el-button  @click="jump(scope.$index, scope.row)" size="mini"  type="success" plain disabled>審核通過</el-button></div>
+            <div  v-else-if="scope.row.auth_status === 1"><el-button  @click="jump(scope.$index, scope.row)" size="mini"  type="success" plain >審核通過</el-button></div>
             <div  v-else><!-- <router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >啟用</router-link> -->
-            <el-button  @click="jump(scope.$index, scope.row)" size="mini" type="danger" plain disabled>審核不通過</el-button>
+            <el-button  @click="jump(scope.$index, scope.row)" size="mini" type="danger" plain >審核不通過</el-button>
             </div>
           </template>
         </el-table-column>
