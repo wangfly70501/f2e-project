@@ -57,7 +57,7 @@ export default {
   data () {
     return {
       fullscreen: false,
-      name: 'linxin',
+      name: '',
       message: 2,
       collapse: false
     }

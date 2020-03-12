@@ -56,6 +56,7 @@ export default {
       }
     }
   },
+
   methods: {
     async confirm () {
       let data = {

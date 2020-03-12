@@ -123,16 +123,8 @@
               :inactive-value="0"
             ></el-switch>
         </el-form-item>
-<!--                            <el-button
-              type="primary"
-              icon="el-icon-picture"
-              size="mini"
-              @click="piclist()"
-            >圖片列表</el-button> -->
        <el-form-item label="內容">
-            <template>
   <yimo-vue-editor v-model="editForm.content"> </yimo-vue-editor>
-</template>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -140,62 +132,11 @@
         <el-button type="primary" @click="saveEdit">確定</el-button>
       </span>
     </el-dialog>
-
-          <!-- 圖片列表 -->
-    <el-dialog  :visible.sync="picDialogVisible" width="30%" >
-         <el-table :data="imgList" stripe border>
-        <!-- <el-table-column
-      type="selection"
-      width="40px">
-    </el-table-column>
-        <el-table-column label="ID" prop="id" width="40px"></el-table-column> -->
-        <el-table-column label="標題" prop="title" ></el-table-column>
-        <!-- <el-table-column label="內容" prop="content"></el-table-column> -->
-        <el-table-column label="發布時間" prop="ctime"></el-table-column>
-        <el-table-column label="語系" prop="lang">
-          <template slot-scope="scope">
-            <span   v-if="scope.row.lang ==='el_GR'">繁體中文</span>
-            <span   v-else-if="scope.row.lang ==='zh_CN'">简体中文</span>
-            <span   v-else>Engilsh</span>
-          </template>
-
-        </el-table-column>
-            <el-table-column label="狀態" >
-          <template slot-scope="scope">
-            <el-tag type="danger" v-if="scope.row.status === 0">棄用</el-tag>
-            <el-tag type="success" v-else>啟用</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" >
-          <template v-slot="scope">
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              size="mini"
-              @click="showEditDialog(scope.$index, scope.row)"
-            >編輯</el-button>
-
-            <!--     <el-button
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              @click="deleteUserById(scope.row.id)"
-            ></el-button>-->
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 底部区域 -->
-      <span slot="footer" class="dialog-footer" >
-        <el-button @click="picDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="piclist">確定</el-button>
-      </span>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
-import { faqdata, faqedit, faqimglist, uploadban } from '../../api/index.js'
+import { faqdata, faqedit, uploadban } from '../../api/index.js'
 import YimoVueEditor from 'yimo-vue-editor'
 
 export default {
@@ -265,16 +206,21 @@ export default {
 
   created () {
     this.getFaqList()
-    this.getimgList()
+    this.objList()
   },
 
   methods: {
 
-    change (value, render) {
-      // render 为 markdown 解析后的结果
-      this.html = render
-    },
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
 
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     // 获取列表
     async getFaqList () {
       let data = {
@@ -358,18 +304,6 @@ export default {
       await this.getFaqList()
     },
 
-    async getimgList () {
-      let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        lang: 'el_GR'
-      }
-      await faqimglist(data).then(res => {
-        this.imgList = res.data
-        console.log('123', res)
-      })
-    },
     async  addBanner () {
       let _this = this
       let reader = new FileReader()
