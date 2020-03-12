@@ -73,8 +73,13 @@
        <el-form-item label="手寫簽名照:">
  <img :src="this.$route.query.fourth_photo" style="max-width:50%"/>
   </el-form-item>
-  <el-form-item label="審核不過說明：">
+  <el-form-item label="審核不過說明：" v-if="this.$route.query.auth_status===0">
     <el-input type="textarea" v-model="form.desc"></el-input>
+  </el-form-item>
+    <el-form-item  v-else-if="this.$route.query.auth_status===1">
+  </el-form-item>
+      <el-form-item  v-else label="審核不過說明：" style="color:red">
+          {{this.$route.query.reason}}
   </el-form-item>
   <el-form-item style="text-align:center">
     <el-button  @click="uppage">上一頁</el-button>&nbsp;&nbsp;
@@ -83,8 +88,6 @@
     <el-button type="primary" @click.once="Submitpass" :disabled="Success">審核通過</el-button>
     </span>
         <span v-else>
-    <el-button  @click="Submitunpass"  type="danger" disabled>審核不通過</el-button>
-    <el-button type="primary" @click.once="Submitpass" disabled>審核通過</el-button>
     </span>
   </el-form-item>
 </el-form>
@@ -122,7 +125,6 @@ export default {
   },
   created () {
     console.log('1223', this.$route.query)
-    this.form.desc = this.$route.query.reason
   },
 
   methods: {

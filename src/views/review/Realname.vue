@@ -46,6 +46,17 @@
           </template>
         </el-table-column>
 
+             <el-table-column label="審核不過說明" >
+          <template slot-scope="scope">
+
+            <div  v-if="scope.row.auth_status === 0"></div>
+            <div  v-else-if="scope.row.auth_status === 1"></div>
+            <div  v-else><!-- <router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >啟用</router-link> -->
+           {{scope.row.reason}}
+            </div>
+          </template>
+        </el-table-column>
+
       </el-table>
 
        <!-- 分页组件 -->
