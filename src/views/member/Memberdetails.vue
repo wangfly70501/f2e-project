@@ -304,10 +304,22 @@ export default {
 
   created () {
     this.getmemdetailList()
-    console.log('1223', this.$route.query.uuid)
+
+    this.objList()
   },
 
   methods: {
+
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     async getmemdetailList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
