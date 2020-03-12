@@ -125,10 +125,21 @@ export default {
   },
   created () {
     console.log('1223', this.$route.query)
+    this.objList()
   },
 
   methods: {
 
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     /* 實名認證不通過 */
     async Submitunpass () {
       var data = {

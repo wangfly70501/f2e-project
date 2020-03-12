@@ -32,9 +32,28 @@ export default {
   components: {
     account,
     trains
+  },
+
+  created () {
+    this.objList()
+    this.getnameList()
+  },
+  methods: {
+
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    }
   }
 
 }
+
 </script>
 
 <style lang="less" scoped>

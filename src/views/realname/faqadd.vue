@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div>
     <TopBreadcrumb :titles="['FAQ管理', '新增FAQ']"></TopBreadcrumb>
 
@@ -8,7 +8,7 @@
          <el-form :model="addForm" :rules="addFormRules" ref="addForm" label-width="100px">
         <el-form-item label="標題" prop="addtitle">
           <el-input v-model="addForm.addtitle"></el-input>
-            </el-form-item>
+          </el-form-item>
          <el-form-item label="語系" prop="lang">
     <el-radio-group v-model="addForm.lang">
       <el-radio label="el_GR">繁體中文</el-radio>
@@ -16,12 +16,8 @@
       <el-radio label="en_US">Engilsh</el-radio>
     </el-radio-group>
   </el-form-item>
-
-               <el-form-item label="內容" prop="addtitle">
-            <template>
+        <el-form-item label="內容" prop="addtitle">
   <yimo-vue-editor v-model="addForm.addcontent"> </yimo-vue-editor>
-</template>
-
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
@@ -61,7 +57,20 @@ export default {
 
     }
   },
+  created () {
+    this.objList()
+  },
   methods: {
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     async addFaq () {
       this.addDialogVisible = false
       var data = {

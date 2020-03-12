@@ -80,9 +80,20 @@ export default {
 
   created () {
     this.getblackusrList()
+    this.objList()
   },
 
   methods: {
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     async getblackusrList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),

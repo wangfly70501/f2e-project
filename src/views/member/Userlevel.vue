@@ -125,9 +125,20 @@ export default {
 
   created () {
     this.getUserlevelList()
+    this.objList()
   },
 
   methods: {
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     async getUserlevelList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),

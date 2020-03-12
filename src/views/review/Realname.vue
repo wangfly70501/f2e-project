@@ -46,7 +46,7 @@
           </template>
         </el-table-column>
 
-             <el-table-column label="審核不過說明" >
+             <el-table-column label="說明" >
           <template slot-scope="scope">
 
             <div  v-if="scope.row.auth_status === 0"></div>
@@ -92,6 +92,8 @@ export default {
       nameList: [
 
       ],
+      objname: '',
+      objpwd: '',
       total: 0,
       realname: [],
       list: '',
@@ -112,10 +114,23 @@ export default {
   },
 
   created () {
+    this.objList()
     this.getnameList()
   },
 
   methods: {
+
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
+
     async getnameList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),

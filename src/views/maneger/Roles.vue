@@ -132,9 +132,20 @@ export default {
 
   created () {
     this.getRoleList()
+    this.objList()
   },
 
   methods: {
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     // 获取所有的角色
     async getRoleList () {
       const { data: res } = await this.$http.get('roles')

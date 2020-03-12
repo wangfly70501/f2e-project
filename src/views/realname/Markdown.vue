@@ -24,7 +24,20 @@ export default {
   components: {
     mavonEditor
   },
+  created () {
+    this.objList()
+  },
   methods: {
+    objList () {
+      this.objname = localStorage.getItem('mg_name')
+      this.objpwd = localStorage.getItem('mg_pwd')
+      console.log(typeof this.objname, this.objpwd)
+
+      if (this.objname == null || this.objpwd == null) {
+        console.log('15132321')
+        this.$router.push('/login')
+      }
+    },
     // 将图片上传到服务器，返回地址替换到md中
     $imgAdd (pos, $file) {
       var formdata = new FormData()
