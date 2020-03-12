@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { signup } from '../api/index.js'
+import { signup, login } from '../api/index.js'
 
 export default {
   data () {
@@ -129,7 +129,7 @@ export default {
     }
   },
   methods: {
-    /*         async login () {
+    async login () {
       let data = {
         mg_name: this.loginForm.username,
         mg_pwd: this.loginForm.password
@@ -137,8 +137,10 @@ export default {
 
       await login(data).then(res => {
         if (res.error_code !== 0) {
+          console.log('res.error_code ', res.error_code)
           return this.$message.error('登入失敗，請確認帳號密碼')
         } else if (res.error_code === 0) {
+          console.log('res.error_code ', res.error_code)
           this.data = res.data.mg_state
           localStorage.setItem('mg_name', this.loginForm.username)
           localStorage.setItem('mg_pwd', this.loginForm.password)
@@ -149,8 +151,10 @@ export default {
           this.$router.push('/home')
         }
       })
-    },  */
-    login () {
+    },
+
+    // 目前用不道 2020-03
+    /* login () {
       this.$refs.loginForm.validate(async valid => {
         localStorage.setItem('mg_name', this.loginForm.username)
         localStorage.setItem('mg_pwd', this.loginForm.password)
@@ -161,12 +165,14 @@ export default {
         const { data: res } = await this.$http.post('login', this.loginForm)
         if (res.meta.status !== 200) return this.$message.error('登入失敗請確認帳號或密碼')/* res.meta.msg */
 
-        // 登陆成功，保存token到sessionStorage，并跳转到首页
-        this.$message.success('登入成功')
+    // 登陆成功，保存token到sessionStorage，并跳转到首页
+    /*   this.$message.success('登入成功')
         window.sessionStorage.setItem('token', res.data.token)
         this.$router.push('/home')
       })
-    },
+    }, */
+
+    // 目前用不道 2020-03
     // 註冊
     async signup () {
       let data = {
