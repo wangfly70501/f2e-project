@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '鎖倉管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '任務管理']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
@@ -126,7 +126,7 @@
               @click="showEditDialog(scope.$index, scope.row)"
             ></el-button>
 
-            <el-button v-else disabled type="info" plain icon="el-icon-edit" size="mini">
+            <el-button v-else  disabled type="info" plain icon="el-icon-edit" size="mini"  @click="showEditDialog(scope.$index, scope.row)">
               <el-tooltip effect="dark" content="活動開始或結束無法編輯" placement="top-start"></el-tooltip>
             </el-button>&nbsp;
             <el-button
@@ -195,6 +195,13 @@
             <el-radio :label="1">人數限制</el-radio>
             <el-radio :label="2">時間限制</el-radio>
             <el-radio :label="3">活動常駐</el-radio>
+          </el-radio-group>
+        </el-form-item>
+            <el-form-item label="語系選擇" prop="lang">
+          <el-radio-group v-model="addForm.lang">
+              <el-radio label="el_GR">繁體中文</el-radio>
+              <el-radio label="zh_CN">简体中文</el-radio>
+              <el-radio label="en_US">Engilsh</el-radio>
           </el-radio-group>
         </el-form-item>
         <!-- 時間限制:人數可以不用填寫 -->
@@ -409,7 +416,9 @@
           ></el-date-picker>&nbsp;
           <el-time-select
             style="width:30%"
-            v-model="editForm.startTime"
+            v-model="startTime"
+             format="HH:mm"
+            value-format="HH:mm"
             :picker-options="{
     start: '00:00',
     step: '00:30',
@@ -446,8 +455,10 @@
             style="width:30%"
           ></el-date-picker>&nbsp;
           <el-time-select
+                format="HH:mm"
+            value-format="HH:mm"
             style="width:30%"
-            v-model="editForm.endTimes"
+            v-model="lastTime"
             :picker-options="{
             start: '00:00',
             step: '00:30',
@@ -466,8 +477,9 @@
           ></el-date-picker>&nbsp;
           <el-time-select
             style="width:30%"
-
-            v-model="editForm.endTimes"
+                  format="HH:mm"
+            value-format="HH:mm"
+            v-model="lastTime"
             :picker-options="{
             start: '00:00',
             step: '00:30',
@@ -533,16 +545,19 @@ export default {
         rate: [{ required: true, message: '請輸入活動利率', trigger: 'blur' }],
         days: [{ required: true, message: '請輸入增值期間', trigger: 'blur' }],
         mode: [{ required: true, trigger: 'blur' }],
+        lang: [{ required: true, trigger: 'blur' }],
         type: [{ required: true, trigger: 'blur' }]
       },
 
       editDialogVisible: false,
       table: {},
       editForm: {
-        startTime: [],
-        lang: []
+        startTime: '',
+        lang: [],
+        beginTime: []
       },
-
+      startTime: '',
+      lastTime: '',
       enable: [
         /*     {
           label: '所有',
@@ -576,6 +591,17 @@ export default {
           return pre + groupOf3Digital.replace(/\d{3}/g, ',$&')
         })
     }
+  },
+  watch: {
+    startTime (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    },
+    lastTime (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    }
+
   },
 
   created () {
@@ -656,12 +682,21 @@ export default {
       this.editForm.currency = Number(ccc)
       var bbb = this.editForm.rate
       this.editForm.rate = Number(bbb) * 100
-    /*   var zzz = this.editForm.beginTime
-      this.editForm.startTime = zzz.substr(11, 5)
-      console.log(this.editForm.startTime)
-      var xxx = this.editForm.endTime
+      console.log(typeof this.editForm.beginTime)
+      console.log('123456', this.editForm.beginTime)
+      console.log('789456', this.startTime)
+
+      this.startTime = this.editForm.beginTime.substr(11, 5)
+      this.lastTime = this.editForm.endTime.substr(11, 5)
+      console.log(typeof this.startTime)
+      /* this.editForm.sTime = this.editForm.beginTime.substr(0, 10) */
+
+      console.log('1234', this.editForm.startTime)
+      console.log('4567', this.editForm.sTime)
+      /*  var xxx = this.editForm.endTime
       this.editForm.endTimes = xxx.substr(11, 5)
       console.log('565', this.editForm) */
+      console.log(this.editForm)
     },
 
     editDialogClosed () {
@@ -673,6 +708,10 @@ export default {
       this.editDialogVisible = false
       var ddd = this.editForm.type
       this.editForm.type = Number(ddd)
+      var strtime = this.editForm.beginTime
+      this.editForm.beginTime = strtime.substring(0, 11)
+      var lsttime = this.editForm.endTime
+      this.editForm.endTime = lsttime.substring(0, 11)
       /*  var str = this.editForm.endTime
       this.editForm.endTime = str.substring(0, str.length - 8) */
       /*    var strtime = this.editForm.beginTime
@@ -686,8 +725,8 @@ export default {
         currency: this.editForm.currency,
         minAmount: this.editForm.minAmount,
         maxAmount: this.editForm.maxAmount,
-        beginTime: this.editForm.beginTime + this.editForm.startTime,
-        endTime: this.editForm.endTime + this.editForm.endTimes,
+        beginTime: this.editForm.beginTime + this.startTime,
+        endTime: this.editForm.endTime + this.lastTime,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
@@ -696,6 +735,7 @@ export default {
         type: this.editForm.type.toString(),
         mode: this.editForm.mode.toString()
       }
+      console.log('data', data)
       await Lockupedit(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('修改成功')

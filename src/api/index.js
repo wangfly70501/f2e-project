@@ -364,6 +364,23 @@ export const setMemberLv = query => {
     data: query
   })
 }
+
+// 活動管理列表//
+export const info_task = query => {
+  return request({
+    url: './taskapi?method=info_task',
+    method: 'post',
+    data: query
+  })
+}
+// 活動類型列表//
+export const info_behavior = query => {
+  return request({
+    url: './taskapi?method=info_behavior',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({
