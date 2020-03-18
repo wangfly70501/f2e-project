@@ -129,7 +129,9 @@ export default {
           title: '項目管理',
           subs: [
             { index: 'lockup', title: '鎖倉管理' },
+            { index: 'activity', title: '活動管理' },
             { index: 'maintain', title: '維護管理' }
+
           ]
         }
       ],

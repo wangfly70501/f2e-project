@@ -12,12 +12,13 @@
                <template slot-scope="scope">
              <el-switch
               v-model="scope.row.switch"
-              active-color="#13ce66"
-              inactive-color="#BEBEBE"
+              active-color="#BEBEBE"
+              inactive-color="#13ce66"
               :active-value='0'
               :inactive-value='1'
              @change="changeSwitch(scope.$index, scope.row)"
             ></el-switch>
+           <!--  "scope.row.switch 0是等於開啟 1是關閉 -->
              </template>
         </el-table-column>
       </el-table>

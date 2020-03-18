@@ -22,12 +22,15 @@ const Withdrawlimit = () => import(/* webpackChunkName: "service_Charges" */ '..
 const Userlevel = () => import(/* webpackChunkName: "service_Charges" */ '../views/member/Userlevel.vue')
 const Revenue = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Revenue.vue')
 const Transaction = () => import(/* webpackChunkName: "service_Charges" */ '../views/report/Transaction.vue')
-const Markdown = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Markdown.vue')
-const Faq = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Faq.vue')
-const faqadd = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/faqadd.vue')
-const Lockup = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockup.vue')
-const Lockuplist = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/Lockuplist.vue')
-const maintain = () => import(/* webpackChunkName: "service_Charges" */ '../views/realname/maintain.vue')
+const Markdown = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/Markdown.vue')
+const Faq = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/Faq.vue')
+const faqadd = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/faqadd.vue')
+const Lockup = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/Lockup.vue')
+const Lockuplist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/Lockuplist.vue')
+const maintain = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/maintain.vue')
+const activity = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activity.vue')
+const activitylist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activitylist.vue')
+const addaclist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/addaclist.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -65,7 +68,10 @@ const routes = [
       { path: '/lockuplist', component: Lockuplist },
       { path: '/markdown', component: Markdown },
       { path: '/maintain', component: maintain },
-      { path: '/withdrawlimit', component: Withdrawlimit }
+      { path: '/withdrawlimit', component: Withdrawlimit },
+      { path: '/activity', component: activity },
+      { path: '/activitylist', component: activitylist },
+      { path: '/addaclist', component: addaclist }
     ]
   }
 ]

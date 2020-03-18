@@ -21,7 +21,14 @@ import './assets/fonts/icon.css'
 import htmlToPdf from './htmlToPdf.js'
 import locale from 'element-ui/lib/locale/lang/zh-TW.js'
 import toExcel from './json2excel'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faGooglePlus } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import YimoVueEditor from 'yimo-vue-editor'
+
+library.add(faCoffee, faGooglePlus)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(YimoVueEditor, {
   name: 'v-editor-app', // Custom name
