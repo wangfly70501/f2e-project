@@ -3,20 +3,22 @@
     <TopBreadcrumb :titles="['活動管理', '編輯活動']"></TopBreadcrumb>
 
     <el-card>
-     <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/><p class="txt">上架
+
+     <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/>
+
+     <p class="txt">前台顯示
               <el-switch
-              v-model="editForm.active"
+              v-model="editForm.show_status"
               active-color="#169BD5"
               inactive-color="#BEBEBE"
               :active-value='1'
               :inactive-value='0'
-             @change="changeSwitch()"
+              class="fontpadding"
             ></el-switch>
                 &nbsp;
-              <span v-if="editForm.active===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </span>
-              <span v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle" /> </span>
+                 <el-button size="mini" type="danger"> <font-awesome-icon  icon="trash-alt" size="mini"/></el-button>
+    </p>
 
-            </p>
       <div class="txt">活動資訊 <hr ></div>
  <!-- 新增活動 -->
 
@@ -94,7 +96,7 @@
           ></el-time-picker>
         </el-form-item>
           <el-form-item label="人數限制" >
-          <el-input v-model="editForm.people_limit" style="width:80px"></el-input> &nbsp;位
+          <el-input v-model="editForm.people_limit" style="width:80px"></el-input> &nbsp;位  (設0表示無限制)
         </el-form-item>
         <hr width="80%" />
           <el-form-item label="對象" >
@@ -113,17 +115,18 @@
         <hr width="80%" />
           <el-form-item label="獎勵金額" >
           <el-input v-model="editForm.bonus_amount" style="width:80px"  placeholder="金額"></el-input>
-            <el-select v-model="coin.value" placeholder="USDT" style="width:10%">
+            <el-select v-model="editForm.bonus_currency" placeholder="USDT" style="width:10%">
           <el-option
-            v-for="(coin,index) in currencyList"
-            :key="index"
-            v-bind:label="coin.currency"
-            v-bind:value="coin.id"
-          >{{coin.currency}}</el-option>
+            v-for="coin in currencyList"
+            :key="coin.id"
+            :label="coin.currency"
+            :value="coin.id"
+          ></el-option>
         </el-select>
         </el-form-item>
           <el-form-item label="獎勵次數" >
-          <el-input v-model="editForm.bonus_limit" style="width:80px"></el-input> &nbsp;次，超過此次數及停止派發獎勵
+          <!-- <el-input v-model="editForm.bonus_limit" style="width:80px"></el-input> -->
+          <el-input-number v-model="editForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
         </el-form-item>
         <hr width="80%" />
          </el-form >
@@ -171,23 +174,23 @@ export default {
       enable: [
         {
           label: '註冊',
-          value: '1'
+          value: 1
         },
         {
           label: '實名認證',
-          value: '2'
+          value: 2
         },
         {
           label: '邀請好友',
-          value: '3'
+          value: 3
         },
         {
           label: '鎖倉認購',
-          value: '4'
+          value: 4
         },
         {
           label: '綁定銀行帳戶',
-          value: '5'
+          value: 5
         }
       ],
       Objecttype: [
@@ -234,6 +237,8 @@ export default {
     this.begintime = this.editForm.starttime.substr(11, 5)
     console.log('status', this.editForm.active)
     this.endtime = this.editForm.endtime.substr(11, 5)
+    this.editForm.bonus_currency = Number(this.editForm.bonus_currency)
+    this.editForm.type = Number(this.editForm.type)
   },
 
   methods: {
@@ -314,5 +319,8 @@ display: flex;
 }
 .font-awesome-icon .fa-hover a.fa{
     font-size: 20px;
+}
+.fontpadding{
+    margin: 0 10px;
 }
 </style>
