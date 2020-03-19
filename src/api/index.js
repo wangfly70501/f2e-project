@@ -381,6 +381,22 @@ export const info_behavior = query => {
     data: query
   })
 }
+// 新增活動//
+export const inserttask = query => {
+  return request({
+    url: './taskapi?method=insert_task',
+    method: 'post',
+    data: query
+  })
+}
+// 活動結束時間//
+export const checkBehaviorEndTime = query => {
+  return request({
+    url: './taskapi?method=checkBehaviorEndTime',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({

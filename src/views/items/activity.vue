@@ -4,7 +4,14 @@
 
     <el-card>
       <!-- 搜索工具 -->
-
+          <el-select v-model="showValue" placeholder="前台顯示" style="width:8% ">
+          <el-option
+            v-for="(showValue,index) in showstatus"
+            :key="index"
+            v-bind:label="showValue.label"
+            v-bind:value="showValue.value"
+          >{{showValue.label}}</el-option>
+        </el-select>&nbsp;
         <el-input
           v-model="searchlist"
           @keyup.enter.native="Search"
@@ -35,11 +42,11 @@
       <!-- 列表 -->
       <el-table :data="activitylist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor"   :cell-style="cellStyle">
         <el-table-column label="排序" prop="id" width="50%"  align="center"></el-table-column>
-        <el-table-column label="上架" width="50%" align="center">
+        <el-table-column label="前台顯示" width="50%" align="center">
             <template slot-scope="scope">
-              <div v-if="scope.row.active===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
-              <div v-else-if="scope.row.active===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div>
-              <div v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle" /> </div>
+              <div v-if="scope.row.show_status===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
+             <!--  <div v-else-if="scope.row.show_status===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div> -->
+              <div v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle"  size="lg"/> </div>
           </template>
         </el-table-column>
              <el-table-column label="類型" width="80%" align="center">
@@ -61,8 +68,8 @@
           </el-table-column>
         <el-table-column label="開放期間"  style="background-color:#FFFFF1" >
           <template slot-scope="scope">
-         <p>{{scope.row.starttime|datefformat}}</p>
-         <p>{{scope.row.endtime|datefformat}}</p>
+         <div>{{scope.row.starttime|datefformat}}</div>
+         <div>{{scope.row.endtime|datefformat}}</div>
           </template>
         </el-table-column>
 
@@ -113,7 +120,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 5, 10]"
+        :page-sizes="[ 10,20,50]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -125,8 +132,6 @@
 
 <script>
 import {
-  addActivity,
-  Lockupedit,
   currencyList,
   info_task,
   info_behavior
@@ -135,12 +140,11 @@ import {
 export default {
   data () {
     return {
+      showValue: '2',
       people_limit: '',
       endTime: '',
       queryData: {},
       content: '',
-      html: '',
-      configs: {},
       searchlist: '',
       currencyList: [],
       queryInfo: {
@@ -149,33 +153,14 @@ export default {
         pagesize: 10,
         enable: '',
         beginTime: '',
-        endTime: '',
-        date: []
+        endTime: ''
       },
-
       date: [],
       activitylist: [ ],
       actypelist: [],
-
       total: 0,
       addDialogVisible: false,
-      addForm: {
-        lang: []
-      },
-      Rules: {
-        title: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        currency: [
-          { required: true, message: '請選擇活動幣種', trigger: 'blur' }
-        ],
-        Amount: [{ required: true, trigger: 'blur' }],
-
-        rate: [{ required: true, message: '請輸入活動利率', trigger: 'blur' }],
-        days: [{ required: true, message: '請輸入增值期間', trigger: 'blur' }],
-        mode: [{ required: true, trigger: 'blur' }],
-        lang: [{ required: true, trigger: 'blur' }],
-        type: [{ required: true, trigger: 'blur' }]
-      },
-
+      addForm: {},
       editDialogVisible: false,
       table: {},
       editForm: {
@@ -201,6 +186,20 @@ export default {
         {
           label: '活動常駐',
           value: '3'
+        }
+      ],
+      showstatus: [
+        {
+          label: '請選擇',
+          value: '2'
+        },
+        {
+          label: '顯示',
+          value: '1'
+        },
+        {
+          label: '不顯示',
+          value: '0'
         }
       ]
     }
@@ -282,7 +281,7 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        active: '2'
+        show_status: this.showValue.toString()
       }
 
       await info_task(data).then(res => {
@@ -295,135 +294,17 @@ export default {
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
-      this.getLockupList()
+      this.getactivitylist()
     },
 
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
-      this.getLockupList()
+      this.getactivitylist()
     },
 
-    addDialogClosed () {
-      this.$refs.addFormref.resetFields()
-      this.addForm.minAmount = ''
-      this.addForm.maxAmount = ''
-      this.addForm.people_limit = ''
-      this.addForm.beginTime = ''
-      this.addForm.starttime = ''
-      this.addForm.endTime = ''
-      this.addForm.endTimes = ''
-    },
-
-    showEditDialog (index, row) {
-      this.editDialogVisible = true
-      this.editForm = row
-      var ccc = this.editForm.currency
-      this.editForm.currency = Number(ccc)
-      var bbb = this.editForm.rate
-      this.editForm.rate = Number(bbb) * 100
-      console.log(typeof this.editForm.beginTime)
-      console.log('123456', this.editForm.beginTime)
-      console.log('789456', this.startTime)
-
-      this.startTime = this.editForm.beginTime.substr(11, 5)
-      this.lastTime = this.editForm.endTime.substr(11, 5)
-      console.log(typeof this.startTime)
-      /* this.editForm.sTime = this.editForm.beginTime.substr(0, 10) */
-
-      console.log('1234', this.editForm.startTime)
-      console.log('4567', this.editForm.sTime)
-      /*  var xxx = this.editForm.endTime
-      this.editForm.endTimes = xxx.substr(11, 5)
-      console.log('565', this.editForm) */
-      console.log(this.editForm)
-    },
-
-    editDialogClosed () {
-      this.$refs.editFormRef.resetFields()
-      this.getLockupList()
-    },
-
-    async saveEdit () {
-      this.editDialogVisible = false
-      var ddd = this.editForm.type
-      this.editForm.type = Number(ddd)
-      var strtime = this.editForm.beginTime
-      this.editForm.beginTime = strtime.substring(0, 11)
-      var lsttime = this.editForm.beginTime
-      this.editForm.beginTime = lsttime.substring(0, 11)
-      /*  var str = this.editForm.endTime
-      this.editForm.endTime = str.substring(0, str.length - 8) */
-      /*    var strtime = this.editForm.beginTime
-      this.editForm.beginTime = strtime.substring(0, str.length - 8) */
-
-      var data = {
-        id: this.editForm.id,
-        title: this.editForm.title,
-        people_limit: this.editForm.people_limit,
-        rate: this.editForm.rate / 100,
-        currency: this.editForm.currency,
-        minAmount: this.editForm.minAmount,
-        maxAmount: this.editForm.maxAmount,
-        beginTime: this.editForm.beginTime + this.startTime,
-        endTime: this.editForm.endTime + this.lastTime,
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        active: this.editForm.active.toString(),
-        days: this.editForm.days,
-        type: this.editForm.type.toString(),
-        mode: this.editForm.mode.toString()
-      }
-      console.log('data', data)
-      await Lockupedit(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('修改成功')
-        } else {
-          this.$message.error('格式不符，修改失敗')
-        }
-        this.getLockupList()
-      })
-    },
-    // 新增鎖倉
-    async addLockup () {
-      this.addDialogVisible = false
-      var data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        type: this.addForm.type.toString(),
-        title: this.addForm.title,
-        people_limit: this.addForm.people_limit,
-        rate: this.addForm.rate / 100,
-        currency: this.addForm.currency,
-        minAmount: this.addForm.minAmount,
-        maxAmount: this.addForm.maxAmount,
-        beginTime: this.addForm.beginTime + this.addForm.starttime,
-        endTime: this.addForm.endTime + this.addForm.endtimes,
-        days: this.addForm.days,
-        mode: this.addForm.mode.toString()
-      }
-
-      await addActivity(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('新增成功')
-          this.$refs.addFormref.resetFields()
-          this.addForm.minAmount = ''
-          this.addForm.maxAmount = ''
-          this.addForm.people_limit = ''
-          this.addForm.beginTime = ''
-          this.addForm.endTime = ''
-          this.addForm.starttime = ''
-          this.addForm.endTimes = ''
-        } else {
-          this.$message.error('格式不符，新增失敗')
-        }
-        this.getLockupList()
-      })
-    },
     async Search () {
       this.queryInfo.pagenum = 1
-      this.getLockupList()
+      this.getactivitylist()
     },
 
     handleSelectionChange (val) {

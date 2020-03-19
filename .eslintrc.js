@@ -10,8 +10,11 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'off' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'camelcase': [1, {"properties": "never"}]
+     'camelcase': [1, {"properties": "never"}] ,
+   /*   "camelcase": ["error", {"allow": ["aa_bb"]}] */ 
   },
+
+
   parserOptions: {
     parser: 'babel-eslint'
   }
