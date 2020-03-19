@@ -31,6 +31,7 @@ const maintain = () => import(/* webpackChunkName: "service_Charges" */ '../view
 const activity = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activity.vue')
 const activitylist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activitylist.vue')
 const addaclist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/addaclist.vue')
+const test = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/test.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -71,7 +72,8 @@ const routes = [
       { path: '/withdrawlimit', component: Withdrawlimit },
       { path: '/activity', component: activity },
       { path: '/activitylist', component: activitylist },
-      { path: '/addaclist', component: addaclist }
+      { path: '/addaclist', component: addaclist },
+      { path: '/test', component: test }
     ]
   }
 ]

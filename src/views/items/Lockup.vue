@@ -187,7 +187,7 @@
         <el-form-item label="派息方式" prop="mode">
           <el-radio-group v-model="addForm.mode">
             <el-radio :label="0">期滿派息</el-radio>
-            <el-radio :label="1">每天派息</el-radio>
+            <el-radio :label="1" disabled>每天派息</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="活動方式" prop="type">
