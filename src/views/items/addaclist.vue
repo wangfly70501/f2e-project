@@ -24,13 +24,13 @@
       <el-form :model="addForm" :rules="Rules" ref="addFormref" label-width="100px">
          <div class="text">
        <span>活動名稱</span> <span class="description">
-         <el-form-item label="繁中" prop="el_GR">
+         <el-form-item label="繁中" prop="titlegr">
           <el-input v-model="addForm.titlegr" style="width:400px" ></el-input>
         </el-form-item>
-        <el-form-item label="简中" prop="el_CN">
+        <el-form-item label="简中" prop="titlecn">
           <el-input v-model="addForm.titlecn" style="width:100%" ></el-input>
         </el-form-item>
-        <el-form-item label="EN" prop="el_EN">
+        <el-form-item label="EN" prop="titleus">
           <el-input v-model="addForm.titleus" style="width:100%" ></el-input>
         </el-form-item>
         </span>
@@ -38,13 +38,13 @@
 
           <hr width="80%" />
           <div class="text"><span>活動描述</span>
-        <span class="description"><el-form-item label="繁中" prop="el_GRcn">
+        <span class="description"><el-form-item label="繁中" prop="activity_content_GR">
           <el-input v-model="addForm.activity_content_GR" style="width:400px" type="textarea"></el-input>
         </el-form-item>
-        <el-form-item label="简中" prop="el_CNcn">
+        <el-form-item label="简中" prop="activity_content_CN">
           <el-input v-model="addForm.activity_content_CN" style="width:100%"  type="textarea"></el-input>
         </el-form-item>
-        <el-form-item label="EN" prop="el_ENcn">
+        <el-form-item label="EN" prop="activity_content_US">
           <el-input v-model="addForm.activity_content_US" style="width:100%"  type="textarea"></el-input>
         </el-form-item>
         </span>
@@ -66,7 +66,7 @@
         </el-form-item>
         <hr width="80%" />
         <!-- 開始時間 -->
-        <el-form-item label="開始時間" prop="startime">
+        <el-form-item label="開始時間" prop="startBudgetTime">
           <el-date-picker
            :editable="false"
     v-model="startBudgetTime"
@@ -103,7 +103,7 @@
         </el-select>
         </el-form-item>
         <!-- 結束時間 -->
-        <el-form-item label="結束時間" prop="endtime">
+        <el-form-item label="結束時間" prop="endBudgetTime">
           <el-date-picker
            :editable="false"
     v-model="endBudgetTime"
@@ -139,7 +139,7 @@
           >{{endtimemin.label}}</el-option>
         </el-select>
         </el-form-item>
-          <el-form-item label="人數限制" prop="peoplelimit">
+          <el-form-item label="人數限制" prop="people_limit">
           <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp;位 (設0表示無限制)
         </el-form-item>
         <hr width="80%" />
@@ -153,7 +153,7 @@
           >{{item.label}}</el-option>
         </el-select>&nbsp;
         </el-form-item>
-        <el-form-item label="資格條件" prop="condition"  style="width:80px" >
+ <!--        <el-form-item label="資格條件" prop="condition"  style="width:80px" >
               <el-select v-model="condition" multiple placeholder="請選擇">
     <el-option
       v-for="item in options"
@@ -162,10 +162,10 @@
       :value="item.value">
     </el-option>
   </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <hr width="80%" />
-          <el-form-item label="獎勵金額" prop="amount">
-          <el-input v-model="addForm.amount" style="width:80px"  placeholder="金額"></el-input>
+          <el-form-item label="獎勵金額" prop="bonus_amount">
+          <el-input v-model="addForm.bonus_amount" style="width:80px"  placeholder="金額"></el-input>
             <el-select v-model="coin.value" placeholder="USDT" style="width:10%">
           <el-option
             v-for="(coin,index) in currencyList"
@@ -175,7 +175,7 @@
           >{{coin.currency}}</el-option>
         </el-select>
         </el-form-item>
-          <el-form-item label="獎勵次數" prop="acount">
+          <el-form-item label="獎勵次數" prop="bonus_limit">
          <!--  <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp; -->
           <el-input-number v-model="addForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
         </el-form-item>
@@ -225,7 +225,7 @@ export default {
       addDialogVisible: false,
       addForm: {
         bonus_limit: 1,
-        people_limit: 0,
+        people_limit: '0',
         titlegr: '',
         titlecn: '',
         titleus: ''
@@ -269,7 +269,7 @@ export default {
         },
         {
           label: '新用戶及舊用戶',
-          value: '3'
+          value: '0'
         }
       ],
       timehr: [
@@ -410,24 +410,24 @@ export default {
       }
       ],
       Rules: {
-        el_GR: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        el_CN: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        el_EN: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        el_GRcn: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
-        el_CNcn: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
-        el_ENcn: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
+        titlegr: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        titlecn: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        titleus: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        activity_content_GR: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
+        activity_content_CN: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
+        activity_content_US: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
         currency: [
           { required: true, message: '請選擇活動幣種', trigger: 'blur' }
         ],
         actype: [{ required: true, trigger: 'blur' }],
-        startime: [{ required: true, trigger: 'blur' }],
-        endtime: [{ required: true, trigger: 'blur' }],
+        startBudgetTime: [{ required: true, trigger: 'blur' }],
+        endBudgetTime: [{ required: true, trigger: 'blur' }],
 
-        peoplelimit: [{ required: true, trigger: 'blur' }],
+        people_limit: [{ required: true, trigger: 'blur' }],
         Objecttype: [{ required: true, trigger: 'blur' }],
-        amount: [{ required: true, trigger: 'blur' }],
-        acount: [{ required: true, trigger: 'blur' }],
-        condition: [{ required: true, trigger: 'blur' }]
+        bonus_amount: [{ required: true, trigger: 'blur' }],
+        bonus_limit: [{ required: true, trigger: 'blur' }]
+        /* condition: [{ required: true, trigger: 'blur' }] */
       }
     }
   },
@@ -445,7 +445,6 @@ export default {
       console.log(typeof this.objname, this.objpwd)
 
       if (this.objname == null || this.objpwd == null) {
-        console.log('15132321')
         this.$router.push('/login')
       }
     },
@@ -475,6 +474,7 @@ export default {
       }
       await checkBehaviorEndTime(data).then(res => {
         this.lasttime = res.data
+        console.log('15132321', this.lasttime)
       })
     },
     // 幣種列表
@@ -491,8 +491,7 @@ export default {
     },
     // 新增
     async addacList () {
-      this.addDialogVisible = false
-      if (this.addForm.bonus_limit === 0) {
+      if (this.addForm.bonus_limit === '0') {
         this.addForm.bonus_limit_status = '0'
       } else {
         this.addForm.bonus_limit_status = '1'
@@ -512,12 +511,13 @@ export default {
         activity_content_GR: this.addForm.activity_content_GR,
         starttime: this.starttime + '' + this.time.value + ':' + this.starttimemin.value,
         endtime: this.enddate + this.endtime.value + ':' + this.endtimemin.value,
-        bonus_amount: this.addForm.amount,
+        bonus_amount: this.addForm.bonus_amount,
         bonus_currency: this.coin.value,
-        bonus_limit: this.addForm.amount * this.addForm.bonus_limit,
+        bonus_limit: this.addForm.bonus_amount * this.addForm.bonus_limit,
         people_limit: this.addForm.people_limit,
         bonus_limit_status: this.addForm.bonus_limit_status,
-        show_status: this.addForm.show_status.toString()
+        show_status: this.addForm.show_status.toString(),
+        people_set: this.Objecttype.value.toString()
       }
       console.log('data', data)
       await inserttask(data).then(res => {
@@ -540,7 +540,7 @@ export default {
         // 可通過箭頭函式的方式訪問到this
         disabledDate: (time) => {
           var times = ''
-          times = time.getTime() > this.lasttime.endtime
+          times = time.getTime() < this.lasttime.endtime
           return times
         }
       })
@@ -564,7 +564,7 @@ export default {
 }
 </script>
 
-<style>
+<style less>
 .txt{
   color:#169BD5;
   font-weight:bold;

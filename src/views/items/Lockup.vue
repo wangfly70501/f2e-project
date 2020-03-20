@@ -4,7 +4,7 @@
 
     <el-card>
       <!-- 搜索工具 -->
-      <div class="text">
+      <div >
         <el-input
           v-model="searchlist"
           @keyup.enter.native="Search"
@@ -428,7 +428,7 @@
         </el-form-item>
         <el-form-item label="活動結束日期" v-if="editForm.type===1">
           <el-date-picker
-            v-model="endTime"
+
             type="date"
             format="yyyy-MM-dd "
             value-format="yyyy-MM-dd "
@@ -437,7 +437,7 @@
           ></el-date-picker>&nbsp;
           <el-time-select
             style="width:30%"
-            v-model="endTime"
+
             :picker-options="{
     start: '00:00',
     step: '00:30',
