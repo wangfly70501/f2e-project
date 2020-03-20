@@ -4,7 +4,7 @@
 
     <el-card>
       <!-- 搜索工具 -->
-          <el-select v-model="showValue" placeholder="前台顯示" style="width:8% ">
+          <el-select v-model="showValue" placeholder="前台顯示" style="width:10% ">
           <el-option
             v-for="(showValue,index) in showstatus"
             :key="index"
@@ -42,14 +42,14 @@
       <!-- 列表 -->
       <el-table :data="activitylist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor"   :cell-style="cellStyle">
         <el-table-column label="排序" prop="id" width="50%"  align="center"></el-table-column>
-        <el-table-column label="前台顯示" width="50%" align="center">
+        <el-table-column label="前台顯示"  align="center" >
             <template slot-scope="scope">
               <div v-if="scope.row.show_status===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
              <!--  <div v-else-if="scope.row.show_status===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div> -->
               <div v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle"  size="lg"/> </div>
           </template>
         </el-table-column>
-             <el-table-column label="類型" width="80%" align="center">
+             <el-table-column label="類型"  align="center" width="100%">
                     <template slot-scope="scope">
             <div
               v-for="item in actypelist"

@@ -397,6 +397,14 @@ export const checkBehaviorEndTime = query => {
     data: query
   })
 }
+// 活動編輯//
+export const setBehavior = query => {
+  return request({
+    url: './taskapi?method=setBehavior',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({

@@ -69,7 +69,7 @@ export default {
             { index: 'rights', title: '權限列表' }
           ]
         }, */
-        {
+        /*   {
 
           index: '2',
           title: '會員管理',
@@ -79,26 +79,26 @@ export default {
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
           ]
-        },
+        }, */
         /*  {
           icon: 'iconfont icon-tijikongjian',
           index: '3',
           title: '出入金管理',
           subs: [{ index: 'deposit', title: '出入金列表' }]
         }, */
-        {
+        /*    {
 
           index: '4',
           title: '財務管理',
           icon: 'iconfont icon-baobiao',
           subs: [
-            /*  { index: 'receipt', title: '發票設置' }, */
+
             { index: 'bankset', title: '銀行設置' },
             { index: 'charge', title: '手續費設置' },
             { index: 'revenue', title: '營收報表' },
             { index: 'transaction', title: '交易報表' }
           ]
-        },
+        }, */
         {
 
           index: '6',
@@ -130,8 +130,8 @@ export default {
           subs: [
             { index: 'lockup', title: '鎖倉管理' },
             { index: 'activity', title: '活動管理' },
-            { index: 'maintain', title: '維護管理' },
-            { index: 'test', title: 'tset' }
+            { index: 'maintain', title: '維護管理' }
+            /*    { index: 'test', title: 'tset' } */
           ]
         }
       ],
