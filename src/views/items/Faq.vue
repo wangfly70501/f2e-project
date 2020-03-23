@@ -4,7 +4,7 @@
 
     <el-card>
       <!-- 搜索工具 -->
-      <div class="text">
+
         <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:10%" placeholder="請輸入標題" size="small"></el-input>&nbsp;
         <el-date-picker
           type="daterange"
@@ -41,7 +41,7 @@
                 <el-button size="small" type="primary">點擊上傳</el-button>
               </el-upload>
               <el-button type="primary" @click="addBanner">確定</el-button> -->
-      </div>
+
       <!-- 列表 -->
       <el-table :data="faqlist" stripe border>
         <!-- <el-table-column

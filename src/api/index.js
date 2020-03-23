@@ -405,6 +405,14 @@ export const setBehavior = query => {
     data: query
   })
 }
+// 活動類型//
+export const get_drop_down_behavior = query => {
+  return request({
+    url: './taskapi?method=get_drop_down_behavior',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({

@@ -159,10 +159,16 @@
     </el-card>
 
     <!-- 新增鎖倉 -->
-    <el-dialog title="建立鎖倉活動" :visible.sync="addDialogVisible" width="70%" @close="addDialogClosed">
+    <el-dialog title="建立鎖倉產品" :visible.sync="addDialogVisible" width="70%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="Rules" ref="addFormref" label-width="100px">
-        <el-form-item label="活動名稱" prop="title">
-          <el-input v-model="addForm.title" style="width:50%"></el-input>
+        <el-form-item label="活動名稱" prop="title_GR">
+          <el-input v-model="addForm.title_GR" style="width:50%"></el-input>
+        </el-form-item>
+          <el-form-item label="英文活動名稱" prop="title_CN">
+          <el-input v-model="addForm.title_CN" style="width:50%"></el-input>
+        </el-form-item>
+          <el-form-item label="簡體活動名稱" prop="title_US">
+          <el-input v-model="addForm.title_US" style="width:50%"></el-input>
         </el-form-item>
         <el-form-item label="活動幣種" prop="currency">
           <el-select v-model="addForm.currency" placeholder="請選擇">
@@ -174,7 +180,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="申購單位" prop="Amount">
+        <el-form-item label="申購單位" prop="minAmount">
           <el-input v-model="addForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>~
           <el-input v-model="addForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
         </el-form-item>
@@ -328,7 +334,40 @@
   }"
           ></el-time-select>
         </el-form-item>
-        <!--  </div> -->
+        <el-form-item label="關聯至活動">
+            <el-select v-model="lockupac" placeholder="請選擇">
+            <el-option
+              v-for="lockup in activitylist"
+              :key="lockup.id"
+              :label="lockup.activity_name"
+              :value="lockup.id"
+            ></el-option>
+          </el-select>
+       <!--    <div v-if="lockupac!==''"> 活動期間:{{activitylist.starttime}}</div>
+           <div v-else> </div> -->
+        </el-form-item>
+
+        <el-form-item label="實名認證" >
+            <el-switch
+              v-model="addForm.kyc_require"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+            ></el-switch>
+        </el-form-item>
+
+        <el-form-item label="對象" prop="Objecttype">
+          <el-select v-model="Objecttype.value" placeholder="請選擇" style="width:30%">
+          <el-option
+            v-for="(item,index) in Objecttype"
+            :key="index"
+            v-bind:label="item.label"
+            v-bind:value="item.value"
+          >{{item.label}}</el-option>
+        </el-select>&nbsp;
+        </el-form-item>
+
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
@@ -339,9 +378,15 @@
 
     <!--編輯活動 -->
     <el-dialog title="編輯活動" :visible.sync="editDialogVisible" width="60%" @close="editDialogClosed">
-      <el-form :model="editForm" ref="editFormRef" label-width="100px" :rules="Rules">
-        <el-form-item label="活動名稱" prop="title">
-          <el-input v-model="editForm.title"></el-input>
+      <el-form :model="editForm" ref="editFormRef" label-width="180px" :rules="Rules">
+        <el-form-item label="活動名稱" prop="title_GR" style="width:50%">
+          <el-input v-model="editForm.title_GR"></el-input>
+        </el-form-item>
+         <el-form-item label="英文活動名稱" prop="title_CN">
+          <el-input v-model="editForm.title_CN" style="width:50%"></el-input>
+        </el-form-item>
+          <el-form-item label="簡體活動名稱" prop="title_US">
+          <el-input v-model="editForm.title_US" style="width:50%"></el-input>
         </el-form-item>
         <el-form-item label="活動幣種" prop="currency">
           <el-select v-model="editForm.currency" placeholder="請選擇">
@@ -354,7 +399,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="申購單位" prop="Amount">
+        <el-form-item label="申購單位" prop="minAmount">
           <el-form-item>
             <el-input v-model="editForm.minAmount" placeholder="最低申購" style="width:200px"></el-input>~
             <el-input v-model="editForm.maxAmount" placeholder="最高申購" style="width:200px"></el-input>
@@ -487,6 +532,39 @@
             }"
           ></el-time-select>
         </el-form-item>
+          <el-form-item label="關聯至活動">
+            <el-select v-model="lockupac" placeholder="請選擇">
+            <el-option
+              v-for="lockup in activitylist"
+              :key="lockup.id"
+              :label="lockup.activity_name"
+              :value="lockup.id"
+            ></el-option>
+          </el-select>
+       <!--    <div v-if="lockupac!==''"> 活動期間:{{activitylist.starttime}}</div>
+           <div v-else> </div> -->
+        </el-form-item>
+
+        <el-form-item label="實名認證" >
+            <el-switch
+              v-model="editForm.kyc_require"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+            ></el-switch>
+        </el-form-item>
+
+        <el-form-item label="對象" prop="Objecttype">
+          <el-select v-model="Objecttype.value" placeholder="請選擇" style="width:30%">
+          <el-option
+            v-for="(item,index) in Objecttype"
+            :key="index"
+            v-bind:label="item.label"
+            v-bind:value="item.value"
+          >{{item.label}}</el-option>
+        </el-select>&nbsp;
+        </el-form-item>
 
         <!--    </div> -->
       </el-form>
@@ -503,12 +581,16 @@ import {
   addActivity,
   Lockupdata,
   Lockupedit,
-  currencyList
+  currencyList,
+  get_drop_down_behavior
 } from '../../api/index.js'
 
 export default {
   data () {
     return {
+      lockup: '',
+      lockupac: '',
+      activitylist: '',
       people_limit: '',
       endTime: '',
       queryData: {},
@@ -536,11 +618,13 @@ export default {
         lang: []
       },
       Rules: {
-        title: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        title_GR: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        title_CN: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
+        title_US: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
         currency: [
           { required: true, message: '請選擇活動幣種', trigger: 'blur' }
         ],
-        Amount: [{ required: true, trigger: 'blur' }],
+        minAmount: [{ required: true, trigger: 'blur' }],
 
         rate: [{ required: true, message: '請輸入活動利率', trigger: 'blur' }],
         days: [{ required: true, message: '請輸入增值期間', trigger: 'blur' }],
@@ -575,6 +659,20 @@ export default {
           label: '活動常駐',
           value: '3'
         }
+      ],
+      Objecttype: [
+        {
+          label: '新用戶(活動開始後註冊)',
+          value: '1'
+        },
+        {
+          label: '舊用戶(活動開始前註冊)',
+          value: '2'
+        },
+        {
+          label: '新用戶及舊用戶',
+          value: '0'
+        }
       ]
     }
   },
@@ -608,9 +706,23 @@ export default {
     this.getLockupList()
     this.getCurrencyList()
     this.objList()
+    this.getactivitylist()
   },
 
   methods: {
+    // 活動列表
+    async getactivitylist () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        behavior_type: '3'
+      }
+      await get_drop_down_behavior(data).then(res => {
+        this.activitylist = res.data
+      })
+    },
+
     objList () {
       this.objname = localStorage.getItem('mg_name')
       this.objpwd = localStorage.getItem('mg_pwd')
@@ -719,7 +831,9 @@ export default {
 
       var data = {
         id: this.editForm.id,
-        title: this.editForm.title,
+        title_GR: this.editForm.title_GR,
+        title_CN: this.editForm.title_CN,
+        title_US: this.editForm.title_US,
         people_limit: this.editForm.people_limit,
         rate: this.editForm.rate / 100,
         currency: this.editForm.currency,
@@ -733,7 +847,10 @@ export default {
         active: this.editForm.active.toString(),
         days: this.editForm.days,
         type: this.editForm.type.toString(),
-        mode: this.editForm.mode.toString()
+        mode: this.editForm.mode.toString(),
+        bonus_behavior_id: this.lockupac,
+        kyc_require: this.addForm.kyc_require.toString(),
+        rank: this.Objecttype.value.toString()
       }
       console.log('data', data)
       await Lockupedit(data).then(res => {
@@ -753,7 +870,9 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         type: this.addForm.type.toString(),
-        title: this.addForm.title,
+        title_GR: this.addForm.title_GR,
+        title_CN: this.addForm.title_CN,
+        title_US: this.addForm.title_US,
         people_limit: this.addForm.people_limit,
         rate: this.addForm.rate / 100,
         currency: this.addForm.currency,
@@ -762,10 +881,14 @@ export default {
         beginTime: this.addForm.beginTime + this.addForm.starttime,
         endTime: this.addForm.endTime + this.addForm.endtimes,
         days: this.addForm.days,
-        mode: this.addForm.mode.toString()
+        mode: this.addForm.mode.toString(),
+        bonus_behavior_id: this.lockupac,
+        kyc_require: this.addForm.kyc_require.toString(),
+        rank: this.Objecttype.value.toString()
       }
 
       await addActivity(data).then(res => {
+        console.log('123', data)
         if (res.error_code === 0) {
           this.$message.success('新增成功')
           this.$refs.addFormref.resetFields()
