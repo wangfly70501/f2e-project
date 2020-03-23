@@ -102,7 +102,7 @@
         </el-select>
         </el-form-item>
         <!-- 結束時間 -->
-        <el-form-item label="結束時間" prop="endBudgetTime">
+        <el-form-item label="結束時間" >
           <el-date-picker
            :editable="false"
     v-model="endBudgetTime"
