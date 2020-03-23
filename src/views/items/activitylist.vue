@@ -75,7 +75,7 @@
     format="yyyy-MM-dd"
     value-format="yyyy-MM-dd"
     placeholder="選擇開始日期"
-    @change="changeEnd"
+
           ></el-date-picker>&nbsp;
 <!--           <el-time-picker
             style="width:30%"
@@ -112,7 +112,7 @@
     format="yyyy-MM-dd "
     value-format="yyyy-MM-dd"
     placeholder="選擇結束日期"
-    @change="changeStart"
+
           ></el-date-picker>&nbsp;
     <!--       <el-time-picker
             style="width:30%"
@@ -540,13 +540,17 @@ export default {
       }
       this.starttime = moment(this.startBudgetTime).format('YYYY-MM-DD ')
       this.enddate = moment(this.endBudgetTime).format('YYYY-MM-DD ')
-      this.starttime = this.starttime + '' + this.time.value + ':' + this.starttimemin.value
-      this.enddate = this.enddate + this.endtime.value + ':' + this.endtimemin.value
-      console.log('starttime', this.starttime, this.enddate)
-      let lastTtem = localStorage.getItem('lasttime')
-      console.log('lastTtem', lastTtem)
 
-      if (lastTtem === this.starttime || this.starttime <= lastTtem || this.enddate <= lastTtem || this.starttime >= this.enddate) {
+      let lastTtem = localStorage.getItem('lasttime')
+      let Ctime = this.starttime + '' + this.starttmiehr + ':' + this.starttimemin
+      let Etime = this.enddate + this.endtimehr + ':' + this.endtimemin
+
+      console.log('lastTtem', lastTtem)
+      console.log('Ctime', Ctime)
+
+      console.log('Etime', Etime)
+
+      if (lastTtem === Ctime || Ctime <= lastTtem || Etime <= lastTtem || Ctime >= Etime) {
         this.$message.error('時間設置異常')
       } else {
         var data = {
@@ -560,8 +564,8 @@ export default {
           activity_content_US: this.editForm.activity_content_US,
           activity_content_CN: this.editForm.activity_content_CN,
           activity_content_GR: this.editForm.activity_content_GR,
-          starttime: this.starttime,
-          endtime: this.enddate,
+          starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
+          endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
           bonus_amount: this.editForm.bonus_amount,
           bonus_currency: this.editForm.bonus_currency,
           bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
@@ -583,7 +587,7 @@ export default {
         })
       }
     },
-    changeStart () {
+    /*  changeStart () {
       console.log('123')
       if (!this.lasttime.endtime) {
         this.pickerOptionsStart = {
@@ -592,7 +596,7 @@ export default {
         return
       }
       this.pickerOptionsStart = Object.assign({}, this.pickerOptionsStart, {
-        // 可通過箭頭函式的方式訪問到this
+
         disabledDate: (time) => {
           var times = ''
           times = time.getTime() < this.lasttime.endtime
@@ -600,7 +604,7 @@ export default {
         }
       })
     },
-    // 開始時間 控制結束時間
+
     changeEnd () {
       if (!this.startBudgetTime) {
         this.pickerOptionsEnd = {
@@ -613,7 +617,7 @@ export default {
           return time.getTime() < this.startBudgetTime
         }
       })
-    },
+    }, */
     delbtn () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
