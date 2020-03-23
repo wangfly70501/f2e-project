@@ -12,9 +12,9 @@
       :value="item.value"
     ></el-option>
 </el-select>  &nbsp; -->
-     <p class="text">Uid:</p>
+     <span class="textfont">Uid:</span>
 <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%" placeholder="請輸入uid"></el-input>&nbsp;
-      <p class="text">提交時間:</p>
+      <span class="textfont">提交時間:</span>
       <el-date-picker
         type="daterange"
         start-placeholder="StartTime"
@@ -181,7 +181,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.text {
+.textfont {
   display: inline-block;
   margin: 0 5px;
   font-size: 12px;

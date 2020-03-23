@@ -89,8 +89,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="上限(次)" prop="bonus_limit" align="center" ></el-table-column>
-
+        <el-table-column label="上限(次)" prop="bonus_limit" align="center" >
+          <template slot-scope="scope">
+          {{scope.row.bonus_limit/scope.row.bonus_amount}}
+            </template>
+            </el-table-column>
        <el-table-column label="已參加人數" align="center">
          <template slot-scope="scope">
          <span v-if="scope.row.status === 0"><el-tag type="info">{{scope.row.people_count}}</el-tag></span>

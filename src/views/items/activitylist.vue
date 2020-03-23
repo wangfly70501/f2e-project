@@ -55,7 +55,7 @@
           <div class="mechanism">
              <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px">
             <el-form-item label="活動類型" prop="type">
-          <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%" @change="getlasttime ()">
+          <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
           <el-option
             v-for="(enableValue,index) in enable"
             :key="index"
@@ -66,14 +66,14 @@
         </el-form-item>
         <hr width="80%" />
         <!-- 開始時間 -->
-        <el-form-item label="開始時間" prop="startBudgetTime">
+        <el-form-item label="開始時間" >
           <el-date-picker
            :editable="false"
     v-model="startBudgetTime"
     :picker-options="pickerOptionsStart"
     type="date"
     format="yyyy-MM-dd"
-    value-format="timestamp"
+    value-format="yyyy-MM-dd"
     placeholder="選擇開始日期"
     @change="changeEnd"
           ></el-date-picker>&nbsp;
@@ -102,7 +102,7 @@
         </el-select>
         </el-form-item>
         <!-- 結束時間 -->
-        <el-form-item label="結束時間" prop="endBudgetTime">
+        <el-form-item label="結束時間">
           <el-date-picker
            :editable="false"
     v-model="endBudgetTime"
@@ -110,7 +110,7 @@
 
     type="date"
     format="yyyy-MM-dd "
-    value-format="timestamp"
+    value-format="yyyy-MM-dd"
     placeholder="選擇結束日期"
     @change="changeStart"
           ></el-date-picker>&nbsp;
@@ -120,7 +120,7 @@
             value-format="HH:mm"
             v-model="addForm.endtimes"
           ></el-time-picker> -->
-            <el-select v-model="endtimehr.value" style="width:10%" placeholder="23">
+            <el-select v-model="endtimehr" style="width:10%" placeholder="23">
           <el-option
             v-for="(endtimehr,index) in timehr"
             :key="index"
@@ -128,7 +128,7 @@
             :value="endtimehr.value"
           >{{endtimehr.label}}</el-option>
         </el-select>
-               <el-select v-model="endtimemin.value" style="width:10%"  placeholder="00">
+               <el-select v-model="endtimemin" style="width:10%"  placeholder="00">
           <el-option
             v-for="(endtimemin,index) in timemin"
             :key="index"
@@ -248,40 +248,44 @@ export default {
       enable: [
         {
           label: '註冊',
-          value: '1'
+          value: 1
         },
         {
           label: '實名認證',
-          value: '2'
+          value: 2
         },
         {
           label: '鎖倉認購',
-          value: '3'
+          value: 3
         },
         {
           label: '邀請好友',
-          value: '4'
+          value: 4
         },
         {
           label: '綁定銀行帳戶',
-          value: '5'
+          value: 5
         }
       ],
       Objecttype: [
         {
           label: '新用戶(活動開始後註冊)',
-          value: '1'
+          value: 1
         },
         {
           label: '舊用戶(活動開始前註冊)',
-          value: '2'
+          value: 2
         },
         {
           label: '新用戶及舊用戶',
-          value: '0'
+          value: 0
         }
       ],
       timehr: [
+        {
+          label: '00',
+          value: '00'
+        },
         {
           label: '01',
           value: '01'
@@ -402,19 +406,19 @@ export default {
         }
       ],
       options: [{
-        value: '0',
+        value: 0,
         label: '不拘'
       }, {
-        value: '1',
+        value: 1,
         label: '已註冊'
       }, {
-        value: '2',
+        value: 2,
         label: '已實名認證'
       }, {
-        value: '3',
+        value: 3,
         label: '已鎖倉認購'
       }, {
-        value: '4',
+        value: 4,
         label: '已綁定銀行帳戶'
       }
       ],
@@ -449,11 +453,19 @@ export default {
       if (newData.id === oldData.id) return
       this.$refs.audio.play()
     },
-    startBudgetTime (newData, oldData) {
+    /*     startBudgetTime (newData, oldData) {
       if (newData.id === oldData.id) return
       this.$refs.audio.play()
     }
-
+ */
+    endtimehr (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    },
+    endtimemin (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    }
   },
   created () {
     this.objList()
@@ -470,9 +482,14 @@ export default {
     this.starttmiehr = this.editForm.starttime.substr(11, 2)
     this.starttimemin = this.editForm.starttime.substr(14, 2)
     /* this.endBudgetTime = this.editForm.endtime.substr(0, 10) */
-    this.endtimehr.value = this.editForm.endtime.substr(11, 2)
-    this.endtimemin.value = this.editForm.endtime.substr(14, 2)
+    this.endtimehr = this.editForm.endtime.substr(11, 2)
+    this.endtimemin = this.editForm.endtime.substr(14, 2)
     console.log('232', this.time.value)
+    this.editForm.bonus_limit = this.$route.query.bonus_limit / this.$route.query.bonus_amount
+    this.startBudgetTime = this.editForm.starttime.substr(0, 10)
+    console.log('456789', this.startBudgetTime)
+    this.endBudgetTime = this.editForm.endtime.substr(0, 10)
+    this.getlasttime()
   },
 
   methods: {
@@ -490,17 +507,17 @@ export default {
     uppage () {
       this.$router.push('/activity')
     },
-    // 最新時間
+    // 獲得最新時間
     async getlasttime () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        behavior_type: this.enable.value
+        behavior_type: this.$route.query.type
       }
       await checkBehaviorEndTime(data).then(res => {
         this.lasttime = res.data
-        console.log('15132321', this.lasttime)
+        console.log('this.lasttime', this.lasttime.endtime)
       })
     },
     // 幣種列表
@@ -512,7 +529,6 @@ export default {
       }
       await currencyList(data).then(res => {
         this.currencyList = res.data
-        console.log('currencyList', this.currencyList)
       })
     },
     // 設置
@@ -524,40 +540,51 @@ export default {
       }
       this.starttime = moment(this.startBudgetTime).format('YYYY-MM-DD ')
       this.enddate = moment(this.endBudgetTime).format('YYYY-MM-DD ')
-      var data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        type: this.editForm.type,
-        activity_name_GR: this.editForm.activity_name_GR,
-        activity_name_CN: this.editForm.activity_name_CN,
-        activity_name_US: this.editForm.activity_name_US,
-        activity_content_US: this.editForm.activity_content_US,
-        activity_content_CN: this.editForm.activity_content_CN,
-        activity_content_GR: this.editForm.activity_content_GR,
-        starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
-        endtime: this.enddate + this.endtimehr.value + ':' + this.endtimemin.value,
-        bonus_amount: this.editForm.bonus_amount,
-        bonus_currency: this.editForm.bonus_currency,
-        bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
-        people_limit: this.editForm.people_limit,
-        bonus_limit_status: this.editForm.bonus_limit_status,
-        show_status: this.editForm.show_status.toString(),
-        people_set: this.editForm.people_set,
-        behavior_id: this.editForm.id
+      this.starttime = this.starttime + '' + this.time.value + ':' + this.starttimemin.value
+      this.enddate = this.enddate + this.endtime.value + ':' + this.endtimemin.value
+      console.log('starttime', this.starttime, this.enddate)
+      let lastTtem = localStorage.getItem('lasttime')
+      console.log('lastTtem', lastTtem)
 
-      }
-      console.log('data', data)
-      await setBehavior(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('編輯成功')
-        } else {
-          this.$message.error('格式不符，修改失敗')
+      if (lastTtem === this.starttime || this.starttime <= lastTtem || this.enddate <= lastTtem || this.starttime >= this.enddate) {
+        this.$message.error('時間設置異常')
+      } else {
+        var data = {
+          mg_name: localStorage.getItem('mg_name'),
+          mg_pwd: localStorage.getItem('mg_pwd'),
+          mg_state: localStorage.getItem('mg_state'),
+          type: this.editForm.type,
+          activity_name_GR: this.editForm.activity_name_GR,
+          activity_name_CN: this.editForm.activity_name_CN,
+          activity_name_US: this.editForm.activity_name_US,
+          activity_content_US: this.editForm.activity_content_US,
+          activity_content_CN: this.editForm.activity_content_CN,
+          activity_content_GR: this.editForm.activity_content_GR,
+          starttime: this.starttime,
+          endtime: this.enddate,
+          bonus_amount: this.editForm.bonus_amount,
+          bonus_currency: this.editForm.bonus_currency,
+          bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
+          people_limit: this.editForm.people_limit,
+          bonus_limit_status: this.editForm.bonus_limit_status,
+          show_status: this.editForm.show_status.toString(),
+          people_set: this.editForm.people_set,
+          behavior_id: this.editForm.id
+
         }
-        this.$router.push('/activity')
-      })
+        console.log('data', data)
+        await setBehavior(data).then(res => {
+          if (res.error_code === 0) {
+            this.$message.success('編輯成功')
+          } else {
+            this.$message.error('格式不符，修改失敗')
+          }
+          this.$router.push('/activity')
+        })
+      }
     },
     changeStart () {
+      console.log('123')
       if (!this.lasttime.endtime) {
         this.pickerOptionsStart = {
           disabledDate: {}
