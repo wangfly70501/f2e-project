@@ -74,7 +74,10 @@
         </el-table-column>
 
         <el-table-column label="名額" prop="people_limit">
-          <template slot-scope="scope">{{scope.row.people_limit }} 人</template>
+          <template slot-scope="scope">
+           <span v-if="scope.row.people_limit===0"> ∞</span>
+           <span v-else> {{scope.row.people_limit}} 人</span>
+            </template>
         </el-table-column>
         <el-table-column label="獎勵金額"  align="center">
           <template slot-scope="scope">
@@ -90,8 +93,9 @@
           </template>
         </el-table-column>
         <el-table-column label="上限(次)" prop="bonus_limit" align="center" >
-          <template slot-scope="scope">
-          {{scope.row.bonus_limit/scope.row.bonus_amount}}
+          <template slot-scope="scope" >
+         <span  v-if="scope.row.bonus_limit=='0'"> 0</span>
+            <span  v-else> {{scope.row.bonus_limit/scope.row.bonus_amount}}</span>
             </template>
             </el-table-column>
        <el-table-column label="已參加人數" align="center">
