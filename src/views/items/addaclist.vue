@@ -66,12 +66,11 @@
         </el-form-item>
         <hr width="80%" />
         <!-- 開始時間 -->
-        <el-form-item label="開始時間" prop="startBudgetTime">
+        <el-form-item label="開始時間" >
           <el-date-picker
            :editable="false"
-    v-model="startBudgetTime"
+     v-model="startBudgetTime"
     :picker-options="pickerOptionsStart"
-
     type="date"
     format="yyyy-MM-dd"
     value-format="timestamp"
@@ -274,6 +273,10 @@ export default {
       ],
       timehr: [
         {
+          label: '00',
+          value: '00'
+        },
+        {
           label: '01',
           value: '01'
         },
@@ -474,7 +477,9 @@ export default {
       }
       await checkBehaviorEndTime(data).then(res => {
         this.lasttime = res.data
-        console.log('15132321', this.lasttime)
+        console.log('15132321', this.lasttime.endtime)
+
+        localStorage.setItem('lasttime', this.lasttime.endtime)
       })
     },
     // 幣種列表
@@ -498,36 +503,47 @@ export default {
       }
       this.starttime = moment(this.startBudgetTime).format('YYYY-MM-DD ')
       this.enddate = moment(this.endBudgetTime).format('YYYY-MM-DD ')
-      var data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state'),
-        type: this.enable.value.toString(),
-        activity_name_GR: this.addForm.titlegr,
-        activity_name_CN: this.addForm.titlecn,
-        activity_name_US: this.addForm.titleus,
-        activity_content_US: this.addForm.activity_content_US,
-        activity_content_CN: this.addForm.activity_content_CN,
-        activity_content_GR: this.addForm.activity_content_GR,
-        starttime: this.starttime + '' + this.time.value + ':' + this.starttimemin.value,
-        endtime: this.enddate + this.endtime.value + ':' + this.endtimemin.value,
-        bonus_amount: this.addForm.bonus_amount,
-        bonus_currency: this.coin.value,
-        bonus_limit: this.addForm.bonus_amount * this.addForm.bonus_limit,
-        people_limit: this.addForm.people_limit,
-        bonus_limit_status: this.addForm.bonus_limit_status,
-        show_status: this.addForm.show_status.toString(),
-        people_set: this.Objecttype.value.toString()
-      }
-      console.log('data', data)
-      await inserttask(data).then(res => {
-        if (res.error_code === 0) {
-          this.$message.success('新增成功')
-        } else {
-          this.$message.error('格式不符，新增失敗')
+      this.starttime = this.starttime + '' + this.time.value + ':' + this.starttimemin.value
+      this.enddate = this.enddate + this.endtime.value + ':' + this.endtimemin.value
+      console.log('starttime', this.starttime, this.enddate)
+      let lastTtem = localStorage.getItem('lasttime')
+      console.log('lastTtem', lastTtem)
+
+      if (lastTtem === this.starttime || this.starttime <= lastTtem || this.enddate <= lastTtem || this.starttime >= this.enddate) {
+        this.$message.error('時間異常,開始時間不能在上一個活動時間內')
+      } else {
+        var data = {
+          mg_name: localStorage.getItem('mg_name'),
+          mg_pwd: localStorage.getItem('mg_pwd'),
+          mg_state: localStorage.getItem('mg_state'),
+          type: this.enable.value.toString(),
+          activity_name_GR: this.addForm.titlegr,
+          activity_name_CN: this.addForm.titlecn,
+          activity_name_US: this.addForm.titleus,
+          activity_content_US: this.addForm.activity_content_US,
+          activity_content_CN: this.addForm.activity_content_CN,
+          activity_content_GR: this.addForm.activity_content_GR,
+          starttime: this.starttime,
+          endtime: this.enddate,
+          bonus_amount: this.addForm.bonus_amount,
+          bonus_currency: this.coin.value,
+          bonus_limit: this.addForm.bonus_amount * this.addForm.bonus_limit,
+          people_limit: this.addForm.people_limit,
+          bonus_limit_status: this.addForm.bonus_limit_status,
+          show_status: this.addForm.show_status.toString(),
+          people_set: this.Objecttype.value.toString()
         }
-        this.$router.push('/activity')
-      })
+
+        console.log('data', data)
+        await inserttask(data).then(res => {
+          if (res.error_code === 0) {
+            this.$message.success('新增成功')
+            this.$router.push('/activity')
+          } else {
+            this.$message.error('格式不符，新增失敗')
+          }
+        })
+      }
     },
     changeStart () {
       if (!this.lasttime.endtime) {
@@ -555,6 +571,7 @@ export default {
       }
       this.pickerOptionsEnd = Object.assign({}, this.pickerOptionsEnd, {
         disabledDate: (time) => {
+          console.log('123456', this.startBudgetTime)
           return time.getTime() < this.startBudgetTime
         }
       })
