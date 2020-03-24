@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '任務管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '鎖倉管理']"></TopBreadcrumb>
 
     <el-card>
       <!-- 搜索工具 -->
@@ -40,7 +40,7 @@
     </el-table-column>
         <el-table-column label="ID" prop="id" width="40px"></el-table-column>-->
         <el-table-column label="ID" prop="id" width="40%"></el-table-column>
-        <el-table-column label="活動名稱" prop="title"></el-table-column>
+        <el-table-column label="活動名稱" prop="title_GR"></el-table-column>
 
         <el-table-column label="幣種" >
           <template slot-scope="scope">
@@ -56,8 +56,8 @@
         </el-table-column>
         <el-table-column label="申購單位">
           <template slot-scope="scope">
-            <p>最低 {{scope.row.minAmount | NumFormat}}</p>
-            <p>最高 {{scope.row.maxAmount | NumFormat }}</p>
+            <div>最低 {{scope.row.minAmount | NumFormat}}</div>
+            <div>最高 {{scope.row.maxAmount | NumFormat }}</div>
           </template>
         </el-table-column>
         <el-table-column label="利率" prop="rate" width="80%">
@@ -81,12 +81,12 @@
         <el-table-column label="活動方式">
           <template slot-scope="scope">
             <div v-if="scope.row.type ===1">
-              <p>開始: {{scope.row.beginTime | datefformat}}</p>
-              <p>結束: 申購人數達{{scope.row.people_limit}} 人</p>
+              <div>開始: {{scope.row.beginTime | datefformat}}</div>
+              <div>結束: 申購人數達{{scope.row.people_limit}} 人</div>
             </div>
             <div v-else>
-              <p>開始: {{scope.row.beginTime | datefformat}}</p>
-              <p>結束: {{scope.row.endTime | datefformat}}</p>
+              <div>開始: {{scope.row.beginTime | datefformat}}</div>
+              <div>結束: {{scope.row.endTime | datefformat}}</div>
             </div>
           </template>
         </el-table-column>
@@ -126,7 +126,7 @@
               @click="showEditDialog(scope.$index, scope.row)"
             ></el-button>
 
-            <el-button v-else  disabled type="info" plain icon="el-icon-edit" size="mini"  @click="showEditDialog(scope.$index, scope.row)">
+            <el-button v-else   type="primary" plain icon="el-icon-view" size="mini"  @click="showEditDialog(scope.$index, scope.row)">
               <el-tooltip effect="dark" content="活動開始或結束無法編輯" placement="top-start"></el-tooltip>
             </el-button>&nbsp;
             <el-button
@@ -358,9 +358,9 @@
         </el-form-item>
 
         <el-form-item label="對象" prop="Objecttype">
-          <el-select v-model="Objecttype.value" placeholder="請選擇" style="width:30%">
+          <el-select v-model="Objecttype" placeholder="請選擇" style="width:30%">
           <el-option
-            v-for="(item,index) in Objecttype"
+            v-for="(item,index) in Objecttypelist"
             :key="index"
             v-bind:label="item.label"
             v-bind:value="item.value"
@@ -556,9 +556,9 @@
         </el-form-item>
 
         <el-form-item label="對象" prop="Objecttype">
-          <el-select v-model="Objecttype.value" placeholder="請選擇" style="width:30%">
+          <el-select v-model="Objecttype" placeholder="請選擇" style="width:30%">
           <el-option
-            v-for="(item,index) in Objecttype"
+            v-for="(item,index) in Objecttypelist"
             :key="index"
             v-bind:label="item.label"
             v-bind:value="item.value"
@@ -568,9 +568,12 @@
 
         <!--    </div> -->
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer" class="dialog-footer" v-if="editForm.status===0">
         <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveEdit">確定</el-button>
+      </span>
+         <span slot="footer" class="dialog-footer" v-else style="color:gray;">
+           活動進行中或已結束無法編輯
       </span>
     </el-dialog>
   </div>
@@ -638,10 +641,12 @@ export default {
       editForm: {
         startTime: '',
         lang: [],
-        beginTime: []
+        beginTime: [],
+        bonus_behavior_id: ''
       },
       startTime: '',
       lastTime: '',
+      Objecttype: '',
       enable: [
         /*     {
           label: '所有',
@@ -660,7 +665,12 @@ export default {
           value: '3'
         }
       ],
-      Objecttype: [
+      Objecttypelist: [
+
+        {
+          label: '不限',
+          value: '0'
+        },
         {
           label: '新用戶(活動開始後註冊)',
           value: '1'
@@ -668,10 +678,6 @@ export default {
         {
           label: '舊用戶(活動開始前註冊)',
           value: '2'
-        },
-        {
-          label: '新用戶及舊用戶',
-          value: '0'
         }
       ]
     }
@@ -808,7 +814,9 @@ export default {
       /*  var xxx = this.editForm.endTime
       this.editForm.endTimes = xxx.substr(11, 5)
       console.log('565', this.editForm) */
-      console.log(this.editForm)
+      console.log(this.editForm.bonus_behavior_id)
+      this.lockupac = this.editForm.bonus_behavior_id
+      this.Objecttype = this.editForm.rank.toString()
     },
 
     editDialogClosed () {
@@ -848,9 +856,9 @@ export default {
         days: this.editForm.days,
         type: this.editForm.type.toString(),
         mode: this.editForm.mode.toString(),
-        bonus_behavior_id: this.lockupac,
-        kyc_require: this.addForm.kyc_require.toString(),
-        rank: this.Objecttype.value.toString()
+        bonus_behavior_id: this.lockupac.toString(),
+        kyc_require: this.editForm.kyc_require.toString(),
+        rank: this.Objecttype.toString()
       }
       console.log('data', data)
       await Lockupedit(data).then(res => {
@@ -884,7 +892,7 @@ export default {
         mode: this.addForm.mode.toString(),
         bonus_behavior_id: this.lockupac,
         kyc_require: this.addForm.kyc_require.toString(),
-        rank: this.Objecttype.value.toString()
+        rank: this.Objecttype.toString()
       }
 
       await addActivity(data).then(res => {
