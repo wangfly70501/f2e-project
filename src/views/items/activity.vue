@@ -42,7 +42,7 @@
       <!-- 列表 -->
       <el-table :data="activitylist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor"   :cell-style="cellStyle">
         <el-table-column label="排序" prop="id" width="50%"  align="center"></el-table-column>
-        <el-table-column label="前台顯示"  align="center" >
+        <el-table-column label="前台顯示"  align="center" width="100%">
             <template slot-scope="scope">
               <div v-if="scope.row.show_status===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
              <!--  <div v-else-if="scope.row.show_status===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div> -->
@@ -61,7 +61,7 @@
             </div>
           </template>
         </el-table-column>
-          <el-table-column label="活動名稱" width="300%">
+          <el-table-column label="活動名稱" width="400%">
               <template slot-scope="scope" >
              <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_GR}}</router-link>
               </template>
@@ -73,7 +73,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="名額" prop="people_limit" width="50%">
+        <el-table-column label="名額" prop="people_limit" width="100%">
           <template slot-scope="scope">
            <span v-if="scope.row.people_limit===0"> 99999</span>
            <span v-else> {{scope.row.people_limit}} 人</span>
