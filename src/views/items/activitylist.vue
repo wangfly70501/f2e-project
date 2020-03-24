@@ -3,155 +3,162 @@
     <TopBreadcrumb :titles="['活動管理', '新增活動']"></TopBreadcrumb>
 
     <el-card>
-    <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/>
+      <font-awesome-icon icon="times" size="lg" @click="uppage" style="float:right" />
 
-     <p class="txt">前台顯示
-              <el-switch
-              v-model="editForm.show_status"
-              active-color="#169BD5"
-              inactive-color="#BEBEBE"
-              :active-value='1'
-              :inactive-value='0'
-              class="fontpadding"
-            ></el-switch>
-                &nbsp;
-                <el-button size="mini" type="danger" @click="showaddDialog()"> <font-awesome-icon  icon="trash-alt" size="1x"/></el-button>
-            </p>
+      <p class="txt">
+        前台顯示
+        <el-switch
+          v-model="editForm.show_status"
+          active-color="#169BD5"
+          inactive-color="#BEBEBE"
+          :active-value="1"
+          :inactive-value="0"
+          class="fontpadding"
+        ></el-switch>&nbsp;
+        <el-button size="mini" type="danger" @click="showaddDialog()">
+          <font-awesome-icon icon="trash-alt" size="1x" />
+        </el-button>
+      </p>
 
-      <div class="txt">活動資訊 <hr ></div>
- <!-- 新增活動 -->
+      <div class="txt">
+        活動資訊
+        <hr />
+      </div>
+      <!-- 新增活動 -->
 
       <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="100px">
-         <div class="text">
-       <span>活動名稱</span> <span class="description">
-         <el-form-item label="繁中" prop="activity_name_GR">
-          <el-input v-model="editForm.activity_name_GR" style="width:400px" ></el-input>
-        </el-form-item>
-        <el-form-item label="简中" prop="activity_name_CN">
-          <el-input v-model="editForm.activity_name_CN" style="width:100%" ></el-input>
-        </el-form-item>
-        <el-form-item label="EN" prop="activity_name_US">
-          <el-input v-model="editForm.activity_name_US" style="width:100%" ></el-input>
-        </el-form-item>
-        </span>
-          </div>
+        <div class="text">
+          <span>活動名稱</span>
+          <span class="description">
+            <el-form-item label="繁中" prop="activity_name_GR">
+              <el-input v-model="editForm.activity_name_GR" style="width:400px"></el-input>
+            </el-form-item>
+            <el-form-item label="简中" prop="activity_name_CN">
+              <el-input v-model="editForm.activity_name_CN" style="width:100%"></el-input>
+            </el-form-item>
+            <el-form-item label="EN" prop="activity_name_US">
+              <el-input v-model="editForm.activity_name_US" style="width:100%"></el-input>
+            </el-form-item>
+          </span>
+        </div>
 
-          <hr width="80%" />
-          <div class="text"><span>活動描述</span>
-        <span class="description"><el-form-item label="繁中" prop="activity_content_GR">
-          <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea"></el-input>
-        </el-form-item>
-        <el-form-item label="简中" prop="activity_content_CN">
-          <el-input v-model="editForm.activity_content_CN" style="width:100%"  type="textarea"></el-input>
-        </el-form-item>
-        <el-form-item label="EN" prop="activity_content_US">
-          <el-input v-model="editForm.activity_content_US" style="width:100%"  type="textarea"></el-input>
-        </el-form-item>
-        </span>
-          </div>
-           </el-form>
-          <!-- 活動描述 -->
-          <div class="txt">活動機制 <hr ></div>
-          <div class="mechanism">
-             <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px">
-            <el-form-item label="活動類型" prop="type">
-          <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
-          <el-option
-            v-for="(enableValue,index) in enable"
-            :key="index"
-            v-bind:label="enableValue.label"
-            v-bind:value="enableValue.value"
-          >{{enableValue.label}}</el-option>
-        </el-select>&nbsp;
-        </el-form-item>
         <hr width="80%" />
-        <!-- 開始時間 -->
-        <el-form-item label="開始時間" >
-          <el-date-picker
-           :editable="false"
-    v-model="startBudgetTime"
-    :picker-options="pickerOptionsStart"
-    type="date"
-    format="yyyy-MM-dd"
-    value-format="yyyy-MM-dd"
-    placeholder="選擇開始日期"
-
-          ></el-date-picker>&nbsp;
-<!--           <el-time-picker
+        <div class="text">
+          <span>活動描述</span>
+          <span class="description">
+            <el-form-item label="繁中" prop="activity_content_GR">
+              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea"></el-input>
+            </el-form-item>
+            <el-form-item label="简中" prop="activity_content_CN">
+              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea"></el-input>
+            </el-form-item>
+            <el-form-item label="EN" prop="activity_content_US">
+              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea"></el-input>
+            </el-form-item>
+          </span>
+        </div>
+      </el-form>
+      <!-- 活動描述 -->
+      <div class="txt">
+        活動機制
+        <hr />
+      </div>
+      <div class="mechanism">
+        <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px">
+          <el-form-item label="活動類型" prop="type">
+            <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
+              <el-option
+                v-for="(enableValue,index) in enable"
+                :key="index"
+                v-bind:label="enableValue.label"
+                v-bind:value="enableValue.value"
+              >{{enableValue.label}}</el-option>
+            </el-select>&nbsp;
+          </el-form-item>
+          <hr width="80%" />
+          <!-- 開始時間 -->
+          <el-form-item label="開始時間">
+            <el-date-picker
+              :editable="false"
+              v-model="startBudgetTime"
+              :picker-options="pickerOptionsStart"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="選擇開始日期"
+            ></el-date-picker>&nbsp;
+            <!--           <el-time-picker
             style="width:30%"
             v-model="addForm.starttime"
              format="HH:mm"
             value-format="HH:mm"
-          ></el-time-picker> -->
+            ></el-time-picker>-->
             <el-select v-model="starttmiehr" style="width:10%" placeholder="00">
-          <el-option
-            v-for="(time,index) in timehr"
-            :key="index"
-           :label="time.label"
-            :value="time.value"
-
-          >{{time.label}}</el-option>
-        </el-select>
-               <el-select v-model="starttimemin" style="width:10%"  placeholder="00">
-          <el-option
-            v-for="(starttimemin,index) in timemin"
-            :key="index"
-           :label="starttimemin.label"
-            :value="starttimemin.value"
-          >{{starttimemin.label}}</el-option>
-        </el-select>
-        </el-form-item>
-        <!-- 結束時間 -->
-        <el-form-item label="結束時間">
-          <el-date-picker
-           :editable="false"
-    v-model="endBudgetTime"
-    :picker-options="pickerOptionsEnd"
-
-    type="date"
-    format="yyyy-MM-dd "
-    value-format="yyyy-MM-dd"
-    placeholder="選擇結束日期"
-
-          ></el-date-picker>&nbsp;
-    <!--       <el-time-picker
+              <el-option
+                v-for="(time,index) in timehr"
+                :key="index"
+                :label="time.label"
+                :value="time.value"
+              >{{time.label}}</el-option>
+            </el-select>
+            <el-select v-model="starttimemin" style="width:10%" placeholder="00">
+              <el-option
+                v-for="(starttimemin,index) in timemin"
+                :key="index"
+                :label="starttimemin.label"
+                :value="starttimemin.value"
+              >{{starttimemin.label}}</el-option>
+            </el-select>
+          </el-form-item>
+          <!-- 結束時間 -->
+          <el-form-item label="結束時間">
+            <el-date-picker
+              :editable="false"
+              v-model="endBudgetTime"
+              :picker-options="pickerOptionsEnd"
+              type="date"
+              format="yyyy-MM-dd "
+              value-format="yyyy-MM-dd"
+              placeholder="選擇結束日期"
+            ></el-date-picker>&nbsp;
+            <!--       <el-time-picker
             style="width:30%"
             format="HH:mm"
             value-format="HH:mm"
             v-model="addForm.endtimes"
-          ></el-time-picker> -->
+            ></el-time-picker>-->
             <el-select v-model="endtimehr" style="width:10%" placeholder="23">
-          <el-option
-            v-for="(endtimehr,index) in timehr"
-            :key="index"
-           :label="endtimehr.label"
-            :value="endtimehr.value"
-          >{{endtimehr.label}}</el-option>
-        </el-select>
-               <el-select v-model="endtimemin" style="width:10%"  placeholder="00">
-          <el-option
-            v-for="(endtimemin,index) in timemin"
-            :key="index"
-           :label="endtimemin.label"
-            :value="endtimemin.value"
-          >{{endtimemin.label}}</el-option>
-        </el-select>
-        </el-form-item>
+              <el-option
+                v-for="(endtimehr,index) in timehr"
+                :key="index"
+                :label="endtimehr.label"
+                :value="endtimehr.value"
+              >{{endtimehr.label}}</el-option>
+            </el-select>
+            <el-select v-model="endtimemin" style="width:10%" placeholder="00">
+              <el-option
+                v-for="(endtimemin,index) in timemin"
+                :key="index"
+                :label="endtimemin.label"
+                :value="endtimemin.value"
+              >{{endtimemin.label}}</el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="人數限制" prop="people_limit">
-          <el-input v-model="editForm.people_limit" style="width:80px"></el-input> &nbsp;位 (設0表示無限制)
-        </el-form-item>
-        <hr width="80%" />
+            <el-input v-model="editForm.people_limit" style="width:80px"></el-input>&nbsp;位 (設0表示無限制)
+          </el-form-item>
+          <hr width="80%" />
           <el-form-item label="對象" prop="people_set">
-          <el-select v-model="editForm.people_set" placeholder="請選擇" style="width:30%">
-          <el-option
-            v-for="(item,index) in Objecttype"
-            :key="index"
-            v-bind:label="item.label"
-            v-bind:value="item.value"
-          >{{item.label}}</el-option>
-        </el-select>&nbsp;
-        </el-form-item>
- <!--        <el-form-item label="資格條件" prop="condition"  style="width:80px" >
+            <el-select v-model="editForm.people_set" placeholder="請選擇" style="width:30%">
+              <el-option
+                v-for="(item,index) in Objecttype"
+                :key="index"
+                v-bind:label="item.label"
+                v-bind:value="item.value"
+              >{{item.label}}</el-option>
+            </el-select>&nbsp;
+          </el-form-item>
+          <!--        <el-form-item label="資格條件" prop="condition"  style="width:80px" >
               <el-select v-model="condition" multiple placeholder="請選擇">
     <el-option
       v-for="item in options"
@@ -160,47 +167,55 @@
       :value="item.value">
     </el-option>
   </el-select>
-        </el-form-item> -->
-        <hr width="80%" />
+          </el-form-item>-->
+          <hr width="80%" />
           <el-form-item label="獎勵金額" prop="bonus_amount">
-          <el-input v-model="editForm.bonus_amount" style="width:80px"  placeholder="金額"></el-input>
+            <el-input v-model="editForm.bonus_amount" style="width:80px" placeholder="金額"></el-input>
             <el-select v-model="editForm.bonus_currency" placeholder="USDT" style="width:10%">
-          <el-option
-            v-for="(coin,index) in currencyList"
-            :key="index"
-            v-bind:label="coin.currency"
-            v-bind:value="coin.id"
-          >{{coin.currency}}</el-option>
-        </el-select>
-        </el-form-item>
+              <el-option
+                v-for="(coin,index) in currencyList"
+                :key="index"
+                v-bind:label="coin.currency"
+                v-bind:value="coin.id"
+              >{{coin.currency}}</el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="獎勵次數" prop="bonus_limit">
-         <!--  <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp; -->
-          <el-input-number v-model="editForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
-        </el-form-item>
-        <hr width="80%" />
-         </el-form >
-        </div>
+            <!--  <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp; -->
+            <el-input-number v-model="editForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
+          </el-form-item>
+          <hr width="80%" />
+        </el-form>
+      </div>
 
       <!-- 底部区域 -->
       <div class="btn">
-     <el-button type="primary" @click="setacList" style="width:40%">編輯活動</el-button>
+        <div
+          v-if="editForm.status===1 ||editForm.status===3 || editForm.status===2"
+          style="color:gray"
+        >活動進行中或已結束無法編輯</div>
+        <div v-else>
+          <el-button type="primary" @click="setacList" style="width:40%">編輯活動</el-button>
+        </div>
       </div>
     </el-card>
-        <!-- 審核不通過訊息 -->
+    <!-- 審核不通過訊息 -->
     <el-dialog title="確定要刪除?" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">
-
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="delbtn">確定</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 
 <script>
-import { currencyList, setBehavior, checkBehaviorEndTime } from '../../api/index.js'
+import {
+  currencyList,
+  setBehavior,
+  checkBehaviorEndTime
+} from '../../api/index.js'
 import moment from 'moment'
 export default {
   data () {
@@ -219,7 +234,6 @@ export default {
         pagesize: 10,
         enable: '',
         date: []
-
       },
       endtimehr: {},
       lasttime: '',
@@ -268,6 +282,11 @@ export default {
         }
       ],
       Objecttype: [
+
+        {
+          label: '不限',
+          value: 0
+        },
         {
           label: '新用戶(活動開始後註冊)',
           value: 1
@@ -275,10 +294,6 @@ export default {
         {
           label: '舊用戶(活動開始前註冊)',
           value: 2
-        },
-        {
-          label: '新用戶及舊用戶',
-          value: 0
         }
       ],
       timehr: [
@@ -405,30 +420,47 @@ export default {
           value: '50'
         }
       ],
-      options: [{
-        value: 0,
-        label: '不拘'
-      }, {
-        value: 1,
-        label: '已註冊'
-      }, {
-        value: 2,
-        label: '已實名認證'
-      }, {
-        value: 3,
-        label: '已鎖倉認購'
-      }, {
-        value: 4,
-        label: '已綁定銀行帳戶'
-      }
+      options: [
+        {
+          value: 0,
+          label: '不拘'
+        },
+        {
+          value: 1,
+          label: '已註冊'
+        },
+        {
+          value: 2,
+          label: '已實名認證'
+        },
+        {
+          value: 3,
+          label: '已鎖倉認購'
+        },
+        {
+          value: 4,
+          label: '已綁定銀行帳戶'
+        }
       ],
       Rules: {
-        activity_name_GR: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        activity_name_CN: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        activity_name_US: [{ required: true, message: '請輸入活動名稱', trigger: 'blur' }],
-        activity_content_GR: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
-        activity_content_CN: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
-        activity_content_US: [{ required: true, message: '請輸入活動描述', trigger: 'blur' }],
+        activity_name_GR: [
+          { required: true, message: '請輸入活動名稱', trigger: 'blur' }
+        ],
+        activity_name_CN: [
+          { required: true, message: '請輸入活動名稱', trigger: 'blur' }
+        ],
+        activity_name_US: [
+          { required: true, message: '請輸入活動名稱', trigger: 'blur' }
+        ],
+        activity_content_GR: [
+          { required: true, message: '請輸入活動描述', trigger: 'blur' }
+        ],
+        activity_content_CN: [
+          { required: true, message: '請輸入活動描述', trigger: 'blur' }
+        ],
+        activity_content_US: [
+          { required: true, message: '請輸入活動描述', trigger: 'blur' }
+        ],
         currency: [
           { required: true, message: '請選擇活動幣種', trigger: 'blur' }
         ],
@@ -470,6 +502,7 @@ export default {
   created () {
     this.objList()
     console.log('1223', this.$route.query)
+
     this.editForm = this.$route.query
     console.log('788988', this.editForm)
     this.getCurrencyList()
@@ -477,15 +510,12 @@ export default {
     console.log('status', this.editForm.active)
     this.endtime = this.editForm.endtime.substr(11, 5)
     this.editForm.bonus_currency = Number(this.editForm.bonus_currency)
-    /*  this.editForm.type = Number(this.editForm.type) */
-    /* this.startBudgetTime = this.editForm.starttime.substr(0, 10) */
     this.starttmiehr = this.editForm.starttime.substr(11, 2)
     this.starttimemin = this.editForm.starttime.substr(14, 2)
-    /* this.endBudgetTime = this.editForm.endtime.substr(0, 10) */
     this.endtimehr = this.editForm.endtime.substr(11, 2)
     this.endtimemin = this.editForm.endtime.substr(14, 2)
-    console.log('232', this.time.value)
-    this.editForm.bonus_limit = this.$route.query.bonus_limit / this.$route.query.bonus_amount
+    this.editForm.bonus_limit =
+      this.$route.query.bonus_limit / this.$route.query.bonus_amount
     this.startBudgetTime = this.editForm.starttime.substr(0, 10)
     console.log('456789', this.startBudgetTime)
     this.endBudgetTime = this.editForm.endtime.substr(0, 10)
@@ -542,16 +572,22 @@ export default {
       this.enddate = moment(this.endBudgetTime).format('YYYY-MM-DD ')
 
       let lastTtem = localStorage.getItem('lasttime')
-      let Ctime = this.starttime + '' + this.starttmiehr + ':' + this.starttimemin
+      let Ctime =
+        this.starttime + '' + this.starttmiehr + ':' + this.starttimemin
       let Etime = this.enddate + this.endtimehr + ':' + this.endtimemin
 
       console.log('lastTtem', lastTtem)
       console.log('Ctime', Ctime)
-
       console.log('Etime', Etime)
-
-      if (lastTtem === Ctime || Ctime <= lastTtem || Etime <= lastTtem || Ctime >= Etime) {
-        this.$message.error('時間設置異常')
+      if (this.$route.query.status === 1) {
+        if (
+          lastTtem === Ctime ||
+          Ctime <= lastTtem ||
+          Etime <= lastTtem ||
+          Ctime >= Etime
+        ) {
+          this.$message.error('時間設置異常')
+        }
       } else {
         var data = {
           mg_name: localStorage.getItem('mg_name'),
@@ -564,7 +600,8 @@ export default {
           activity_content_US: this.editForm.activity_content_US,
           activity_content_CN: this.editForm.activity_content_CN,
           activity_content_GR: this.editForm.activity_content_GR,
-          starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
+          starttime:
+            this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
           endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
           bonus_amount: this.editForm.bonus_amount,
           bonus_currency: this.editForm.bonus_currency,
@@ -574,14 +611,13 @@ export default {
           show_status: this.editForm.show_status.toString(),
           people_set: this.editForm.people_set,
           behavior_id: this.editForm.id
-
         }
         console.log('data', data)
         await setBehavior(data).then(res => {
           if (res.error_code === 0) {
             this.$message.success('編輯成功')
           } else {
-            this.$message.error('格式不符，修改失敗')
+            this.$message.error('修改失敗')
           }
           this.$router.push('/activity')
         })
@@ -641,45 +677,43 @@ export default {
     showaddDialog () {
       this.addDialogVisible = true
     }
-
   }
 }
 </script>
 
 <style less>
-.txt{
-  color:#169BD5;
-  font-weight:bold;
+.txt {
+  color: #169bd5;
+  font-weight: bold;
 }
 .txt hr {
-    background-color: #169BD5;
-    height: 2px
+  background-color: #169bd5;
+  height: 2px;
 }
-.text{
-  font-size: 16px ;
+.text {
+  font-size: 16px;
   padding: 25px 200px 0px;
-display: flex;
+  display: flex;
 }
-.text.description{
-  font-size: 16px ;
-   padding: 25px 40px 0px;
+.text.description {
+  font-size: 16px;
+  padding: 25px 40px 0px;
 }
 /* .el-form-item{
   margin-bottom: 10px;
 } */
-.mechanism{
+.mechanism {
   padding: 25px 80px 0px;
-
 }
-.mechanism .el-form-item__label{
+.mechanism .el-form-item__label {
   font-size: 16px;
   padding: 0 18px 0;
 }
-.btn{
+.btn {
   width: 30%;
   margin: 0 180px;
 }
-.fontpadding{
-    margin: 0 10px;
+.fontpadding {
+  margin: 0 10px;
 }
 </style>

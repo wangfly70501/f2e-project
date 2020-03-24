@@ -18,7 +18,7 @@
           style="width:10%"
           placeholder="請輸入標題"
         ></el-input>&nbsp;
-        <el-date-picker
+    <!--     <el-date-picker
           type="daterange"
           start-placeholder="StartTime"
           end-placeholder="EndTime"
@@ -34,7 +34,7 @@
             v-bind:label="enableValue.label"
             v-bind:value="enableValue.value"
           >{{enableValue.label}}</el-option>
-        </el-select>&nbsp;
+        </el-select>&nbsp; -->
         <el-button type="info" @click="clear" >清除</el-button>
         <el-button type="primary" @click="Search">搜尋</el-button>
         <el-button type="primary" @click="addaclist" class="btn_right">建立活動</el-button>
@@ -63,7 +63,7 @@
         </el-table-column>
           <el-table-column label="活動名稱" >
               <template slot-scope="scope">
-             <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_CN}}</router-link>
+             <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_GR}}</router-link>
               </template>
           </el-table-column>
         <el-table-column label="開放期間"  style="background-color:#FFFFF1" >
@@ -75,7 +75,7 @@
 
         <el-table-column label="名額" prop="people_limit">
           <template slot-scope="scope">
-           <span v-if="scope.row.people_limit===0"> ∞</span>
+           <span v-if="scope.row.people_limit===0"> 99999</span>
            <span v-else> {{scope.row.people_limit}} 人</span>
             </template>
         </el-table-column>
@@ -101,15 +101,15 @@
             </el-table-column>
        <el-table-column label="已參加人數" align="center">
          <template slot-scope="scope">
-         <span v-if="scope.row.status === 0"><el-tag type="info">{{scope.row.people_count}}</el-tag></span>
-         <span v-else-if="scope.row.status === 1"><el-tag type="success">{{scope.row.people_count}}</el-tag></span>
-         <span v-else><el-tag type="danger">{{scope.row.people_count}}</el-tag></span>
+         <span v-if="scope.row.status === 0"><el-button type="info" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
+         <span v-else-if="scope.row.status === 1"><el-button type="success" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
+         <span v-else><el-button type="danger" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
          </template>
        </el-table-column>
         <el-table-column label="進展" width="80%" align="center">
           <template slot-scope="scope">
-            <div v-if="scope.row.status === 0" style="color:gray">尚未開始</div>
-            <div v-else-if="scope.row.status === 1" style="color:#79BB13">進行中</div>
+            <div v-if="scope.row.status === 0 " style="color:gray">尚未開始</div>
+            <div v-else-if="scope.row.status === 1 || scope.row.status === 3" style="color:#79BB13">進行中</div>
             <div v-else style="color:red">已結束</div>
           </template>
         </el-table-column>
@@ -289,7 +289,8 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        show_status: this.showValue.toString()
+        show_status: this.showValue.toString(),
+        search_name: this.searchlist
       }
 
       await info_task(data).then(res => {
@@ -320,14 +321,15 @@ export default {
     },
     async clear () {
       this.searchlist = ''
+      this.showValue = '2'
       this.enable.value = ''
-      this.queryInfo.date = ''
-      this.getLockupList()
+      /* this.queryInfo.date = '' */
+      this.getactivitylist()
     },
     jump (index, row) {
       let queryData = {}
       queryData = row
-      this.$router.push({ path: '/lockuplist', query: queryData })
+      this.$router.push({ path: '/activitymem', query: queryData })
     },
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
@@ -344,6 +346,7 @@ export default {
     addaclist () {
       this.$router.push('/addaclist')
     }
+
   }
 }
 /* 數字千分位 */

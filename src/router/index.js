@@ -31,6 +31,7 @@ const maintain = () => import(/* webpackChunkName: "service_Charges" */ '../view
 const activity = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activity.vue')
 const activitylist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activitylist.vue')
 const addaclist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/addaclist.vue')
+const activitymem = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activitymem.vue')
 const test = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/test.vue')
 Vue.use(VueRouter)
 
@@ -73,7 +74,8 @@ const routes = [
       { path: '/activity', component: activity },
       { path: '/activitylist', component: activitylist },
       { path: '/addaclist', component: addaclist },
-      { path: '/test', component: test }
+      { path: '/test', component: test },
+      { path: '/activitymem', component: activitymem }
     ]
   }
 ]
