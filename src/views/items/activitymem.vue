@@ -1,11 +1,12 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['鎖倉列表', '鎖倉參加者列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['活動列表', '活動參加者列表']"></TopBreadcrumb>
 
     <el-card class="aligned">
 
       <!-- 列表 -->
-      <p class="acmemtitle">123456 <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/></p>
+      <p class="acmemtitle"> {{this.$route.query.activity_name_GR}}    <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/></p>
+
      <div >
         <el-input
           v-model="searchlist"
@@ -100,6 +101,7 @@ export default {
       }
       await getBehaviorJoin(data).then(res => {
         this.BehaviorJoin = res.data
+        console.log(this.BehaviorJoin)
       })
     },
 
@@ -119,7 +121,7 @@ export default {
     background-color:#02A7F0;
     color: white;
     height: 30px;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 30px;
     padding: 10px 15px;
 }
