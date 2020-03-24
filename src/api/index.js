@@ -413,6 +413,14 @@ export const get_drop_down_behavior = query => {
     data: query
   })
 }
+// 活動參加人數//
+export const getBehaviorJoin = query => {
+  return request({
+    url: './taskapi?method=getBehaviorJoin',
+    method: 'post',
+    data: query
+  })
+}
 // json//
 /* export const userdata = query => {
   return request({

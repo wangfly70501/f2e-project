@@ -465,6 +465,21 @@ export default {
     },
 
     uppage () {
+      this.enable.value = ''
+      this.addForm.titlegr = ''
+      this.addForm.titlecn = ''
+      this.addForm.titleus = ''
+      this.addForm.activity_content_US = ''
+      this.addForm.activity_content_CN = ''
+      this.addForm.activity_content_GR = ''
+      this.starttime = ''
+      this.enddate = ''
+      this.addForm.bonus_amount = ''
+      this.coin.value = ''
+      this.addForm.people_limit = ''
+      this.addForm.bonus_limit_status = ''
+      this.addForm.show_status = ''
+      this.Objecttype.value = ''
       this.$router.push('/activity')
     },
     // 最新時間
@@ -509,8 +524,10 @@ export default {
       let lastTtem = localStorage.getItem('lasttime')
       console.log('lastTtem', lastTtem)
 
-      if (lastTtem === this.starttime || this.starttime <= lastTtem || this.enddate <= lastTtem || this.starttime >= this.enddate) {
-        this.$message.error('時間異常,開始時間不能在上一個活動時間內')
+      if (this.$route.query.status === 1) {
+        if (lastTtem === this.starttime || this.starttime <= lastTtem || this.enddate <= lastTtem || this.starttime >= this.enddate) {
+          this.$message.error('時間新增異常')
+        }
       } else {
         var data = {
           mg_name: localStorage.getItem('mg_name'),
