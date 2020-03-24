@@ -61,8 +61,8 @@
             </div>
           </template>
         </el-table-column>
-          <el-table-column label="活動名稱" >
-              <template slot-scope="scope">
+          <el-table-column label="活動名稱" width="300%">
+              <template slot-scope="scope" >
              <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_GR}}</router-link>
               </template>
           </el-table-column>
@@ -73,7 +73,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="名額" prop="people_limit">
+        <el-table-column label="名額" prop="people_limit" width="50%">
           <template slot-scope="scope">
            <span v-if="scope.row.people_limit===0"> 99999</span>
            <span v-else> {{scope.row.people_limit}} 人</span>
@@ -92,7 +92,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="上限(次)" prop="bonus_limit" align="center" >
+        <el-table-column label="上限(次)" prop="bonus_limit" align="center"  width="80%">
           <template slot-scope="scope" >
          <span  v-if="scope.row.bonus_limit=='0'"> 0</span>
          <span  v-else-if="scope.row.bonus_amount=='0'"> 0</span>
