@@ -697,7 +697,7 @@ export default {
       console.log('lastTtem', lastTtem)
       console.log('Ctime', Ctime)
       console.log('Etime', Etime)
-      if (this.$route.query.status === 1) {
+      /*       if (this.$route.query.status === 1) {
         if (
           lastTtem === Ctime ||
           Ctime <= lastTtem ||
@@ -706,39 +706,39 @@ export default {
         ) {
           this.$message.error('時間設置異常')
         }
-      } else {
-        var data = {
-          mg_name: localStorage.getItem('mg_name'),
-          mg_pwd: localStorage.getItem('mg_pwd'),
-          mg_state: localStorage.getItem('mg_state'),
-          type: this.editForm.type,
-          activity_name_GR: this.editForm.activity_name_GR,
-          activity_name_CN: this.editForm.activity_name_CN,
-          activity_name_US: this.editForm.activity_name_US,
-          activity_content_US: this.editForm.activity_content_US,
-          activity_content_CN: this.editForm.activity_content_CN,
-          activity_content_GR: this.editForm.activity_content_GR,
-          starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
-          endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
-          bonus_amount: this.editForm.bonus_amount,
-          bonus_currency: this.editForm.bonus_currency,
-          bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
-          people_limit: this.editForm.people_limit,
-          bonus_limit_status: this.editForm.bonus_limit_status,
-          show_status: this.editForm.show_status.toString(),
-          people_set: this.editForm.people_set,
-          behavior_id: this.editForm.id
-        }
-        console.log('data', data)
-        await setBehavior(data).then(res => {
-          if (res.error_code === 0) {
-            this.$message.success('編輯成功')
-          } else {
-            this.$message.error('修改失敗')
-          }
-          this.$router.push('/activity')
-        })
+      } else { */
+      var data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        type: this.editForm.type,
+        activity_name_GR: this.editForm.activity_name_GR,
+        activity_name_CN: this.editForm.activity_name_CN,
+        activity_name_US: this.editForm.activity_name_US,
+        activity_content_US: this.editForm.activity_content_US,
+        activity_content_CN: this.editForm.activity_content_CN,
+        activity_content_GR: this.editForm.activity_content_GR,
+        starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
+        endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
+        bonus_amount: this.editForm.bonus_amount,
+        bonus_currency: this.editForm.bonus_currency,
+        bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
+        people_limit: this.editForm.people_limit,
+        bonus_limit_status: this.editForm.bonus_limit_status,
+        show_status: this.editForm.show_status.toString(),
+        people_set: this.editForm.people_set,
+        behavior_id: this.editForm.id
       }
+      console.log('data', data)
+      await setBehavior(data).then(res => {
+        if (res.error_code === 0) {
+          this.$message.success('編輯成功')
+        } else {
+          this.$message.error('修改失敗')
+        }
+        this.$router.push('/activity')
+      })
+      /*  } */
     },
     /*  changeStart () {
       console.log('123')
