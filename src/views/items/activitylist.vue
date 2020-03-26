@@ -370,6 +370,7 @@ export default {
         titlecn: '',
         titleus: ''
       },
+      bonuslimit: '',
       coin: {},
       time: {},
       lastttime: {},
@@ -681,11 +682,6 @@ export default {
     },
     // 設置
     async setacList () {
-      if (this.editForm.bonus_limit === 0) {
-        this.editForm.bonus_limit_status = '0'
-      } else {
-        this.editForm.bonus_limit_status = '1'
-      }
       this.starttime = moment(this.startBudgetTime).format('YYYY-MM-DD ')
       this.enddate = moment(this.endBudgetTime).format('YYYY-MM-DD ')
 
@@ -707,6 +703,15 @@ export default {
           this.$message.error('時間設置異常')
         }
       } else { */
+      if (this.editForm.bonus_amount === 0) {
+        this.bonuslimit = this.$route.query.bonus_limit
+        this.editForm.bonus_limit_status = '0'
+      } else {
+        this.bonuslimit = this.editForm.bonus_amount * this.editForm.bonus_limit
+        this.editForm.bonus_limit_status = '1'
+        console.log(this.bonuslimit)
+      }
+
       var data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -722,7 +727,7 @@ export default {
         endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
         bonus_amount: this.editForm.bonus_amount,
         bonus_currency: this.editForm.bonus_currency,
-        bonus_limit: this.editForm.bonus_amount * this.editForm.bonus_limit,
+        bonus_limit: this.bonuslimit,
         people_limit: this.editForm.people_limit,
         bonus_limit_status: this.editForm.bonus_limit_status,
         show_status: this.editForm.show_status.toString(),

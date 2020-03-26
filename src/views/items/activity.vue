@@ -95,7 +95,7 @@
         <el-table-column label="上限(次)" prop="bonus_limit" align="center"  width="80%">
           <template slot-scope="scope" >
          <span  v-if="scope.row.bonus_limit=='0'"> 0</span>
-         <span  v-else-if="scope.row.bonus_amount=='0'"> 0</span>
+         <span  v-else-if="scope.row.bonus_amount=='0'"> {{scope.row.bonus_limit}}</span>
          <span  v-else> {{scope.row.bonus_limit/scope.row.bonus_amount}}</span>
             </template>
             </el-table-column>
