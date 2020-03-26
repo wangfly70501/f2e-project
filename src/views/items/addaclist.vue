@@ -66,7 +66,7 @@
         </el-form-item>
         <hr width="80%" />
         <!-- 開始時間 -->
-        <el-form-item label="開始時間" >
+        <el-form-item label="開始時間"  :required="true" >
           <el-date-picker
            :editable="false"
      v-model="startBudgetTime"
@@ -102,7 +102,7 @@
         </el-select>
         </el-form-item>
         <!-- 結束時間 -->
-        <el-form-item label="結束時間" >
+        <el-form-item label="結束時間" :required="true" >
           <el-date-picker
            :editable="false"
     v-model="endBudgetTime"
