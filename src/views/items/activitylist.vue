@@ -25,8 +25,8 @@
         <hr />
       </div>
       <!-- 新增活動 -->
-
-      <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="100px">
+      <!-- 活動資訊 -->
+      <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="100px" v-if="editForm.status!==2">
         <div class="text">
           <span>活動名稱</span>
           <span class="description">
@@ -58,15 +58,54 @@
           </span>
         </div>
       </el-form>
-      <!-- 活動描述 -->
+        <!-- 活動資訊無法編輯的部分 -->
+          <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="100px" v-else :disabled="true">
+        <div class="text">
+          <span>活動名稱</span>
+          <span class="description">
+            <el-form-item label="繁中" >
+              <el-input v-model="editForm.activity_name_GR" style="width:400px" ></el-input>
+            </el-form-item>
+            <el-form-item label="简中" >
+              <el-input v-model="editForm.activity_name_CN" style="width:100%" ></el-input>
+            </el-form-item>
+            <el-form-item label="EN" >
+              <el-input v-model="editForm.activity_name_US" style="width:100%" ></el-input>
+            </el-form-item>
+          </span>
+        </div>
+
+        <hr width="80%" />
+        <div class="text">
+          <span>活動描述</span>
+          <span class="description">
+            <el-form-item label="繁中" >
+              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea" ></el-input>
+            </el-form-item>
+            <el-form-item label="简中" >
+              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea" ></el-input>
+            </el-form-item>
+            <el-form-item label="EN" >
+              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea" ></el-input>
+            </el-form-item>
+             <el-form-item style="color:#BEBEBE" v-if="editForm.status!==2">
+            已額滿無法編輯活動資訊
+            </el-form-item>
+               <el-form-item style="color:#BEBEBE" v-else>
+
+            </el-form-item>
+          </span>
+        </div>
+      </el-form>
+      <!-- 活動機制 -->
       <div class="txt">
         活動機制
         <hr />
       </div>
       <div class="mechanism">
-        <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px">
+        <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px" v-if="editForm.status===0">
           <el-form-item label="活動類型" prop="type">
-            <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
+            <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%" >
               <el-option
                 v-for="(enableValue,index) in enable"
                 :key="index"
@@ -77,7 +116,7 @@
           </el-form-item>
           <hr width="80%" />
           <!-- 開始時間 -->
-          <el-form-item label="開始時間">
+          <el-form-item label="開始時間" :required="true" >
             <el-date-picker
               :editable="false"
               v-model="startBudgetTime"
@@ -87,12 +126,6 @@
               value-format="yyyy-MM-dd"
               placeholder="選擇開始日期"
             ></el-date-picker>&nbsp;
-            <!--           <el-time-picker
-            style="width:30%"
-            v-model="addForm.starttime"
-             format="HH:mm"
-            value-format="HH:mm"
-            ></el-time-picker>-->
             <el-select v-model="starttmiehr" style="width:10%" placeholder="00">
               <el-option
                 v-for="(time,index) in timehr"
@@ -111,7 +144,7 @@
             </el-select>
           </el-form-item>
           <!-- 結束時間 -->
-          <el-form-item label="結束時間">
+          <el-form-item label="結束時間" :required="true" >
             <el-date-picker
               :editable="false"
               v-model="endBudgetTime"
@@ -121,13 +154,7 @@
               value-format="yyyy-MM-dd"
               placeholder="選擇結束日期"
             ></el-date-picker>&nbsp;
-            <!--       <el-time-picker
-            style="width:30%"
-            format="HH:mm"
-            value-format="HH:mm"
-            v-model="addForm.endtimes"
-            ></el-time-picker>-->
-            <el-select v-model="endtimehr" style="width:10%" placeholder="23">
+                 <el-select v-model="endtimehr" style="width:10%" placeholder="23">
               <el-option
                 v-for="(endtimehr,index) in timehr"
                 :key="index"
@@ -158,16 +185,6 @@
               >{{item.label}}</el-option>
             </el-select>&nbsp;
           </el-form-item>
-          <!--        <el-form-item label="資格條件" prop="condition"  style="width:80px" >
-              <el-select v-model="condition" multiple placeholder="請選擇">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-          </el-form-item>-->
           <hr width="80%" />
           <el-form-item label="獎勵金額" prop="bonus_amount">
             <el-input v-model="editForm.bonus_amount" style="width:80px" placeholder="金額"></el-input>
@@ -181,22 +198,123 @@
             </el-select>
           </el-form-item>
           <el-form-item label="獎勵次數" prop="bonus_limit">
+            <el-input-number v-model="editForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
+          </el-form-item>
+          <hr width="80%" />
+        </el-form>
+        <!-- 活動機制無法編輯的部分 -->
+        <el-form :model="editForm" ref="addFormref" label-width="200px" v-else :disabled="true">
+          <el-form-item label="活動類型" >
+            <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
+              <el-option
+                v-for="(enableValue,index) in enable"
+                :key="index"
+                v-bind:label="enableValue.label"
+                v-bind:value="enableValue.value"
+              >{{enableValue.label}}</el-option>
+            </el-select>&nbsp;
+          </el-form-item>
+          <hr width="80%" />
+          <!-- 開始時間 -->
+          <el-form-item label="開始時間"  >
+            <el-date-picker
+              :editable="false"
+              v-model="startBudgetTime"
+              :picker-options="pickerOptionsStart"
+              type="date"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              placeholder="選擇開始日期"
+            ></el-date-picker>&nbsp;
+            <el-select v-model="starttmiehr" style="width:10%" placeholder="00">
+              <el-option
+                v-for="(time,index) in timehr"
+                :key="index"
+                :label="time.label"
+                :value="time.value"
+              >{{time.label}}</el-option>
+            </el-select>
+            <el-select v-model="starttimemin" style="width:10%" placeholder="00">
+              <el-option
+                v-for="(starttimemin,index) in timemin"
+                :key="index"
+                :label="starttimemin.label"
+                :value="starttimemin.value"
+              >{{starttimemin.label}}</el-option>
+            </el-select>
+          </el-form-item>
+          <!-- 結束時間 -->
+          <el-form-item label="結束時間"  >
+            <el-date-picker
+              :editable="false"
+              v-model="endBudgetTime"
+              :picker-options="pickerOptionsEnd"
+              type="date"
+              format="yyyy-MM-dd "
+              value-format="yyyy-MM-dd"
+              placeholder="選擇結束日期"
+            ></el-date-picker>&nbsp;
+                 <el-select v-model="endtimehr" style="width:10%" placeholder="23">
+              <el-option
+                v-for="(endtimehr,index) in timehr"
+                :key="index"
+                :label="endtimehr.label"
+                :value="endtimehr.value"
+              >{{endtimehr.label}}</el-option>
+            </el-select>
+            <el-select v-model="endtimemin" style="width:10%" placeholder="00">
+              <el-option
+                v-for="(endtimemin,index) in timemin"
+                :key="index"
+                :label="endtimemin.label"
+                :value="endtimemin.value"
+              >{{endtimemin.label}}</el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="人數限制">
+            <el-input v-model="editForm.people_limit" style="width:80px"></el-input>&nbsp;位 (設0表示無限制)
+          </el-form-item>
+          <hr width="80%" />
+          <el-form-item label="對象" >
+            <el-select v-model="editForm.people_set" placeholder="請選擇" style="width:30%">
+              <el-option
+                v-for="(item,index) in Objecttype"
+                :key="index"
+                v-bind:label="item.label"
+                v-bind:value="item.value"
+              >{{item.label}}</el-option>
+            </el-select>&nbsp;
+          </el-form-item>
+          <hr width="80%" />
+          <el-form-item label="獎勵金額">
+            <el-input v-model="editForm.bonus_amount" style="width:80px" placeholder="金額"></el-input>
+            <el-select v-model="editForm.bonus_currency" placeholder="USDT" style="width:10%">
+              <el-option
+                v-for="(coin,index) in currencyList"
+                :key="index"
+                v-bind:label="coin.currency"
+                v-bind:value="coin.id"
+              >{{coin.currency}}</el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="獎勵次數">
             <!--  <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp; -->
             <el-input-number v-model="editForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
+          </el-form-item>
+            <el-form-item>
+                <span style="color:#8C8C8C"  v-if="editForm.status===1 ||editForm.status===3">活動進行中無法編輯活動機制</span >
+                <span style="color:#8C8C8C"  v-else></span >
           </el-form-item>
           <hr width="80%" />
         </el-form>
       </div>
 
       <!-- 底部区域 -->
-      <div class="btn">
-        <div
-          v-if="editForm.status===1 ||editForm.status===3 || editForm.status===2"
-          style="color:gray"
-        >活動進行中或已結束無法編輯</div>
-        <div v-else>
+      <div class="btn"  v-if="editForm.status!==2">
           <el-button type="primary" @click="setacList" style="width:40%">編輯活動</el-button>
-        </div>
+      </div>
+        <div class="btn" v-else>
+          <span style="color:red">活動結束</span>
       </div>
     </el-card>
     <!-- 審核不通過訊息 -->
@@ -600,8 +718,7 @@ export default {
           activity_content_US: this.editForm.activity_content_US,
           activity_content_CN: this.editForm.activity_content_CN,
           activity_content_GR: this.editForm.activity_content_GR,
-          starttime:
-            this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
+          starttime: this.starttime + '' + this.starttmiehr + ':' + this.starttimemin,
           endtime: this.enddate + this.endtimehr + ':' + this.endtimemin,
           bonus_amount: this.editForm.bonus_amount,
           bonus_currency: this.editForm.bonus_currency,
@@ -711,7 +828,7 @@ export default {
 }
 .btn {
   width: 30%;
-  margin: 0 180px;
+  margin: 20px 180px;
 }
 .fontpadding {
   margin: 0 10px;

@@ -335,7 +335,7 @@
           ></el-time-select>
         </el-form-item>
         <el-form-item label="關聯至活動">
-            <el-select v-model="lockupac" placeholder="請選擇">
+            <el-select v-model="lockupac" placeholder="請選擇" style="width:30%">
             <el-option
               v-for="lockup in activitylist"
               :key="lockup.id"
