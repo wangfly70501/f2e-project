@@ -429,3 +429,21 @@ export const getBehaviorJoin = query => {
     params: query
   })
 } */
+
+// 權限列表//
+export const getAuthList = query => {
+  return request({
+    url: './bankendapi?method=getAuthList',
+    method: 'post',
+    data: query
+  })
+}
+
+// 更改權限//
+export const setMgState = query => {
+  return request({
+    url: './bankendapi?method=setMgState',
+    method: 'post',
+    data: query
+  })
+}

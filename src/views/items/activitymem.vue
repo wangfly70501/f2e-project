@@ -2,22 +2,22 @@
   <div>
     <TopBreadcrumb :titles="['活動列表', '活動參加者列表']"></TopBreadcrumb>
 
-    <el-card class="aligned">
+   <div class="aligned">
 
       <!-- 列表 -->
       <p class="acmemtitle"> {{this.$route.query.activity_name_GR}}    <font-awesome-icon  icon="times" size="lg"  @click="uppage" style="float:right"/></p>
 
-     <div >
+     <div style="padding:20px">
         <el-input
           v-model="searchlist"
           @keyup.enter.native="Search"
-          style="width:50%"
+          class="searchtool"
           placeholder="請輸入UUID"
           size="mini"
         ></el-input>&nbsp;
-        <el-button type="primary" @click="Search"  size="mini">搜尋</el-button>
+        <el-button type="primary" @click="Search"  size="mini">查尋</el-button>
       </div>
-      <el-table :data="BehaviorJoin" >
+      <el-table :data="BehaviorJoin" style="padding:10px">
         <el-table-column label="UUID" prop="uuid" ></el-table-column>
         <el-table-column label="派獎時間" prop="ctime" >
               <template slot-scope="scope">
@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
+     </div>
 
   </div>
 </template>
@@ -123,10 +123,15 @@ export default {
     height: 30px;
     font-size: 16px;
     line-height: 30px;
-    padding: 10px 15px;
+    padding: 10px 20px;
 }
 .aligned{
     margin: 0 auto;
-    width: 500px;
+    width: 600px;
+     background-color:#FFFFFF;
+}
+.searchtool{
+      width:50%;
+      background-color:gray
 }
 </style>

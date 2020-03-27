@@ -12,8 +12,8 @@
       :value="item.value"
     ></el-option>
 </el-select>  &nbsp; -->
-     <span class="textfont">Uid:</span>
-<el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%" placeholder="請輸入uid"></el-input>&nbsp;
+     <span class="textfont">UUID:</span>
+<el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%" placeholder="請輸入UUID"></el-input>&nbsp;
       <span class="textfont">提交時間:</span>
       <el-date-picker
         type="daterange"
@@ -64,7 +64,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 5, 10]"
+        :page-sizes="[10, 20, 30]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"

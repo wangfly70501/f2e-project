@@ -33,6 +33,7 @@ const activitylist = () => import(/* webpackChunkName: "service_Charges" */ '../
 const addaclist = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/addaclist.vue')
 const activitymem = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/activitymem.vue')
 const test = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/test.vue')
+const setstatus = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/setstatus.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -75,7 +76,9 @@ const routes = [
       { path: '/activitylist', component: activitylist },
       { path: '/addaclist', component: addaclist },
       { path: '/test', component: test },
-      { path: '/activitymem', component: activitymem }
+      { path: '/activitymem', component: activitymem },
+      { path: '/setstatus', component: setstatus }
+
     ]
   }
 ]
