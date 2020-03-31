@@ -6,7 +6,7 @@
       <!-- 列表 -->
       <el-table :data="AuthList" stripe border>
         <el-table-column label="id" prop="id" ></el-table-column>
-        <el-table-column label="姓名" prop="name"></el-table-column>
+        <el-table-column label="帳號" prop="name"></el-table-column>
         <el-table-column label="時間" prop="">
             <template slot-scope="scope">
                 {{scope.row.time|dateFormat}}

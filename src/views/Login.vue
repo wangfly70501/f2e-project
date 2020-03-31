@@ -6,7 +6,7 @@
     <div class="login-box">
       <el-tabs v-model="activeName">
         <el-tab-pane label="登入" name="signin">
-          <div class="text">
+          <div class="logintext">
             歡迎登入
             <el-form
               ref="loginForm"
@@ -36,7 +36,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="註冊" name="signup">
-          <div class="text">註冊</div>
+          <div class="logintext">註冊</div>
           <el-form
             ref="signupForm"
             :model="signupForm"
@@ -145,10 +145,14 @@ export default {
           localStorage.setItem('mg_name', this.loginForm.username)
           localStorage.setItem('mg_pwd', this.loginForm.password)
           localStorage.setItem('mg_state', this.data)
+          if (this.data !== 1) {
+            this.$message.error('登入失敗，請確認帳號權限')
+          } else {
           // 登陆成功，保存token到sessionStorage，并跳转到首页
-          this.$message.success(' 登入成功')
-          window.sessionStorage.setItem('token', res.data.token)
-          this.$router.push('/home')
+            this.$message.success(' 登入成功')
+            window.sessionStorage.setItem('token', res.data.token)
+            this.$router.push('/home')
+          }
         }
       })
     },
@@ -213,7 +217,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap");
 </style>
 <style lang="less" scoped>
-.text {
+.logintext {
   font-size: 24px;
   color: #5b5b5b;
   text-align: center;

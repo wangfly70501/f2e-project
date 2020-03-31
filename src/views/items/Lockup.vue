@@ -160,6 +160,7 @@
 
     <!-- 新增鎖倉 -->
     <el-dialog title="建立鎖倉產品" :visible.sync="addDialogVisible" width="70%" @close="addDialogClosed">
+
       <el-form :model="addForm" :rules="Rules" ref="addFormref" label-width="100px">
         <el-form-item label="活動名稱" prop="title_GR">
           <el-input v-model="addForm.title_GR" style="width:50%"></el-input>
@@ -367,7 +368,17 @@
           >{{item.label}}</el-option>
         </el-select>&nbsp;
         </el-form-item>
-
+        <el-form-item label="前台顯示">
+               <el-switch
+              v-model="addForm.show_status"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+              class="fontpadding"
+            ></el-switch>
+                &nbsp;
+        </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
@@ -565,7 +576,17 @@
           >{{item.label}}</el-option>
         </el-select>&nbsp;
         </el-form-item>
-
+        <el-form-item label="前台顯示">
+               <el-switch
+              v-model="editForm.show_status"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+              class="fontpadding"
+            ></el-switch>
+                &nbsp;
+        </el-form-item>
         <!--    </div> -->
       </el-form>
       <span slot="footer" class="dialog-footer" v-if="editForm.status===0">
@@ -858,7 +879,8 @@ export default {
         mode: this.editForm.mode.toString(),
         bonus_behavior_id: this.lockupac.toString(),
         kyc_require: this.editForm.kyc_require.toString(),
-        rank: this.Objecttype.toString()
+        rank: this.Objecttype.toString(),
+        show_status: this.editForm.show_status.toString()
       }
       console.log('data', data)
       await Lockupedit(data).then(res => {
@@ -892,7 +914,8 @@ export default {
         mode: this.addForm.mode.toString(),
         bonus_behavior_id: this.lockupac,
         kyc_require: this.addForm.kyc_require.toString(),
-        rank: this.Objecttype.toString()
+        rank: this.Objecttype.toString(),
+        show_status: this.addForm.show_status.toString()
       }
 
       await addActivity(data).then(res => {
