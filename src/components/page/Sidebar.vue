@@ -69,7 +69,7 @@ export default {
             { index: 'rights', title: '權限列表' }
           ]
         }, */
-        /*   {
+        {
 
           index: '2',
           title: '會員管理',
@@ -79,7 +79,7 @@ export default {
             { index: 'blackmember', title: '黑名單會員列表' },
             { index: 'userlevel', title: '會員層級列表' }
           ]
-        }, */
+        },
         /*  {
           icon: 'iconfont icon-tijikongjian',
           index: '3',
@@ -105,7 +105,7 @@ export default {
           title: '審核管理',
           icon: 'iconfont icon-shangpin',
           subs: [
-          /*   { index: 'withdrawlimit', title: '審核提領上限' }, */
+            { index: 'withdrawlimit', title: '審核提領上限' },
             { index: 'realname', title: '審核實名認證' }
 
           ]

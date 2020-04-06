@@ -17,7 +17,7 @@
           @click="showToggle"
         ></el-button>
 
-        <el-button type="primary" size="mini" style="float:right" v-show="!isShow"  @click="acmange">儲存</el-button>
+        <el-button type="primary" size="mini" style="float:right" v-show="!isShow"  @click.once="acmange">儲存</el-button>
         <el-button
           type="primary"
           size="mini"
@@ -67,7 +67,8 @@
         <td>
           <p>台幣資產:</p>
         </td>
-        <td>{{userList.amount |NumFormat}} TWD</td>
+        <td v-if="userList.amount===0">{{userList.amount}} TWD</td>
+        <td v-else>{{userList.amount |NumFormat}} TWD</td>
       </tr>
       <tr>
         <td>
@@ -140,10 +141,12 @@
         </td>
         <td>
           <template>
-            <div v-if="userList.limitday!=100000" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div>
+           <!--  <div v-if="userList.level_normal!=1||2" >{{100000|NumFormat}} (會員等級{{userList.level}})</div> -->
+             <div v-if="userList.level==1" >{{300000|NumFormat}} (會員等級{{userList.level}})</div>
+              <div v-else-if="userList.level==2" >{{500000|NumFormat}} (會員等級{{userList.level}})</div>
             <!--  <div v-else-if="userList.limitday='500000'" >{{userList.limitday |NumFormat}} (會員等級{{userList.level}})</div> -->
             <div v-else >
-              <el-select v-model="awlist.level" placeholder="預設值" value-key="id">
+              <el-select v-model="levelnormal" placeholder="預設值" value-key="id">
                 <el-option
                   v-for="(awlisttValue,index) in awlist"
                   :key="index"
@@ -162,7 +165,7 @@
         </td>
         <td>
           <template>
-            <el-select v-model="temlist.level" placeholder="預設值" value-key="id">
+            <el-select v-model="leveltemp" placeholder="預設值" value-key="id">
               <el-option
                 v-for="(temlistValue,index) in temlist"
                 :key="index"
@@ -195,7 +198,11 @@
         </td>
         <td>
           <p>
-             <template >{{userList.limitday |NumFormat}} TWD(會員等級 {{userList.level }})</template>
+
+             <!--   <template v-if="userList.level_normal!=1||2" >{{100000|NumFormat}} (會員等級{{userList.level}})</template> -->
+             <template  v-if="userList.level==1" >{{300000|NumFormat}} (會員等級{{userList.level}})</template>
+              <template v-else-if="userList.level==2" >{{500000|NumFormat}} (會員等級{{userList.level}})</template>
+                <template v-else>{{100000|NumFormat}} (會員等級{{userList.level}})</template>
           </p>
         </td>
       </tr>
@@ -207,10 +214,9 @@
         <td>
           <p>
             <template>
-            <p v-if="userList.level==0" >未設定</p>
-            <p v-else-if="userList.level==1" >未設定</p>
-            <p v-else-if="userList.level==2" >未設定</p>
-             <p v-else>{{userList.amount }}</p>
+            <p v-if="userList.level_temp==0" >未設定</p>
+
+             <p v-else>{{userList.limitday_temp|NumFormat }} (會員等級{{userList.level_temp}})</p>
            </template>
           </p>
         </td>
@@ -234,6 +240,8 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
+      leveltemp: '',
+      levelnormal: '',
       /*     userList: [
         {
           status: 1,
@@ -254,7 +262,7 @@ export default {
 
       ], */
       userList: {
-        limitday: {}
+
       },
       isShow: true,
       ssShow: true,
@@ -304,7 +312,6 @@ export default {
 
   created () {
     this.getmemdetailList()
-
     this.objList()
   },
 
@@ -316,7 +323,6 @@ export default {
       console.log(typeof this.objname, this.objpwd)
 
       if (this.objname == null || this.objpwd == null) {
-        console.log('15132321')
         this.$router.push('/login')
       }
     },
@@ -327,11 +333,12 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         uuid: this.$route.query.uuid
       }
-      console.log('1323', data)
+
       await memberDetail(data).then(res => {
         this.userList = res.data
-        console.log('1323', this.userList)
-        console.log(typeof this.userList.limitday)
+        console.log('detail', this.userList)
+        this.leveltemp = this.userList.level_temp
+        console.log(this.userList.level_temp)
       })
     },
 
@@ -341,10 +348,7 @@ export default {
     showlimit () {
       this.ssShow = !this.ssShow
     },
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getUserList()
-    },
+
     acmange () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
@@ -367,44 +371,41 @@ export default {
       })
     },
     async wdlimitcap () {
-      console.log('check', this.awlist.level, this.temlist.level)
-      if (this.awlist.level !== undefined) {
-        if (this.awlist.level < this.temlist.level) {
-          this.levelType = 1
-          this.level = this.temlist.level
-        } else {
-          this.levelType = 0
-          this.level = this.awlist.level
-        }
-      } else if (this.temlist.level === undefined) {
-        this.$message.error('請選擇臨時上限')
-      } else if (this.queryInfo.desc === '') {
-        this.$message.error('請輸入調整原因')
-      } else {
-        this.levelType = 1
-        this.level = this.temlist.level
+      console.log('check', this.levelnormal, this.leveltemp)
+      if (this.levelnormal === '') {
+        this.levelnormal = 0
+      } else if (this.leveltemp === '') {
+        this.leveltemp = 0
       }
-      console.log('bbbb', this.awlist.level)
-      console.log('tttt', this.level, this.levelType)
+
+      console.log('永久上限', this.levelnormal)
+      console.log('臨時上限', this.leveltemp)
+
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         uuid: this.$route.query.uuid,
-        levelType: this.levelType.toString(),
-        level: this.level.toString(),
+        level_normal: this.levelnormal.toString(),
+        level_temp: this.leveltemp.toString(),
         reason: this.queryInfo.desc
       }
       console.log('456789', data)
       await setMemberLv(data).then(res => {
         console.log('1448565', data)
         if (res.error_code === 0) {
-          this.$message.success('已送出提領上限申請')
-          this.getmemdetailList()
-          this.ssShow = !this.ssShow
+          if (this.levelnormal !== 0) {
+            this.$message.success('已調整永久上限')
+            this.ssShow = !this.ssShow
+          } else {
+            this.$message.success('已送出臨時提領上限申請')
+            this.getmemdetailList()
+            this.ssShow = !this.ssShow
+          }
+        } else if (res.error_code === 124) {
+          this.$message.error('請確認資料是否重複申請')
         } else {
-          this.$message.error('送出錯誤,請確認資料是否遺漏或是重複申請')
-          this.getmemdetailList()
+          this.$message.error('送出錯誤,請確認資料是否遺漏')
         }
       })
     }

@@ -20,13 +20,13 @@
        <el-table-column label="ID" prop="id" sortable></el-table-column>
         <el-table-column label="UUID/姓名">
             <template slot-scope="scope">
-                 <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" target='_blank'>{{scope.row.uuid }}/ {{scope.row.username }}</router-link>
+                 <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" target='_blank'>{{scope.row.uuid }} / {{scope.row.username }}</router-link>
             </template>
         </el-table-column>
         <el-table-column label="調整提領上限/期限" >
               <template slot-scope="scope">
-                <div  v-if="scope.row.levelType===0">{{scope.row.limitday |NumFormat }}/永久</div>
-                <div  v-else>{{scope.row.limitday |NumFormat }}/ 臨時</div>
+                <div  v-if="scope.row.levelType===0">{{scope.row.limitday_temp |NumFormat }}/永久</div>
+                <div  v-else>{{scope.row.limitday_temp |NumFormat }}/ 臨時</div>
             </template></el-table-column>
 
         <el-table-column label="調整原因" prop="reason"></el-table-column>
@@ -53,11 +53,11 @@
 
               <el-table-column label="審核" >
                <template slot-scope="scope">
-                   <div  v-if="scope.row.status===0">
-                      <el-button type="success"  size="mini" @click.once="reviewpass(scope.$index,scope.row)">通過</el-button>
+                   <div  v-if="scope.row.status_temp===0">
+                      <el-button type="success"  size="mini" @click="showpassDialog(scope.$index,scope.row)">通過</el-button>
                       <el-button type="danger" size="mini"   @click="showaddDialog(scope.$index,scope.row)" >退回</el-button>
                     </div>
-                     <div  v-else-if="scope.row.status===1">
+                     <div  v-else-if="scope.row.status_temp===1">
                       <el-tag type="success"  size="mini">已通過</el-tag>
                     </div>
                    <div  v-else>
@@ -80,9 +80,9 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 審核不通過訊息 -->
-    <el-dialog title="審核不通過訊息" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">
-      <el-form :model="addForm"  ref="addFormRef" label-width="100px">
+    <!-- 不過說明 -->
+    <el-dialog title="說明" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed"  class="custom">
+      <el-form :model="addForm"  ref="addFormRef" label-width="150px">
         <el-form-item label="請輸入不通過訊息">
            <el-input v-model="queryInfo.reason"></el-input>
         </el-form-item>
@@ -93,7 +93,22 @@
         <el-button type="primary" @click="reviewfail">確定</el-button>
       </span>
     </el-dialog>
-  </div>
+
+        <!-- 通過說明 -->
+
+    <el-dialog title="說明" :visible.sync="passDialogVisible" width="30%" @close="passDialogClosed" class="custom">
+      <el-form :model="passForm"  ref="passFormRef" label-width="150px">
+        <el-form-item label="請輸入通過訊息">
+           <el-input v-model="queryInfo.reason"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="passDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="reviewpass">確定</el-button>
+      </span>
+    </el-dialog>
+    </div>
 </template>
 
 <script>
@@ -136,7 +151,9 @@ export default {
       realname: [],
       list: '',
       addDialogVisible: false,
+      passDialogVisible: false,
       addForm: {},
+      passForm: {},
       form: {},
       enable: [
         {
@@ -176,7 +193,8 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        token: sessionStorage.getItem('token')
+        /*   token: sessionStorage.getItem('token') */
+        searchType: 1
       }
       await withdrawlimit(data).then(res => {
         this.withdrawlist = res.data
@@ -193,36 +211,45 @@ export default {
     addDialogClosed () {
       this.addDialogVisible = false
     },
+    passDialogClosed () {
+      this.passDialogVisible = false
+    },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.queryInfo.pagenum = 1
-      this.getnameList()
+      this.getwdlimitList()
     },
 
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
-      this.getnameList()
+      this.getwdlimitList()
     },
     async Search () {
       this.queryInfo.pagenum = 1
-      await this.getnameList()
+      await this.getwdlimitList()
     },
-    showToggle () {
+    /*    showToggle () {
       let _this = this
       _this.isShow = !_this.isShow
       console.log('123456')
-    },
-    async reviewpass (index, row) {
+    }, */
+    showpassDialog (index, row) {
       this.form = row
+      this.passDialogVisible = true
+      console.log('123', this.form)
+    },
+    /* 審核通過 */
+    async reviewpass (index, row) {
+    /*   this.form = row
+      console.log('456', this.form) */
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         id: this.form.id,
-        uuid: this.form.uuid.toString(),
-        levelType: this.form.levelType.toString(),
-        level: this.form.level.toString(),
-        status: '1'
+        uuid: this.form.uuid,
+        status: '1',
+        reason: this.queryInfo.reason
       }
       await reviwlimit(data).then(res => {
         console.log('passdata', data)
@@ -233,11 +260,16 @@ export default {
         }
       })
       this.getwdlimitList()
+      this.passDialogVisible = false
     },
+
     showaddDialog (index, row) {
       this.form = row
       this.addDialogVisible = true
+      console.log('456')
     },
+
+    /* 審核失敗 */
     async  reviewfail () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
@@ -245,8 +277,6 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         id: this.form.id,
         uuid: this.form.uuid.toString(),
-        levelType: this.form.levelType.toString(),
-        level: this.form.level.toString(),
         status: '0',
         reason: this.queryInfo.reason
       }
@@ -271,6 +301,14 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+.custom .el-dialog__header {
+background-color: #F2F2F2;
 
+}
+ .custom .el-dialog__title{
+color: #7B7B7B;
+font-weight:bold;
+
+ }
 </style>

@@ -73,10 +73,11 @@
        <el-form-item label="手寫簽名照:">
  <img :src="this.$route.query.fourth_photo" style="max-width:50%"/>
   </el-form-item>
-  <el-form-item label="審核不過說明：" v-if="this.$route.query.auth_status===0">
+  <el-form-item label="審核不過說明：" v-if="this.$route.query.auth_status===0" required>
     <el-input type="textarea" v-model="form.desc"></el-input>
   </el-form-item>
-    <el-form-item  v-else-if="this.$route.query.auth_status===1">
+    <el-form-item  v-else-if="this.$route.query.auth_status===1" label="說明：">
+        {{this.$route.query.reason}}
   </el-form-item>
       <el-form-item  v-else label="審核不過說明：" style="color:red">
           {{this.$route.query.reason}}
@@ -168,7 +169,8 @@ export default {
         uuid: this.$route.query.uuid,
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
+        mg_state: localStorage.getItem('mg_state'),
+        reason: this.form.desc
       }
       await KycSuccess(data).then(res => {
         if (res.error_code === 0) {

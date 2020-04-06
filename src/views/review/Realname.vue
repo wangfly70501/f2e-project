@@ -46,16 +46,7 @@
           </template>
         </el-table-column>
 
-             <el-table-column label="說明" >
-          <template slot-scope="scope">
-
-            <div  v-if="scope.row.auth_status === 0"></div>
-            <div  v-else-if="scope.row.auth_status === 1"></div>
-            <div  v-else><!-- <router-link  :to="{path:'/realnamepic',query:{uuid:`${scope.row.uuid}`}}" >啟用</router-link> -->
-           {{scope.row.reason}}
-            </div>
-          </template>
-        </el-table-column>
+         <el-table-column label="說明" prop="reason"></el-table-column>
 
       </el-table>
 
@@ -145,7 +136,7 @@ export default {
       }
       await KycList(data).then(res => {
         this.nameList = res.data
-        console.log(this.nameList)
+        console.log('list', this.nameList)
         this.total = res.pagination.total_record
       })
     },

@@ -233,7 +233,7 @@ export default {
     },
     async Search () {
       this.queryInfo.pagenum = 1
-      /* await this.getFaqList() */
+      this.getUserList()
     },
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
