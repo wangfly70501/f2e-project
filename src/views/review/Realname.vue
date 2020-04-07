@@ -12,8 +12,8 @@
       :value="item.value"
     ></el-option>
 </el-select>  &nbsp; -->
-     <span class="textfont">UUID:</span>
-<el-input v-model="searchlist" @keyup.enter.native="Search" style="width:30%" placeholder="請輸入UUID"></el-input>&nbsp;
+     <span class="textfont">UID:</span>
+<el-input v-model="searchlist" @keyup.enter.native="Search" style="width:20%" placeholder="請輸入UID" size="small"></el-input>&nbsp;
       <span class="textfont">提交時間:</span>
       <el-date-picker
         type="daterange"
@@ -22,14 +22,19 @@
         v-model="queryInfo.date"
         value-format="yyyy-MM-dd"
         style="width:30%"
+        size="small"
       ></el-date-picker>&nbsp;
-      <el-button type="primary" @click="Search">搜尋</el-button>
+      <el-button type="primary" @click="Search" size="small">搜尋</el-button>
 
       <el-table :data="nameList" stripe border>
         <el-table-column label="UUID" prop="uuid"></el-table-column>
         <el-table-column label="使用者姓名" prop="username"></el-table-column>
-        <!--  <el-table-column label="手機號碼" prop="mobile"></el-table-column> -->
         <el-table-column label="信箱" prop="email"></el-table-column>
+        <el-table-column label="手機" prop="mobile">
+           <template slot-scope="scope">
+                {{scope.row.mobile |phoneformat}}
+            </template>
+        </el-table-column>
         <el-table-column label="提交時間" >
             <template slot-scope="scope">
                 {{scope.row.ctime |dateFormat}}

@@ -164,6 +164,7 @@ export default {
   bottom: 0;
   overflow-y: scroll;
   background-color: #324157;
+  width: 100%;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
   width: 200px;
@@ -172,5 +173,8 @@ export default {
 .menuls {
   text-align: right;
   margin: 0 5px;
+}
+.sidebar-el-menu.el-menu{
+  border-right:0 ;
 }
 </style>

@@ -5,7 +5,8 @@
     <el-card>
                       <el-select  v-model="enable.value" placeholder="狀態"
                          style="width:8% "
-                         size='small'>
+                         size='small'
+                         clearable>
                             <el-option
                                 v-for="(enableValue,index) in enable"
                                 :key="index"
@@ -14,10 +15,11 @@
 
                             >{{enableValue.label}}</el-option>
                         </el-select>&nbsp;
-        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:20%" placeholder="姓名/身分證字號/手機/UUID" size='small'></el-input>&nbsp;
+        <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:20%" placeholder="姓名/身分證字號/手機/UID" size='small' clearable></el-input>&nbsp;
                               <el-select  v-model="memlevel.value" placeholder="會員等級"
                          style="width:15% "
-                         size='small'>
+                         size='small'
+                         clearable>
                             <el-option
                                 v-for="(memlevel,index) in memlevel"
                                 :key="index"
@@ -25,8 +27,8 @@
                                 v-bind:value="memlevel.value"
                             >{{memlevel.label}}</el-option>
                         </el-select>&nbsp;
-                                                    <el-select  v-model="safelevel.value" placeholder="安全等級"
-                         style="width:15% " size='small'>
+                        <el-select  v-model="safelevel.value" placeholder="安全等級"
+                         style="width:15% " size='small' clearable>
                             <el-option
                                 v-for="(safelevel,index) in safelevel"
                                 :key="index"
@@ -34,28 +36,31 @@
                                 v-bind:value="safelevel.value"
                             >{{safelevel.label}}</el-option>
                         </el-select>&nbsp;
+                           <el-button type="primary" @click="clear" size='small'>清除</el-button>
                            <el-button type="primary" @click="Search" size='small'>查詢</el-button>
       <!-- 會員列表数据 -->
       <el-table :data="userList" :header-cell-style="tableHeaderColor">
-        <el-table-column type="index" ></el-table-column>
-        <el-table-column label="狀態" prop="blacklist" width="50px">
+        <el-table-column type="index" label="編號" width="50px" align="center"></el-table-column>
+ <!--        <el-table-column label="狀態" prop="blacklist" width="50px" align="center">
           <template slot-scope="scope">
             <div  v-if="scope.row.blacklist =='1'"><i class="fas fa-circle"  color="red"></i></div>
             <div  v-else color="#00EC00"><i class="fas fa-circle"  color="#00EC00"></i></div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
-        <el-table-column label="UUID" prop="uuid">
+        <el-table-column label="UID" prop="uuid" align="center">
                 <template slot-scope="scope">
                   <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" > {{scope.row.uuid}}</router-link>
                 </template>
         </el-table-column>
-        <el-table-column label="會員姓名" prop="username"></el-table-column>
+        <el-table-column label="會員姓名" prop="username" align="left"></el-table-column>
 
-        <el-table-column label="身分證字號" prop="identityid">
+        <!-- <el-table-column label="身分證字號" prop="identityid">
               <template slot-scope="scope">
                  {{scope.row.identityid|phoneformat}}
-                </template></el-table-column>
+                </template></el-table-column> -->
+
+                <el-table-column label="信箱" prop="email" width="220%"></el-table-column>
         <el-table-column label="手機" prop="mobile">
 
                         <template slot-scope="scope">
@@ -64,27 +69,37 @@
         </el-table-column>
         <!-- <el-table-column label="會員帳號" prop="account"></el-table-column> -->
 
-        <el-table-column label="會員等級" prop="level"></el-table-column>
-
-        <el-table-column label="安全等級" >
+        <el-table-column label="安全等級" align="center">
            <template slot-scope="scope">
-           LV{{scope.row.securityLevel }}
+             <el-tag v-if="scope.row.securityLevel==='1'" type="warning">LV1</el-tag>
+              <el-tag v-else-if="scope.row.securityLevel==='2'" >LV2</el-tag>
+              <el-tag v-else-if="scope.row.securityLevel==='3'" type="success">LV3</el-tag>
           </template></el-table-column>
+           <el-table-column label="提領上限" prop="level" align="center">
+             <template slot-scope="scope">
+           <span v-if="scope.row.level===0">100,000</span>
+           <span v-else-if="scope.row.level===1">300,000</span>
+           <span v-else-if="scope.row.level===2">500,000</span>
+          </template>
+           </el-table-column>
 
- <el-table-column label="台幣資產" > <template slot-scope="scope">
-            {{scope.row.amount | NumFormat}}
-          </template></el-table-column>
+         <el-table-column label="台幣資產" align="center">
+           <template slot-scope="scope">
+            <span v-if="scope.row.amount===0"> 0</span>
+            <span v-else> {{scope.row.amount | NumFormat}}</span>
+          </template>
+          </el-table-column>
 
-        <el-table-column label="登入時間" prop="lg_in_time">
+        <el-table-column label="註冊時間" >
           <template slot-scope="scope">
-            {{scope.row.lg_in_time | dateFormat}}
+            {{scope.row.ctime | dateFormat}}
           </template>
         </el-table-column>
-             <el-table-column label="登出時間" prop="lg_out_time">
+     <!--         <el-table-column label="登出時間" prop="lg_out_time">
           <template slot-scope="scope">
             {{scope.row.lg_out_time | dateFormat}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
 <!--         <el-table-column label="操作">
           <template>
             <el-button size="mini" type="primary" icon="el-icon-edit"
@@ -100,7 +115,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[5, 10, 15]"
+        :page-sizes="[10, 20, 30]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
@@ -176,15 +191,15 @@ export default {
       safelevel: [
         {
           label: '安全等級Lv.1',
-          value: 0
-        },
-        {
-          label: '安全等級Lv.2',
           value: 1
         },
         {
-          label: '安全等級Lv.3',
+          label: '安全等級Lv.2',
           value: 2
+        },
+        {
+          label: '安全等級Lv.3',
+          value: 3
         }
       ],
       addressVisible: false
@@ -215,7 +230,11 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        searchValue: this.searchlist
+        searchValue: this.searchlist,
+        searchBlacklist: this.enable.value,
+        searchMemberLevel: this.memlevel.value,
+        searchSecurityLevel: this.safelevel.value
+
       }
       await userData(data).then(res => {
         this.userList = res.data
@@ -233,7 +252,14 @@ export default {
     },
     async Search () {
       this.queryInfo.pagenum = 1
-      this.getUserList()
+      await this.getUserList()
+    },
+    async clear () {
+      this.searchlist = ''
+      this.enable.value = ''
+      this.memlevel.value = ''
+      this.safelevel.value = ''
+      await this.getUserList()
     },
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {

@@ -6,19 +6,32 @@
       <el-button  @click="uppage">上一頁</el-button>
       <!-- 列表 -->
       <el-table :data="ActivityJoinlist" stripe border>
-        <el-table-column label="Id" prop="id" ></el-table-column>
-        <el-table-column label="uuid" prop="uuid" ></el-table-column>
-        <el-table-column label="幣種" prop="currency" ></el-table-column>
-        <!-- <el-table-column label="內容" prop="content"></el-table-column> -->
+        <el-table-column label="Uuid" prop="uuid" ></el-table-column>
+          <el-table-column label="幣種"  >
+          <template slot-scope="scope">
+            <div
+              v-for="item in currencyList"
+              :key="item.id"
+              :label="item.currency"
+              :value="item.id"
+            >
+              <div v-if="item.id==scope.row.currency">{{item.currency}}</div>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="參加金額" prop="quota"></el-table-column>
-        <!--  <el-table-column label="是否匯出" prop="export"></el-table-column> -->
-            <el-table-column label="狀態" >
+       <!--      <el-table-column label="狀態" >
           <template slot-scope="scope">
             <el-tag type="danger" v-if="scope.row.active === 0">棄用</el-tag>
             <el-tag type="success" v-else>啟用</el-tag>
           </template>
-        </el-table-column>
-
+        </el-table-column> -->
+       <el-table-column label="反息狀態">
+         <template slot-scope="scope">
+            <el-tag type="danger" v-if="scope.row.export === 0">尚未返息</el-tag>
+            <el-tag type="success" v-else>已返息</el-tag>
+          </template>
+         </el-table-column>
       </el-table>
 
       <!-- 分页组件 -->
@@ -37,12 +50,12 @@
 </template>
 
 <script>
-import { getActivityJoin } from '../../api/index.js'
+import { getActivityJoin, currencyList } from '../../api/index.js'
 
 export default {
   data () {
     return {
-
+      currencyList: [],
       content: '',
       html: '',
       configs: {},
@@ -82,6 +95,7 @@ export default {
   created () {
     this.getActivityJoin()
     this.objList()
+    this.getCurrencyList()
   },
 
   methods: {
@@ -103,9 +117,10 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
-        activityType: this.$route.query.type,
-        activityId: this.$route.query.id,
-        exportStatus: '0'
+        /*  activityType: this.$route.query.type, */
+        activityId: this.$route.query.id
+      /*   exportStatus: '0' */
+      /* searchUuid: */
       }
       await getActivityJoin(data).then(res => {
         this.ActivityJoinlist = res.data
@@ -127,6 +142,17 @@ export default {
 
     uppage () {
       this.$router.push('/lockup')
+    },
+    async getCurrencyList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state')
+      }
+      await currencyList(data).then(res => {
+        this.currencyList = res.data
+        console.log(this.currencyList)
+      })
     }
   }
 }
