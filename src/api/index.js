@@ -447,3 +447,12 @@ export const setMgState = query => {
     data: query
   })
 }
+
+// 定投列表//
+export const getStakingList = query => {
+  return request({
+    url: './taskapi?method=getStakingList',
+    method: 'post',
+    data: query
+  })
+}

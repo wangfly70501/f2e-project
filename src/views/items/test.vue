@@ -23,6 +23,9 @@
     default-time="['23:59:59']"
     placeholder="選擇結束日期"
     @change="changeStart"/>
+   <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
+      <el-button>上左</el-button>
+    </el-tooltip>
 </div>
 </template>
 

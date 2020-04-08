@@ -3,7 +3,7 @@
     <TopBreadcrumb :titles="['會員管理', '會員列表']"></TopBreadcrumb>
 
     <el-card>
-                      <el-select  v-model="enable.value" placeholder="狀態"
+                      <el-select  v-model="enablevalue" placeholder="狀態"
                          style="width:8% "
                          size='small'
                          clearable>
@@ -16,7 +16,7 @@
                             >{{enableValue.label}}</el-option>
                         </el-select>&nbsp;
         <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:20%" placeholder="姓名/身分證字號/手機/UID" size='small' clearable></el-input>&nbsp;
-                              <el-select  v-model="memlevel.value" placeholder="會員等級"
+                              <el-select  v-model="memlevelvalue" placeholder="會員等級"
                          style="width:15% "
                          size='small'
                          clearable>
@@ -27,7 +27,7 @@
                                 v-bind:value="memlevel.value"
                             >{{memlevel.label}}</el-option>
                         </el-select>&nbsp;
-                        <el-select  v-model="safelevel.value" placeholder="安全等級"
+                        <el-select  v-model="safelevelvalue" placeholder="安全等級"
                          style="width:15% " size='small' clearable>
                             <el-option
                                 v-for="(safelevel,index) in safelevel"
@@ -69,11 +69,11 @@
         </el-table-column>
         <!-- <el-table-column label="會員帳號" prop="account"></el-table-column> -->
 
-        <el-table-column label="安全等級" align="center">
+        <el-table-column label="安全等級" align="center" style="color:white">
            <template slot-scope="scope">
-             <el-tag v-if="scope.row.securityLevel==='1'" type="warning">LV1</el-tag>
-              <el-tag v-else-if="scope.row.securityLevel==='2'" >LV2</el-tag>
-              <el-tag v-else-if="scope.row.securityLevel==='3'" type="success">LV3</el-tag>
+             <span v-if="scope.row.securityLevel==='1'" class="lv1">Lv.1</span>
+             <span v-else-if="scope.row.securityLevel==='2'" class="lv2">Lv.2</span>
+             <span v-else-if="scope.row.securityLevel==='3'" class="lv3">Lv.3</span>
           </template></el-table-column>
            <el-table-column label="提領上限" prop="level" align="center">
              <template slot-scope="scope">
@@ -140,6 +140,9 @@ export default {
       orderList: [],
       total: 0,
       isDisabl: true,
+      enablevalue: '',
+      memlevelvalue: '',
+      safelevelvalue: '',
       userList: [/* {
         status: 1,
         uuid: '10080',
@@ -206,7 +209,25 @@ export default {
 
     }
   },
+  watch: {
+    searchlist (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    },
+    enablevalue (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    },
+    memlevelvalue (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    },
+    safelevelvalue (newData, oldData) {
+      if (newData.id === oldData.id) return
+      this.$refs.audio.play()
+    }
 
+  },
   created () {
     this.getUserList()
     this.objList()
@@ -231,9 +252,9 @@ export default {
         paginate: this.queryInfo.pagesize,
         page: this.queryInfo.pagenum,
         searchValue: this.searchlist,
-        searchBlacklist: this.enable.value,
-        searchMemberLevel: this.memlevel.value,
-        searchSecurityLevel: this.safelevel.value
+        searchBlacklist: this.enablevalue,
+        searchMemberLevel: this.memlevelvalue,
+        searchSecurityLevel: this.safelevelvalue
 
       }
       await userData(data).then(res => {
@@ -256,9 +277,9 @@ export default {
     },
     async clear () {
       this.searchlist = ''
-      this.enable.value = ''
-      this.memlevel.value = ''
-      this.safelevel.value = ''
+      this.enablevalue = ''
+      this.memlevelvalue = ''
+      this.safelevelvalue = ''
       await this.getUserList()
     },
     tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
@@ -269,8 +290,26 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .el-cascader {
   width: 100%;
+}
+.lv1{
+  background-color: #F4D375;
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+}
+.lv2{
+  background-color: #6BBDBB;
+  padding: 5px 10px;
+  color: white;
+   border-radius: 5px;
+}
+.lv3{
+  background-color: #61C868;
+  padding: 5px 10px;
+  color: white;
+   border-radius: 5px;
 }
 </style>
