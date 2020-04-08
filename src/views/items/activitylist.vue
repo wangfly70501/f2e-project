@@ -19,7 +19,17 @@
           <font-awesome-icon icon="trash-alt" size="1x" />
         </el-button>
       </p>
-
+       <p class="txt">
+        活動類型
+            <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%" >
+              <el-option
+                v-for="(enableValue,index) in enable"
+                :key="index"
+                v-bind:label="enableValue.label"
+                v-bind:value="enableValue.value"
+              >{{enableValue.label}}</el-option>
+            </el-select>&nbsp;
+        </p>
       <div class="txt">
         活動資訊
         <hr />
@@ -56,6 +66,12 @@
               <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea"></el-input>
             </el-form-item>
           </span>
+        </div>
+          <div class="text">
+          <span>連結網址</span>
+            <el-form-item  prop="link_url" label="網址" >
+              <el-input v-model="editForm.link_url" style="width:400px" ></el-input>
+            </el-form-item>
         </div>
       </el-form>
         <!-- 活動資訊無法編輯的部分 -->
@@ -104,7 +120,7 @@
       </div>
       <div class="mechanism">
         <el-form :model="editForm" :rules="Rules" ref="addFormref" label-width="200px" v-if="editForm.status===0">
-          <el-form-item label="活動類型" prop="type">
+<!--           <el-form-item label="活動類型" prop="type">
             <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%" >
               <el-option
                 v-for="(enableValue,index) in enable"
@@ -113,7 +129,7 @@
                 v-bind:value="enableValue.value"
               >{{enableValue.label}}</el-option>
             </el-select>&nbsp;
-          </el-form-item>
+          </el-form-item> -->
           <hr width="80%" />
           <!-- 開始時間 -->
           <el-form-item label="開始時間" :required="true" >
@@ -204,7 +220,7 @@
         </el-form>
         <!-- 活動機制無法編輯的部分 -->
         <el-form :model="editForm" ref="addFormref" label-width="200px" v-else :disabled="true">
-          <el-form-item label="活動類型" >
+ <!--          <el-form-item label="活動類型" >
             <el-select v-model="editForm.type" placeholder="請選擇" style="width:30%">
               <el-option
                 v-for="(enableValue,index) in enable"
@@ -213,7 +229,7 @@
                 v-bind:value="enableValue.value"
               >{{enableValue.label}}</el-option>
             </el-select>&nbsp;
-          </el-form-item>
+          </el-form-item> -->
           <hr width="80%" />
           <!-- 開始時間 -->
           <el-form-item label="開始時間"  >
@@ -380,6 +396,10 @@ export default {
       endtimemin: {},
       enable: [
         {
+          label: '一般',
+          value: 5
+        },
+        {
           label: '註冊',
           value: 1
         },
@@ -397,7 +417,7 @@ export default {
         },
         {
           label: '綁定銀行帳戶',
-          value: 5
+          value: 6
         }
       ],
       Objecttype: [
@@ -639,6 +659,7 @@ export default {
     console.log('456789', this.startBudgetTime)
     this.endBudgetTime = this.editForm.endtime.substr(0, 10)
     this.getlasttime()
+    this.editForm.type = Number(this.editForm.type)
   },
 
   methods: {
@@ -732,7 +753,8 @@ export default {
         bonus_limit_status: this.editForm.bonus_limit_status,
         show_status: this.editForm.show_status.toString(),
         people_set: this.editForm.people_set,
-        behavior_id: this.editForm.id
+        behavior_id: this.editForm.id,
+        link_url: this.editForm.link_url
       }
       console.log('data', data)
       await setBehavior(data).then(res => {

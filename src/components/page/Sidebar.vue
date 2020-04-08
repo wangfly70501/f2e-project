@@ -59,16 +59,17 @@ export default {
           index: 'welcome',
           title: '系统首頁'
         }, */
-        /*     {
+        {
           index: '1',
           title: '管理者管理',
           icon: 'iconfont icon-user',
           subs: [
-            { index: 'users', title: '管理者列表' },
+          /*   { index: 'users', title: '管理者列表' },
             { index: 'roles', title: '角色列表' },
-            { index: 'rights', title: '權限列表' }
+            { index: 'rights', title: '權限列表' } */
+            { index: 'setstatus', title: '權限管理' }
           ]
-        }, */
+        },
         {
 
           index: '2',
@@ -131,7 +132,7 @@ export default {
             { index: 'lockup', title: '鎖倉管理' },
             { index: 'activity', title: '活動管理' },
             { index: 'maintain', title: '維護管理' },
-            { index: 'setstatus', title: '權限管理' }
+            { index: 'staking', title: '定投管理' }
             /*    { index: 'test', title: 'tset' } */
           ]
         }

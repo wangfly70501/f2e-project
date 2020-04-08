@@ -4,7 +4,7 @@
 
     <el-card>
       <!-- 搜索工具 -->
-          <el-select v-model="showValue" placeholder="前台顯示" style="width:10% " size="small">
+          <el-select v-model="showValue" placeholder="前台顯示" style="width:10% ">
           <el-option
             v-for="(showValue,index) in showstatus"
             :key="index"
@@ -13,7 +13,6 @@
           >{{showValue.label}}</el-option>
         </el-select>&nbsp;
         <el-input
-          size="small"
           v-model="searchlist"
           @keyup.enter.native="Search"
           style="width:10%"
@@ -36,9 +35,9 @@
             v-bind:value="enableValue.value"
           >{{enableValue.label}}</el-option>
         </el-select>&nbsp; -->
-        <el-button type="info" @click="clear" size="small" >清除</el-button>
-        <el-button type="primary" @click="Search" size="small">搜尋</el-button>
-        <el-button type="primary" @click="addaclist" class="btn_right" size="small">建立活動</el-button>
+        <el-button type="info" @click="clear" >清除</el-button>
+        <el-button type="primary" @click="Search">搜尋</el-button>
+        <el-button type="primary" @click="addaclist" class="btn_right">建立活動</el-button>
 
       <!-- 列表 -->
       <el-table :data="activitylist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor"   :cell-style="cellStyle">
