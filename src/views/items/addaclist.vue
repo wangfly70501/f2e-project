@@ -17,7 +17,17 @@
             ></el-switch>
                 &nbsp;
             </p>
-
+      <p class="txt">
+        活動類型
+        <el-select v-model="enable.value" placeholder="請選擇" style="width:30%" @change="getlasttime ()">
+          <el-option
+            v-for="(enableValue,index) in enable"
+            :key="index"
+            v-bind:label="enableValue.label"
+            v-bind:value="enableValue.value"
+          >{{enableValue.label}}</el-option>
+        </el-select>&nbsp;
+        </p>
       <div class="txt">活動資訊 <hr ></div>
  <!-- 新增活動 -->
 
@@ -49,12 +59,18 @@
         </el-form-item>
         </span>
           </div>
+        <div class="text">
+          <span>連結網址</span>
+            <el-form-item  prop="link_url" label="網址">
+              <el-input v-model="addForm.link_url" style="width:400px" ></el-input>
+            </el-form-item>
+        </div>
            </el-form>
           <!-- 活動描述 -->
           <div class="txt">活動機制 <hr ></div>
           <div class="mechanism">
              <el-form :model="addForm" :rules="Rules" ref="addFormref" label-width="200px">
-            <el-form-item label="活動類型" prop="actype">
+      <!--       <el-form-item label="活動類型" prop="actype">
           <el-select v-model="enable.value" placeholder="請選擇" style="width:30%" @change="getlasttime ()">
           <el-option
             v-for="(enableValue,index) in enable"
@@ -63,7 +79,7 @@
             v-bind:value="enableValue.value"
           >{{enableValue.label}}</el-option>
         </el-select>&nbsp;
-        </el-form-item>
+        </el-form-item> -->
         <hr width="80%" />
         <!-- 開始時間 -->
         <el-form-item label="開始時間"  :required="true" >
@@ -237,6 +253,10 @@ export default {
       endtimemin: {},
       enable: [
         {
+          label: '一般',
+          value: '5'
+        },
+        {
           label: '註冊',
           value: '1'
         },
@@ -254,7 +274,7 @@ export default {
         },
         {
           label: '綁定銀行帳戶',
-          value: '5'
+          value: '6'
         }
       ],
       Objecttype: [
@@ -548,18 +568,21 @@ export default {
           people_limit: this.addForm.people_limit,
           bonus_limit_status: this.addForm.bonus_limit_status,
           show_status: this.addForm.show_status.toString(),
-          people_set: this.Objecttype.value.toString()
+          people_set: this.Objecttype.value.toString(),
+          link_url: this.addForm.link_url
         }
-
-        console.log('data', data)
-        await inserttask(data).then(res => {
-          if (res.error_code === 0) {
-            this.$message.success('新增成功')
-            this.$router.push('/activity')
-          } else {
-            this.$message.error('格式不符，新增失敗')
-          }
-        })
+        if (data.link_url === undefined) {
+          data.link_url = '0'
+          console.log('data', data)
+          await inserttask(data).then(res => {
+            if (res.error_code === 0) {
+              this.$message.success('新增成功')
+              this.$router.push('/activity')
+            } else {
+              this.$message.error('格式不符，新增失敗')
+            }
+          })
+        }
       }
     },
     changeStart () {
