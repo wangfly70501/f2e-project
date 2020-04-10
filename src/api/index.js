@@ -208,6 +208,15 @@ export const KycList = query => {
     data: query
   })
 }
+
+// 實名驗證
+export const getKYCcertificateBumber = query => {
+  return request({
+    url: './bankendapi?method=getKYCcertificateBumber',
+    method: 'post',
+    data: query
+  })
+}
 // 實名認證通過
 export const KycSuccess = query => {
   return request({

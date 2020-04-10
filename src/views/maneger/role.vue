@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['實名認證', '實名認證']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['管理者管理', '權限管理']"></TopBreadcrumb>
 
     <el-card>
 <!--       <p class="text">認證狀態:</p>
@@ -12,7 +12,7 @@
       :value="item.value"
     ></el-option>
 </el-select>  &nbsp; -->
-     <span class="textfont">UID:</span>
+     <span class="textfont">ID:</span>
 <el-input v-model="searchlist" @keyup.enter.native="Search" style="width:20%" placeholder="請輸入UID" size="small"></el-input>&nbsp;
       <span class="textfont">提交時間:</span>
       <el-date-picker
@@ -27,7 +27,7 @@
       <el-button type="primary" @click="Search" size="small">搜尋</el-button>
 
       <el-table :data="nameList" stripe border>
-        <el-table-column label="UID" prop="uuid" width="80%"></el-table-column>
+        <el-table-column label="UUID" prop="uuid"></el-table-column>
         <el-table-column label="使用者姓名" prop="username"></el-table-column>
         <el-table-column label="信箱" prop="email"></el-table-column>
         <el-table-column label="手機" prop="mobile">

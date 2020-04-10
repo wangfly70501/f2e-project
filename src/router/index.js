@@ -35,6 +35,7 @@ const activitymem = () => import(/* webpackChunkName: "service_Charges" */ '../v
 const test = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/test.vue')
 const staking = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/staking.vue')
 const setstatus = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/setstatus.vue')
+const right = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/right.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -79,7 +80,8 @@ const routes = [
       { path: '/test', component: test },
       { path: '/activitymem', component: activitymem },
       { path: '/setstatus', component: setstatus },
-      { path: '/staking', component: staking }
+      { path: '/staking', component: staking },
+      { path: '/right', component: right }
     ]
   }
 ]

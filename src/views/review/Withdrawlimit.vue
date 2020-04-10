@@ -17,7 +17,7 @@
       ></el-date-picker>&nbsp;
       <el-button type="primary" @click="Search">搜尋</el-button> -->
       <el-table :data="withdrawlist" :default-sort="{prop: 'id', order: 'descending'}"  :header-cell-style="tableHeaderColor" border>
-       <el-table-column label="ID" prop="id" sortable></el-table-column>
+       <el-table-column label="ID" prop="id" sortable width="70%" ></el-table-column>
         <el-table-column label="UUID/姓名">
             <template slot-scope="scope">
                  <router-link  :to="{path:'/membercatch',query:{uuid:`${scope.row.uuid}`}}" target='_blank'>{{scope.row.uuid }} / {{scope.row.username }}</router-link>
