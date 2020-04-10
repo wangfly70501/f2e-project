@@ -5,12 +5,12 @@
           <el-tab-pane label="提領上限紀錄" name="limitup">
              <limitup></limitup>
         </el-tab-pane>
-        <el-tab-pane label="法幣交易記錄" name="trans">
+  <!--       <el-tab-pane label="法幣交易記錄" name="trans">
            <trains></trains>
         </el-tab-pane>
         <el-tab-pane label="帳號記錄" name="account">
              <account></account>
-        </el-tab-pane>
+        </el-tab-pane> -->
 
       </el-tabs>
 
@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import trains from '../../views/member/translist.vue'
-import account from '../../views/member/accountlist.vue'
+/* import trains from '../../views/member/translist.vue'
+import account from '../../views/member/accountlist.vue' */
 import limitup from '../../views/member/limitup.vue'
 export default {
   data () {
@@ -35,8 +35,8 @@ export default {
     }
   },
   components: {
-    account,
-    trains,
+    /*     account,
+    trains, */
     limitup
   },
 

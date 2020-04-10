@@ -12,6 +12,8 @@
           <th>手機號碼</th>
           <th>信箱</th>
           <th>提交時間</th>
+          <th>身分字號</th>
+          <!-- <th>是否重複</th -->>
         </tr>
         <tr>
           <td>{{ this.$route.query.uuid }}</td>
@@ -19,6 +21,9 @@
           <td>{{ this.$route.query.mobile }}</td>
           <td>{{this.$route.query.email }}</td>
           <td>{{ this.$route.query.ctime |dateFormat}}</td>
+          <td>{{ this.checkidlist.certificate_number}}</td>
+      <!--     <td v-if="this.checkidlist.count>1">是 UID:{{ this.checkidlist.uuid}}</td>
+           <td v-else>否</td> -->
         </tr>
       </table>
 
@@ -98,7 +103,7 @@
 </template>
 
 <script>
-import { KycSuccess, KycFail } from '../../api/index.js'
+import { KycSuccess, KycFail, getKYCcertificateBumber } from '../../api/index.js'
 export default {
   data () {
     return {
@@ -121,15 +126,29 @@ export default {
       /*  editDialogVisible: false, */
       editForm: {},
       realname: {},
-      nameList: []
+      nameList: [],
+      checkidlist: {}
     }
   },
   created () {
     console.log('1223', this.$route.query)
     this.objList()
+    this.checkid()
   },
 
   methods: {
+    async  checkid () {
+      var data = {
+        uuid: this.$route.query.uuid,
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state')
+      }
+      await getKYCcertificateBumber(data).then(res => {
+        this.checkidlist = res.data
+        console.log('check', this.checkidlist)
+      })
+    },
 
     objList () {
       this.objname = localStorage.getItem('mg_name')

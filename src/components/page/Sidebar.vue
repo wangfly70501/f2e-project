@@ -68,6 +68,7 @@ export default {
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' } */
             { index: 'setstatus', title: '權限管理' }
+          /*   { index: 'right', title: '權限列表' } */
           ]
         },
         {
@@ -76,9 +77,9 @@ export default {
           title: '會員管理',
           icon: 'iconfont icon-users',
           subs: [
-            { index: 'member', title: '會員列表' },
-            { index: 'blackmember', title: '黑名單會員列表' },
-            { index: 'userlevel', title: '會員層級列表' }
+            { index: 'member', title: '會員列表' }
+            /*  { index: 'blackmember', title: '黑名單會員列表' }, */
+          /*   { index: 'userlevel', title: '會員層級列表' } */
           ]
         },
         /*  {
@@ -118,8 +119,8 @@ export default {
           icon: 'iconfont icon-tijikongjian',
           subs: [
             /*  { index: 'indexmenu', title: '公告管理' }, */
-            { index: 'faq', title: 'FaQ管理' },
-            { index: 'banner', title: 'banner管理' }
+            { index: 'faq', title: 'FaQ管理' }
+            /*  { index: 'banner', title: 'banner管理' } */
 
           ]
         },
@@ -131,8 +132,8 @@ export default {
           subs: [
             { index: 'lockup', title: '鎖倉管理' },
             { index: 'activity', title: '活動管理' },
-            { index: 'maintain', title: '維護管理' },
-            { index: 'staking', title: '定投管理' }
+            { index: 'maintain', title: '維護管理' }
+            /* { index: 'staking', title: '定投管理' } */
             /*    { index: 'test', title: 'tset' } */
           ]
         }

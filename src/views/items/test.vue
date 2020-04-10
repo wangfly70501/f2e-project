@@ -26,7 +26,9 @@
    <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
       <el-button>上左</el-button>
     </el-tooltip>
+    <div class="info-area">1234565</div>
 </div>
+
 </template>
 
 <script>
@@ -75,3 +77,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" >
+        $info:#B9CAD4;
+
+        $error:red;
+        $success:#064B74;
+.info-area {
+  color: $info;
+  border: 1px solid $success;
+  background-color: $info;
+}
+</style>

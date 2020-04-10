@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '帳號管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['權限管理', '帳號管理']"></TopBreadcrumb>
 
     <el-card>
       <!-- 列表 -->
