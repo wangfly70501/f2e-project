@@ -31,8 +31,8 @@
               <template slot-scope="scope">
                <div v-if="scope.row.level_temp =='3' || scope.row.level_temp =='4'|| scope.row.level_temp =='5'">
                  <span v-if="scope.row.status_temp===0"><el-tag type="warning">審核中</el-tag></span>
-                 <span v-else-if="scope.row.status_temp===1"><el-tag type="success">通過</el-tag>/{{scope.row.failReason}}</span>
-                 <span v-else-if="scope.row.status_temp===2"><el-tag type="danger">不通過</el-tag>/{{scope.row.failReason}}</span>
+                 <span v-else-if="scope.row.status_temp===1"><el-tag type="success">通過</el-tag> &nbsp;/{{scope.row.failReason}}</span>
+                 <span v-else-if="scope.row.status_temp===2"><el-tag type="danger">不通過</el-tag> &nbsp;/{{scope.row.failReason}}</span>
                  </div>
                <div v-else>
                  <span v-if="scope.row.status_normal===1"><el-tag type="success">通過</el-tag></span>
