@@ -13,7 +13,7 @@
           <th>信箱</th>
           <th>提交時間</th>
           <th>身分字號</th>
-          <!-- <th>是否重複</th -->>
+          <!-- <th>是否重複</th -->
         </tr>
         <tr>
           <td>{{ this.$route.query.uuid }}</td>
