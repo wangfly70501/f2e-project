@@ -78,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+/* <style lang="scss" >
         $info:#B9CAD4;
 
         $error:red;
@@ -88,4 +88,4 @@ export default {
   border: 1px solid $success;
   background-color: $info;
 }
-</style>
+</style> */
