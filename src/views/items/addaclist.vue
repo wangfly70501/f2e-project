@@ -49,13 +49,14 @@
           <hr width="80%" />
           <div class="text"><span>活動描述</span>
         <span class="description"><el-form-item label="繁中" prop="activity_content_GR">
-          <el-input v-model="addForm.activity_content_GR" style="width:400px" type="textarea"></el-input>
+          <el-input v-model="addForm.activity_content_GR" style="width:400px" type="textarea" maxlength='512' size="medium" rows="7"></el-input>
         </el-form-item>
         <el-form-item label="简中" prop="activity_content_CN">
-          <el-input v-model="addForm.activity_content_CN" style="width:100%"  type="textarea"></el-input>
+          <el-input v-model="addForm.activity_content_CN" style="width:100%"  type="textarea" maxlength='512' size="medium" rows="7"></el-input>
         </el-form-item>
         <el-form-item label="EN" prop="activity_content_US">
-          <el-input v-model="addForm.activity_content_US" style="width:100%"  type="textarea"></el-input>
+          <el-input v-model="addForm.activity_content_US" style="width:100%"  type="textarea" maxlength='512' size="medium" rows="7"></el-input>
+           <div style="color:#F78989"> (中文256個字，英文512個字)</div>
         </el-form-item>
         </span>
           </div>
