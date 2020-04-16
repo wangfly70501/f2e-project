@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['活動管理', '新增活動']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['活動管理', '編輯活動']"></TopBreadcrumb>
 
     <el-card>
       <font-awesome-icon icon="times" size="lg" @click="uppage" style="float:right" />
@@ -57,13 +57,14 @@
           <span>活動描述</span>
           <span class="description">
             <el-form-item label="繁中" prop="activity_content_GR">
-              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea"></el-input>
+              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea" rows="7"></el-input>
             </el-form-item>
             <el-form-item label="简中" prop="activity_content_CN">
-              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea"></el-input>
+              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea" rows="7"></el-input>
             </el-form-item>
             <el-form-item label="EN" prop="activity_content_US">
-              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea"></el-input>
+              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea" rows="7"></el-input>
+                <div style="color:#F78989"> (中文256個字，英文512個字)</div>
             </el-form-item>
           </span>
         </div>
@@ -96,13 +97,13 @@
           <span>活動描述</span>
           <span class="description">
             <el-form-item label="繁中" >
-              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea" ></el-input>
+              <el-input v-model="editForm.activity_content_GR" style="width:400px" type="textarea" rows="7"></el-input>
             </el-form-item>
             <el-form-item label="简中" >
-              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea" ></el-input>
+              <el-input v-model="editForm.activity_content_CN" style="width:100%" type="textarea"  rows="7"></el-input>
             </el-form-item>
             <el-form-item label="EN" >
-              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea" ></el-input>
+              <el-input v-model="editForm.activity_content_US" style="width:100%" type="textarea"  rows="7"></el-input>
             </el-form-item>
              <el-form-item style="color:#BEBEBE" v-if="editForm.status!==2">
             已額滿無法編輯活動資訊
