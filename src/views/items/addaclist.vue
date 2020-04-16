@@ -531,6 +531,7 @@ export default {
     },
     // 新增
     async addacList () {
+      console.log('test123456')
       if (this.addForm.bonus_limit === '0') {
         this.addForm.bonus_limit_status = '0'
       } else {
@@ -571,18 +572,19 @@ export default {
           people_set: this.Objecttype.value.toString(),
           link_url: this.addForm.link_url
         }
+        console.log('data', data)
         if (data.link_url === undefined) {
           data.link_url = '0'
-          console.log('data', data)
-          await inserttask(data).then(res => {
-            if (res.error_code === 0) {
-              this.$message.success('新增成功')
-              this.$router.push('/activity')
-            } else {
-              this.$message.error('格式不符，新增失敗')
-            }
-          })
         }
+        console.log('data', data)
+        await inserttask(data).then(res => {
+          if (res.error_code === 0) {
+            this.$message.success('新增成功')
+            this.$router.push('/activity')
+          } else {
+            this.$message.error('格式不符，新增失敗')
+          }
+        })
       }
     },
     changeStart () {
