@@ -83,6 +83,7 @@
 
 <script>
 import { signup, login } from '../api/index.js'
+import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -128,6 +129,13 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      isLogin: state => state.user.isLogin,
+      isUserReady: state => state.user.isRecieved,
+      userAllowPage: state => state.user.allowPage
+    })
+  },
   methods: {
     async login () {
       let data = {
@@ -144,13 +152,22 @@ export default {
           this.data = res.data.mg_state
           localStorage.setItem('mg_name', this.loginForm.username)
           localStorage.setItem('mg_pwd', this.loginForm.password)
-          localStorage.setItem('mg_state', this.data)
+          localStorage.setItem('mg_state', res.data.mg_state)
+          localStorage.setItem('role_id', res.data.role_id)
+          this.$store.dispatch('getRolePermissions', {
+            mg_name: this.loginForm.username,
+            mg_pwd: this.loginForm.password,
+            mg_state: res.data.mg_state,
+            role_id: res.data.role_id
+          })
+
           if (this.data !== 1) {
             this.$message.error('登入失敗，請確認帳號權限')
           } else {
           // 登陆成功，保存token到sessionStorage，并跳转到首页
             this.$message.success(' 登入成功')
             window.sessionStorage.setItem('token', res.data.token)
+            window.localStorage.setItem('token', res.data.token)
             this.$router.push('/home')
           }
         }
@@ -209,6 +226,18 @@ export default {
     forgetpsw () {
       console.log('123')
       this.$router.push('/forgetpsw')
+    }
+  },
+  watch: {
+    userAllowPage (val) {
+      if (this.isUserReady) { // 取到新權限以後導回
+        this.$router.push(window.sessionStorage.getItem('previewPage'))
+      }
+    },
+    $route (to, from) {
+      console.log('mixin watch', to, from)
+      this.isAllowEnter = this.allowPage.indexOf(to.name.toUpperCase()) > -1
+      console.log(to.name, from.name, this.isAllowEnter, this.allowPage)
     }
   }
 }

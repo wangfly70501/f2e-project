@@ -26,6 +26,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faGooglePlus } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import YimoVueEditor from 'yimo-vue-editor'
+import store from '@/store'
 
 library.add(faCoffee, faGooglePlus)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -151,5 +152,6 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
