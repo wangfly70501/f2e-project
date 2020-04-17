@@ -17,7 +17,7 @@
       unique-opened
       router
     >
-      <template v-for="item in items">
+      <template v-for="item in filterMenu">
         <template v-if="item.subs">
           <el-submenu :index="item.index" :key="item.index">
             <template slot="title">
@@ -50,6 +50,8 @@
 
 <script>
 import bus from '../page/bus.js'
+import { mapState } from 'vuex'
+
 export default {
   data () {
     return {
@@ -143,8 +145,27 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      isLogin: state => state.user.isLogin,
+      isUserReady: state => state.user.isRecieved,
+      userAllowPage: state => state.user.allowPage
+    }),
     onRoutes () {
       return this.$route.path.replace('/', '')
+    },
+    filterMenu () {
+      let filterMenu = [...this.items]
+      if (this.userAllowPage.length > 0) {
+        filterMenu = filterMenu.filter(item => {
+          if (item.subs.length) {
+            // 過濾如果 index 不在允許清單內
+            item.subs = item.subs.filter(subItem => this.userAllowPage.indexOf(subItem.index.toUpperCase()) > -1)
+          }
+          return item.subs.length > 0 // 拔掉沒子選單的
+        })
+      }
+
+      return filterMenu
     }
   },
   created () {
