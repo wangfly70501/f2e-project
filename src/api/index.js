@@ -465,3 +465,12 @@ export const getStakingList = query => {
     data: query
   })
 }
+
+// 取得會員權限列表
+export const getRolePermissions = query => {
+  return request({
+    url: './taskapi?method=getRoleComponent',
+    method: 'post',
+    data: query
+  })
+}

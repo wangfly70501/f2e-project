@@ -72,6 +72,7 @@
           <span>連結網址</span>
             <el-form-item  prop="link_url" label="網址" >
               <el-input v-model="editForm.link_url" style="width:400px" ></el-input>
+                <div style="color:#F78989"> （請輸入完整網址，如https://www.google.com）</div>
             </el-form-item>
         </div>
       </el-form>
