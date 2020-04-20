@@ -53,7 +53,6 @@ export default {
   },
   mutations: {
     [RECEIVE_USER_RULE] (state, result) {
-      console.log('mutations RECEIVE_USER_RULE', result)
       state.allowPage = result.allowPage
       state.isLogin = true
       state.isRecieved = true

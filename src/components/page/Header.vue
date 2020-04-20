@@ -72,7 +72,7 @@ export default {
     logout () {
       window.sessionStorage.clear()
       localStorage.clear()
-      this.$router.push('/login')
+      this.$router.go('/login')
     },
     // 侧边栏折叠
     collapseChage () {

@@ -96,7 +96,6 @@ const authChecking = (to) => {
   }
   let allowPage = [...store.getters.allowPage, ...store.getters.pageWhiteList]
   isAllowEnter = allowPage.indexOf(to.name.toUpperCase()) > -1
-  console.log('authChecking allowPage', to.name.toUpperCase(), isAllowEnter, allowPage)
   return isAllowEnter
 }
 
@@ -112,7 +111,6 @@ router.beforeEach((to, from, next) => {
   if (tokenStr && tokenStr !== '') {
     if (!store.getters.isAuthed && to.path !== '/login') { // 沒取到就先返回
       window.sessionStorage.setItem('previewPage', to.name)
-      console.log(from.name)
       return next('/login')
     }
     if (allowEnter) {
