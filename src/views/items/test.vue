@@ -27,6 +27,21 @@
       <el-button>上左</el-button>
     </el-tooltip>
     <div class="info-area">1234565</div>
+      <!-- 列表数据 -->
+      <div ref="pdfContent" id="pdfContent">
+        <div class="font">
+          <span v-if="this.queryInfo.enable === '0'">營收報表-入金</span>
+          <span v-else>營收報表-出金</span>
+        </div>
+        <el-table :data="revenueList" border stripe>
+           <el-table-column label="UID" prop="uuid"></el-table-column>
+          <el-table-column label="會員帳號" prop="account"></el-table-column>
+          <el-table-column label="身分證" prop="identityid"></el-table-column>
+          <el-table-column label="交易次數" prop="transactionTimes"></el-table-column>
+          <el-table-column label="交易總金額" prop="transactionTotal"></el-table-column>
+
+        </el-table>
+      </div>
 </div>
 
 </template>

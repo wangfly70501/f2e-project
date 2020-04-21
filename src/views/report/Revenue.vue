@@ -17,7 +17,7 @@
       </el-select>
 
       <el-button type="primary"  @click="Search">搜尋</el-button>
-      <!-- <el-button type="primary" @click="ExportSavePdf()">匯出</el-button> -->
+      <el-button type="primary" @click="ExportSavePdf()">匯出</el-button>
       <el-button type="primary" @click="downExcel()">匯出excel</el-button>
       <!-- 列表数据 -->
       <div ref="pdfContent" id="pdfContent">

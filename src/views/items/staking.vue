@@ -1,126 +1,96 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['項目管理', '活動管理']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['項目管理', '定投管理']"></TopBreadcrumb>
 
     <el-card>
-      <!-- 搜索工具 -->
-          <el-select v-model="showValue" placeholder="前台顯示" style="width:10% ">
-          <el-option
-            v-for="(showValue,index) in showstatus"
-            :key="index"
-            v-bind:label="showValue.label"
-            v-bind:value="showValue.value"
-          >{{showValue.label}}</el-option>
-        </el-select>&nbsp;
-        <el-input
-          v-model="searchlist"
-          @keyup.enter.native="Search"
-          style="width:10%"
-          placeholder="請輸入標題"
-        ></el-input>&nbsp;
-    <!--     <el-date-picker
-          type="daterange"
-          start-placeholder="StartTime"
-          end-placeholder="EndTime"
-          v-model="queryInfo.date"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
-          style="width:20% "
-        ></el-date-picker>&nbsp;
-        <el-select v-model="enable.value" placeholder="請選擇" style="width:8% ">
-          <el-option
-            v-for="(enableValue,index) in enable"
-            :key="index"
-            v-bind:label="enableValue.label"
-            v-bind:value="enableValue.value"
-          >{{enableValue.label}}</el-option>
-        </el-select>&nbsp; -->
-        <el-button type="info" @click="clear" >清除</el-button>
-        <el-button type="primary" @click="Search">搜尋</el-button>
-        <el-button type="primary" @click="addaclist" class="btn_right">建立活動</el-button>
+
+        <el-button type="primary" @click="addaclist" class="btn_right">建立定投</el-button>
 
       <!-- 列表 -->
-      <el-table :data="activitylist"  @selection-change="handleSelectionChange"  :header-cell-style="tableHeaderColor"   :cell-style="cellStyle">
-        <el-table-column label="排序" prop="id" width="50%"  align="center"></el-table-column>
-        <el-table-column label="前台顯示"  align="center" width="100%">
+      <el-table :data="stakinglist"    >
+        <el-table-column label="ID" prop="id" width="50%"  align="center"></el-table-column>
+        <el-table-column label="顯示"  align="center" width="100%">
             <template slot-scope="scope">
               <div v-if="scope.row.show_status===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
              <!--  <div v-else-if="scope.row.show_status===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div> -->
               <div v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle"  size="lg"/> </div>
           </template>
         </el-table-column>
-             <el-table-column label="類型"  align="center" width="100%">
-                    <template slot-scope="scope">
-            <div
-              v-for="item in actypelist"
-              :key="item.BehaviorType"
-              :label="item.BehaviorName"
-              :value="item.BehaviorType"
-            >
-              <div v-if="item.BehaviorType==scope.row.type">{{item.BehaviorName}}</div>
-            </div>
-          </template>
-        </el-table-column>
-          <el-table-column label="活動名稱" width="400%">
-              <template slot-scope="scope" >
-             <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_GR}}</router-link>
-              </template>
-          </el-table-column>
-        <el-table-column label="開放期間"  style="background-color:#FFFFF1" >
-          <template slot-scope="scope">
-         <div>{{scope.row.starttime|datefformat}}</div>
-         <div>{{scope.row.endtime|datefformat}}</div>
-          </template>
-        </el-table-column>
+            <el-table-column label="定投名稱"  align="center" width="100%" prop="staking_name">
 
-        <el-table-column label="名額" prop="people_limit" width="100%">
-          <template slot-scope="scope">
-           <span v-if="scope.row.people_limit===0"> 99999</span>
-           <span v-else> {{scope.row.people_limit}} 人</span>
-            </template>
         </el-table-column>
-        <el-table-column label="獎勵金額"  align="center">
-          <template slot-scope="scope">
+             <el-table-column label="from幣種"  align="center" width="100%" prop="from_currency">
+         <template slot-scope="scope">
             <div
               v-for="item in currencyList"
               :key="item.id"
               :label="item.currency"
               :value="item.id"
-
             >
-              <div v-if="item.id==scope.row.bonus_currency"   class="coinpadding">{{scope.row.bonus_amount}}&nbsp;{{item.currency}}</div>
+              <div v-if="item.id==scope.row.from_currency"   class="coinpadding">{{item.currency}}</div>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="上限(次)" prop="bonus_limit" align="center"  width="80%">
-          <template slot-scope="scope" >
-         <span  v-if="scope.row.bonus_limit=='0'"> 0</span>
-         <span  v-else-if="scope.row.bonus_amount=='0'"> {{scope.row.bonus_limit}}</span>
-         <span  v-else> {{scope.row.bonus_limit/scope.row.bonus_amount}}</span>
-            </template>
-            </el-table-column>
-       <el-table-column label="已參加人數" align="center">
-         <template slot-scope="scope">
-         <span v-if="scope.row.status === 0"><el-button type="info" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
-         <span v-else-if="scope.row.status === 1"><el-button type="success" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
-         <span v-else><el-button type="danger" size="mini" plain  @click="jump(scope.$index, scope.row)">{{scope.row.people_count}}</el-button></span>
-         </template>
-       </el-table-column>
-        <el-table-column label="進展" width="80%" align="center">
+          <el-table-column label="to幣種" >
+                 <template slot-scope="scope">
+            <div
+              v-for="item in currencyList"
+              :key="item.id"
+              :label="item.currency"
+              :value="item.id"
+            >
+              <div v-if="item.id==scope.row.to_currency"   class="coinpadding">{{item.currency}}</div>
+            </div>
+          </template>
+          </el-table-column>
+        <el-table-column label="定投日期"  style="background-color:#FFFFF1" >
           <template slot-scope="scope">
-            <div v-if="scope.row.status === 0 " style="color:gray">尚未開始</div>
-            <div v-else-if="scope.row.status === 1 || scope.row.status === 3" style="color:#79BB13">進行中</div>
-            <div v-else style="color:red">已結束</div>
+         <div>{{scope.row.cdate}}</div>
           </template>
         </el-table-column>
-     <!--        <el-table-column label="實際結束時間" >
-          <template slot-scope="scope">
-            <div v-if="scope.row.status === 0" ></div>
-            <div v-else-if="scope.row.status === 1" ></div>
-            <div v-else style="color:red">{{scope.row.endTime}}</div>
-          </template>
-        </el-table-column> -->
 
+        <el-table-column label="成交手續費" prop="people_limit" width="100%">
+          <template slot-scope="scope">
+          {{scope.row.charge}} %
+            </template>
+        </el-table-column>
+        <el-table-column label="代買手續費"  align="center">
+          <template slot-scope="scope">
+        {{scope.row.bcharge}} %
+          </template>
+        </el-table-column>
+       <el-table-column label="躉繳優惠">
+               <template slot-scope="scope">
+           {{scope.row.discount}} %
+              </template>
+        </el-table-column>
+      <el-table-column label="開放期限">
+        <template slot-scope="scope">
+         <div>{{scope.row.starttime}}</div>~
+         <div>{{scope.row.endtime}}</div>
+          </template>
+        </el-table-column>
+          <el-table-column label="人數上限">
+            <template slot-scope="scope">
+           {{scope.row.people_limit}} 人
+              </template>
+        </el-table-column>
+          <el-table-column label="認購名單">
+            <template slot-scope="scope">
+               <el-button type="success"  plain size="mini" @click="showpassDialog(scope.$index,scope.row)">  {{scope.row.joinpeople}}</el-button>
+
+              </template>
+        </el-table-column>
+          <el-table-column label="餘額不足">
+            <template slot-scope="scope">
+               <el-button type="success"  plain size="mini" @click="showpassDialog(scope.$index,scope.row)">   {{scope.row.balance}}</el-button>
+
+              </template>
+        </el-table-column>
+             <el-table-column label="">
+             <div class="el-icon-edit" @click="showEditDialog(scope.$index, scope.row)" style="font-size:18px;">
+            </div>
+        </el-table-column>
       </el-table>
 
       <!-- 分页组件 -->
@@ -164,7 +134,24 @@ export default {
         endTime: ''
       },
       date: [],
-      activitylist: [ ],
+      stakinglist: [
+        {
+          id: 1,
+          show_status: 1,
+          staking_name: 'test',
+          from_currency: '23',
+          to_currency: '23',
+          cdate: 123,
+          charge: 0.1,
+          bcharge: 0.1,
+          discount: 5,
+          starttime: '2020/04/10',
+          endtime: '2020/04/20',
+          people_limit: 1000,
+          joinpeople: 37,
+          balance: 6
+        }
+      ],
       actypelist: [],
       total: 0,
       addDialogVisible: false,
@@ -279,6 +266,7 @@ export default {
       }
       await currencyList(data).then(res => {
         this.currencyList = res.data
+        console.log('456668', this.currencyList)
       })
     },
     // 获取列表
@@ -331,18 +319,12 @@ export default {
       queryData = row
       this.$router.push({ path: '/activitymem', query: queryData })
     },
-    tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
+    /*   tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 0) {
         return 'background-color:#F2F2F2 ;color:#7B7B7B;font-size: 12px;'
       }
     },
-    cellStyle ({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 9 || columnIndex === 8 || columnIndex === 10) { // 指定坐标rowIndex ：行，columnIndex ：列
-        return 'background:#FFFFF1' // rgb(105,0,7)
-      } else {
-        return ''
-      }
-    },
+ */
     addaclist () {
       this.$router.push('/addaclist')
     }

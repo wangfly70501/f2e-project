@@ -70,7 +70,7 @@ export default {
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' } */
             { index: 'setstatus', title: '權限管理' }
-          /*   { index: 'right', title: '權限列表' } */
+            /* { index: 'right', title: '角色列表' } */
           ]
         },
         {
@@ -134,8 +134,8 @@ export default {
           subs: [
             { index: 'lockup', title: '鎖倉管理' },
             { index: 'activity', title: '活動管理' },
-            { index: 'maintain', title: '維護管理' },
-            { index: 'staking', title: '定投管理' }
+            { index: 'maintain', title: '維護管理' }
+            /*  { index: 'staking', title: '定投管理' } */
             /*    { index: 'test', title: 'tset' } */
           ]
         }

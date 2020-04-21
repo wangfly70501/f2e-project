@@ -1,16 +1,16 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['權限管理', '權限列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['權限管理', '角色列表']"></TopBreadcrumb>
 
     <el-card>
         <el-row>
-        <el-button type="primary" @click="addDialogVisible = true" size="small">新增權限</el-button>
+        <el-button type="primary" @click="addDialogVisible = true" size="small">新增角色</el-button>
       </el-row>
       <!-- 权限列表 -->
-      <el-table :data="rightsList" stripe border>
+      <el-table :data="roleList " stripe border>
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="權限名稱" prop="authName"></el-table-column>
-        <el-table-column label="權限ID" prop="role_id"></el-table-column>
+        <el-table-column label="角色名稱" prop="authName"></el-table-column>
+        <el-table-column label="角色描述" prop="role_id"></el-table-column>
   <!--       <el-table-column label="權限等級" prop="level">
           <template v-slot="scope">
             <el-tag v-if="scope.row.level === '1'">一级</el-tag>
@@ -18,16 +18,16 @@
             <el-tag v-else type="warning">三级</el-tag>
           </template>
         </el-table-column> -->
-          <el-table-column label="描述" prop="path"></el-table-column>
+          <el-table-column label="創建時間" prop="path"></el-table-column>
       </el-table>
 
       <!-- 新增權限的对话框 -->
-    <el-dialog title="新增權限" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed" class="dialog">
+    <el-dialog title="新增角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed" class="dialog">
       <el-form :model="addForm" ref="addFormRef" label-width="100px">
-        <el-form-item label="權限名稱" prop="roleName">
+        <el-form-item label="角色名稱" prop="roleName">
           <el-input v-model="addForm.roleName"></el-input>
         </el-form-item>
-        <el-form-item label="權限描述" prop="roleDesc">
+        <el-form-item label="角色描述" prop="roleDesc">
           <el-input v-model="addForm.roleDesc"></el-input>
         </el-form-item>
       </el-form>
@@ -43,17 +43,25 @@
 </template>
 
 <script>
+import { roleList } from '../../api/index.js'
 export default {
   data () {
     return {
-      rightsList: [],
+      roleList: [],
       addForm: {},
-      addDialogVisible: false
+      addDialogVisible: false,
+      queryInfo: {
+        pagenum: 1,
+        pagesize: 10,
+        date: [],
+        enable: '0'
+      },
+      total: 0
     }
   },
 
   created () {
-    this.getRightsList()
+    this.getroleList()
     this.objList()
   },
 
@@ -68,27 +76,27 @@ export default {
         this.$router.push('/login')
       }
     },
-    // 获取所有的权限
-    async getRightsList () {
+    // 获取所有的角色
+    async getroleList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum
 
+      }
+      console.log('4565', data)
+      await roleList(data).then(res => {
+        this.roleList = res.data
+        /* this.total = res.pagination.total_record */
+        console.log('4561212', this.roleList)
+      })
     },
     addDialogClosed () {
 
     },
     addRole () {
-      this.$refs.addFormRef.validate(async valid => {
-        if (!valid) return
-
-        const { data: res } = await this.$http.post('roles', this.addForm)
-
-        if (res.meta.status !== 201) {
-          return this.$message.error('添加角色失败')
-        }
-
-        this.$message.success('添加角色成功')
-        this.getRoleList()
-        this.addDialogVisible = false
-      })
     }
 
   }

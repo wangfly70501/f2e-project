@@ -7,6 +7,7 @@ const USER_TOKEN_ERROR = 'USER_TOKEN_ERROR'
 const USER_DATA_RECEIVED = 'USER_DATA_RECEIVED'
 
 const formatRules = (data) => {
+  console.log('data1234', data)
   let allowPage = []
   data.map(item => {
     if (item.component) {

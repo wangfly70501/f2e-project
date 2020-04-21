@@ -474,3 +474,12 @@ export const getRolePermissions = query => {
     data: query
   })
 }
+
+// 權限控制
+export const roleList = query => {
+  return request({
+    url: './taskapi?method=roleList',
+    method: 'post',
+    data: query
+  })
+}
