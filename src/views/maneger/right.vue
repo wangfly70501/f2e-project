@@ -7,7 +7,7 @@
         <el-button type="primary" @click="addDialogVisible = true" size="small">新增角色</el-button>
       </el-row>
       <!-- 权限列表 -->
-      <el-table :data="roleList" stripe border>
+      <el-table :data="rightList" stripe border>
         <el-table-column  label="ID" prop="id" width="50%" ></el-table-column>
         <el-table-column label="角色名稱" prop="role_name"></el-table-column>
         <el-table-column label="角色描述" prop="role_des"></el-table-column>
@@ -60,7 +60,7 @@ export default {
         pagenum: 1,
         pagesize: 10
       },
-      roleList: {},
+      /*   roleList: {}, */
       total: 0
     }
   },
@@ -93,7 +93,7 @@ export default {
       }
       console.log('4565', data)
       await roleList(data).then(res => {
-        this.roleList = res.data
+        this.rightList = res.data
         /*  this.total = res.pagination.total_record */
         console.log('roleList', this.roleList)
       })
