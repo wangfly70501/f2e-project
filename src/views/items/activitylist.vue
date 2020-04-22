@@ -328,12 +328,10 @@
       </div>
 
       <!-- 底部区域 -->
-      <div class="btn"  v-if="editForm.status!==2">
+      <div class="btn"  >
           <el-button type="primary" @click="setacList" style="width:40%">編輯活動</el-button>
       </div>
-        <div class="btn" v-else>
-          <span style="color:red">活動結束</span>
-      </div>
+
     </el-card>
     <!-- 審核不通過訊息 -->
     <el-dialog title="確定要刪除?" :visible.sync="addDialogVisible" width="30%" @close="addDialogClosed">

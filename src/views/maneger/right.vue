@@ -7,10 +7,10 @@
         <el-button type="primary" @click="addDialogVisible = true" size="small">新增角色</el-button>
       </el-row>
       <!-- 权限列表 -->
-      <el-table :data="roleList " stripe border>
-        <el-table-column type="index"></el-table-column>
-        <el-table-column label="角色名稱" prop="authName"></el-table-column>
-        <el-table-column label="角色描述" prop="role_id"></el-table-column>
+      <el-table :data="roleList" stripe border>
+        <el-table-column  label="ID" prop="id" width="50%" ></el-table-column>
+        <el-table-column label="角色名稱" prop="role_name"></el-table-column>
+        <el-table-column label="角色描述" prop="role_des"></el-table-column>
   <!--       <el-table-column label="權限等級" prop="level">
           <template v-slot="scope">
             <el-tag v-if="scope.row.level === '1'">一级</el-tag>
@@ -18,10 +18,10 @@
             <el-tag v-else type="warning">三级</el-tag>
           </template>
         </el-table-column> -->
-          <el-table-column label="創建時間" prop="path"></el-table-column>
+          <el-table-column label="創建時間" prop="ctime"></el-table-column>
       </el-table>
 
-      <!-- 新增權限的对话框 -->
+      <!-- 新增角色的对话框 -->
     <el-dialog title="新增角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed" class="dialog">
       <el-form :model="addForm" ref="addFormRef" label-width="100px">
         <el-form-item label="角色名稱" prop="roleName">
@@ -47,15 +47,20 @@ import { roleList } from '../../api/index.js'
 export default {
   data () {
     return {
-      roleList: [],
+      rightList: [
+        {
+          authName: '主管',
+          authcontent: '123456',
+          ctime: '2020/04/21'
+        }
+      ],
       addForm: {},
       addDialogVisible: false,
       queryInfo: {
         pagenum: 1,
-        pagesize: 10,
-        date: [],
-        enable: '0'
+        pagesize: 10
       },
+      roleList: {},
       total: 0
     }
   },
@@ -89,8 +94,8 @@ export default {
       console.log('4565', data)
       await roleList(data).then(res => {
         this.roleList = res.data
-        /* this.total = res.pagination.total_record */
-        console.log('4561212', this.roleList)
+        /*  this.total = res.pagination.total_record */
+        console.log('roleList', this.roleList)
       })
     },
     addDialogClosed () {

@@ -19,6 +19,7 @@
       <el-button type="primary"  @click="Search">搜尋</el-button>
       <el-button type="primary" @click="ExportSavePdf()">匯出</el-button>
       <el-button type="primary" @click="downExcel()">匯出excel</el-button>
+        <el-button type="primary" @click="Exportpdf()">匯出pdf</el-button>
       <!-- 列表数据 -->
       <div ref="pdfContent" id="pdfContent">
         <div class="font">
@@ -47,8 +48,9 @@
     </el-card>
   </div>
 </template>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
 <script>
+import jsPDF from 'jspdf';
 import { revenuedata } from '../../api/index.js'
 import moment from 'moment'
 
@@ -147,7 +149,14 @@ export default {
       const data = this.revenueList.map(v => filterVal.map(k => v[k]))
       const [fileName, fileType, sheetName] = ['測試下載', 'xlsx', '測試頁']
       this.$toExcel({ th, data, fileName, fileType, sheetName })
+    },
+    async Exportpdf(){
+      var doc = new jsPDF()
+
+      doc.text('Hello world!', 10, 10)
+     doc.save('a4.pdf')
     }
+
   }
 }
 </script>
