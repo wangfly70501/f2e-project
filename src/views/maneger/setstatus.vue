@@ -98,6 +98,7 @@ export default {
   created () {
     this.getAuthList()
     this.objList()
+    console.log('!!!', process.env)
   },
 
   methods: {
