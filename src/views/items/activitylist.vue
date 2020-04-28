@@ -68,12 +68,19 @@
             </el-form-item>
           </span>
         </div>
-          <div class="text">
-          <span>連結網址</span>
-            <el-form-item  prop="link_url" label="網址" >
+         <div class="text">
+          <span>連結網址</span><span class="description">
+            <el-form-item label="網址" >
               <el-input v-model="editForm.link_url" style="width:400px" ></el-input>
+            </el-form-item>
+                <el-form-item   label="簡中網址" >
+              <el-input v-model="editForm.link_url_cn" style="width:400px" ></el-input>
+            </el-form-item>
+                  <el-form-item   label="英文網址" >
+              <el-input v-model="editForm.link_url_en" style="width:400px" ></el-input>
                 <div style="color:#F78989"> （請輸入完整網址，如https://www.google.com）</div>
             </el-form-item>
+            </span>
         </div>
       </el-form>
         <!-- 活動資訊無法編輯的部分 -->
@@ -754,7 +761,9 @@ export default {
         show_status: this.editForm.show_status.toString(),
         people_set: this.editForm.people_set,
         behavior_id: this.editForm.id,
-        link_url: this.editForm.link_url
+        link_url: this.editForm.link_url,
+        link_url_en: this.editForm.link_url_en,
+        link_url_cn: this.editForm.link_url_cn
       }
       console.log('data', data)
       await setBehavior(data).then(res => {

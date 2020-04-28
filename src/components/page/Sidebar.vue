@@ -69,8 +69,11 @@ export default {
           /*   { index: 'users', title: '管理者列表' },
             { index: 'roles', title: '角色列表' },
             { index: 'rights', title: '權限列表' } */
-            { index: 'setstatus', title: '權限管理' },
-            { index: 'right', title: '角色列表' }
+            { index: 'manger', title: '管理者列表' },
+            { index: 'role', title: '角色列表' },
+            /* { index: 'setstatus', title: '權限管理' }, */
+            { index: 'right', title: '權限列表' }
+
           ]
         },
         {

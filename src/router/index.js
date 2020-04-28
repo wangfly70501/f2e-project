@@ -35,6 +35,8 @@ const activitymem = () => import(/* webpackChunkName: "service_Charges" */ '../v
 const test = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/test.vue')
 const staking = () => import(/* webpackChunkName: "service_Charges" */ '../views/items/staking.vue')
 const setstatus = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/setstatus.vue')
+const manger = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/manger.vue')
+const role = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/role.vue')
 const right = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/right.vue')
 Vue.use(VueRouter)
 
@@ -80,7 +82,9 @@ const routes = [
       { path: '/test', component: test },
       { path: '/activitymem', component: activitymem },
       { path: '/setstatus', component: setstatus },
+      { path: '/manger', component: manger },
       { path: '/staking', component: staking },
+      { path: '/role', component: role },
       { path: '/right', component: right }
     ]
   }

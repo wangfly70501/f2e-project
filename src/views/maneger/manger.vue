@@ -1,9 +1,9 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['權限管理', '權限管理NEWAPI']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['權限管理', '帳號管理']"></TopBreadcrumb>
 
     <el-card>
-    <!-- API 用新的 -->
+
       <!-- 列表 -->
       <el-table :data="AuthList" stripe border>
         <el-table-column label="id" prop="id" ></el-table-column>
@@ -18,7 +18,9 @@
                 {{scope.row.mobile|phoneformat}}
             </template>
         </el-table-column>
+
         <el-table-column label="email" prop="email"></el-table-column>
+        <el-table-column label="角色名稱" prop="role_name"></el-table-column>
         <el-table-column label="狀態" prop="status">
                <template slot-scope="scope">
              <el-switch
@@ -32,29 +34,40 @@
            <!--  "scope.row.status 1是等於開啟 0是關閉 -->
              </template>
         </el-table-column>
+         <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button
+              type="warning"
+              icon="el-icon-setting"
+              size="mini"
+              @click="showEditDialog (scope.$index, scope.row)"
+            >分配角色</el-button>
+                 </template>
+         </el-table-column>
 
       </el-table>
-            <!--分配權限的对话框 -->
-    <el-dialog title="分配權限" :visible.sync="distributionDialog" width="50%" @close="distributionClosed">
+            <!--分配角色的对话框 -->
+    <el-dialog title="分配角色" :visible.sync="distributionDialog" width="50%" @close="distributionClosed">
 <!--
           <el-checkbox-group v-model="distribution">
             <el-checkbox v-for="item in items" :label="item.id">{{item.role_name}}</el-checkbox>
           </el-checkbox-group> -->
         <el-form :model="distributionForm"  label-width="70px">
-        <el-form-item label="功能名稱">
-          <el-input v-model="distributionForm.role_name" ></el-input>
+        <el-form-item label="帳號">
+          <el-input v-model="distributionForm.name" ></el-input>
         </el-form-item>
-        <el-form-item label="權限">
-          <el-input v-model="distributionForm.role_des"></el-input>
+        <el-form-item label="手機">
+          <el-input v-model="distributionForm.mobile"></el-input>
+        </el-form-item>
+          <el-form-item label="email">
+          <el-input v-model="distributionForm.email"></el-input>
         </el-form-item>
            <el-form-item label="角色">
           <el-checkbox-group v-model="distribution">
             <el-checkbox v-for="item in roleList" :label="item.id" :key="item.id">{{item.role_name}}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-           <el-form-item label="等級">
-          <el-input v-model="distributionForm.level"></el-input>
-        </el-form-item>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="distributionDialog = false">取 消</el-button>
@@ -208,10 +221,30 @@ export default {
       this.distributionForm.role_name = ''
       this.distributionForm.role_des = ''
     },
-    savedistribution () {
-      console.log('distribution', this.distribution)
+    async savedistribution () {
+      const arr = Array.prototype.slice.call(this.distribution)
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        role_id: arr,
+        id: this.distributionForm.id.toString()
+      }
+      await setMgState(data).then(res => {
+        console.log('456', data)
+        if (res.error_code === 0) {
+          this.$message.success('修改成功')
+        } else {
+          this.$message.error('修改失敗')
+        }
+        this.getAuthList()
+      })
+    },
+    showEditDialog (index, row) {
+      this.distributionDialog = true
+      this.distributionForm = row
+      console.log('456', this.distributionForm)
     }
-
   }
 }
 </script>

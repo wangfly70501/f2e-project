@@ -30,7 +30,7 @@ export default {
   },
 
   created () {
-    this.getRightsList()
+    this.getrightsList()
     this.objList()
   },
 
@@ -46,7 +46,7 @@ export default {
       }
     },
     // 获取所有的权限
-    async getRightsList () {
+    async getrightsList () {
       const { data: res } = await this.$http.get('rights/list')
 
       if (res.meta.status !== 200) {

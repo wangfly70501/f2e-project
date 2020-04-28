@@ -492,3 +492,48 @@ export const roleAdd = query => {
     data: query
   })
 }
+
+// 分配權限
+export const rolePermissionAdd = query => {
+  return request({
+    url: './taskapi?method=rolePermissionAdd',
+    method: 'post',
+    data: query
+  })
+}
+
+// 編輯
+export const roleModify = query => {
+  return request({
+    url: './taskapi?method=roleModify',
+    method: 'post',
+    data: query
+  })
+}
+
+// 使用者列表(角色)
+export const roleStatus = query => {
+  return request({
+    url: './taskapi?method=roleStatus',
+    method: 'post',
+    data: query
+  })
+}
+
+// 權限列表
+export const rolePermissionList = query => {
+  return request({
+    url: './taskapi?method=rolePermissionList',
+    method: 'post',
+    data: query
+  })
+}
+
+// 權限列表狀態
+export const rolePermissionStatus = query => {
+  return request({
+    url: './taskapi?method=rolePermissionStatus',
+    method: 'post',
+    data: query
+  })
+}

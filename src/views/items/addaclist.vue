@@ -61,11 +61,18 @@
         </span>
           </div>
         <div class="text">
-          <span>連結網址</span>
-            <el-form-item  prop="link_url" label="網址">
+          <span>連結網址</span><span class="description">
+            <el-form-item label="網址" >
               <el-input v-model="addForm.link_url" style="width:400px" ></el-input>
+            </el-form-item>
+                <el-form-item   label="簡中網址" >
+              <el-input v-model="addForm.link_url_cn" style="width:400px" ></el-input>
+            </el-form-item>
+                  <el-form-item   label="英文網址" >
+              <el-input v-model="addForm.link_url_en" style="width:400px" ></el-input>
                 <div style="color:#F78989"> （請輸入完整網址，如https://www.google.com）</div>
             </el-form-item>
+            </span>
         </div>
            </el-form>
           <!-- 活動描述 -->
@@ -572,7 +579,9 @@ export default {
           bonus_limit_status: this.addForm.bonus_limit_status,
           show_status: this.addForm.show_status.toString(),
           people_set: this.Objecttype.value.toString(),
-          link_url: this.addForm.link_url
+          link_url: this.addForm.link_url,
+          link_url_en: this.addForm.link_url_en,
+          link_url_cn: this.addForm.link_url_cn
         }
         console.log('data', data)
         if (data.link_url === undefined) {

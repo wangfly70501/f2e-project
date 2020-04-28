@@ -1,16 +1,16 @@
 <template>
   <div>
-    <TopBreadcrumb :titles="['權限管理', '角色列表']"></TopBreadcrumb>
+    <TopBreadcrumb :titles="['權限管理', '權限列表']"></TopBreadcrumb>
 
     <el-card>
         <el-row>
-        <el-button type="primary" @click="addDialogVisible = true" size="small">新增角色</el-button>
+           <el-button type="primary" @click="distributionDialog = true" size="small">新增權限</el-button>
       </el-row>
       <!-- 权限列表 -->
       <el-table :data="rightList" stripe border>
-        <el-table-column  label="ID" prop="id" width="50%" align="center"></el-table-column>
-        <el-table-column label="角色名稱" prop="role_name"></el-table-column>
-        <el-table-column label="角色描述" prop="role_des"></el-table-column>
+        <el-table-column  label="角色名稱" prop="role_name" ></el-table-column>
+        <el-table-column label="功能名稱" prop="component_name"></el-table-column>
+        <el-table-column label="權限等級" prop="ps_level"></el-table-column>
   <!--       <el-table-column label="權限等級" prop="level">
           <template v-slot="scope">
             <el-tag v-if="scope.row.level === '1'">一级</el-tag>
@@ -18,67 +18,78 @@
             <el-tag v-else type="warning">三级</el-tag>
           </template>
         </el-table-column> -->
-          <el-table-column label="創建時間" prop="ctime"></el-table-column>
-             <el-table-column label="操作"><el-button type="primary" @click="addDialogVisible = true" size="small">編輯</el-button></el-table-column>
+               <el-table-column label="狀態" prop="status">
+               <template slot-scope="scope">
+             <el-switch
+              v-model="scope.row.status"
+              active-color="#13ce66"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+             @change="changeSwitch(scope.$index, scope.row)"
+            ></el-switch>
+           <!--  "scope.row.status 1是等於開啟 0是關閉 -->
+             </template>
+        </el-table-column>
       </el-table>
-
-      <!-- 新增角色的对话框 -->
-    <el-dialog title="新增角色" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed" class="dialog">
-      <el-form :model="addForm" ref="addFormRef" label-width="100px">
-        <el-form-item label="角色名稱" prop="roleName">
-          <el-input v-model="addForm.roleName"></el-input>
+        <!--分配權限的对话框 -->
+    <el-dialog title="分配權限" :visible.sync="distributionDialog" width="50%" @close="distributionClosed">
+<!--
+          <el-checkbox-group v-model="distribution">
+            <el-checkbox v-for="item in items" :label="item.id">{{item.role_name}}</el-checkbox>
+          </el-checkbox-group> -->
+        <el-form :model="distributionForm"  label-width="70px">
+        <el-form-item label="功能名稱">
+          <el-input v-model="distributionForm.component_name" ></el-input>
         </el-form-item>
-        <el-form-item label="角色描述" prop="roleDesc">
-          <el-input v-model="addForm.roleDesc"></el-input>
+        <el-form-item label="路徑">
+          <el-input v-model="distributionForm.component"></el-input>
+        </el-form-item>
+           <el-form-item label="角色">
+          <el-checkbox-group v-model="distribution" @change="handleCheckedChange">
+            <el-checkbox v-for="item in roleList" :label="item.id" :key="item.id">{{item.role_name}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+           <el-form-item label="等級">
+          <el-input v-model="distributionForm.level"></el-input>
         </el-form-item>
       </el-form>
-      <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addRole">確 定</el-button>
+        <el-button @click="distributionDialog = false">取 消</el-button>
+        <el-button type="primary" @click="savedistribution">确 定</el-button>
       </span>
     </el-dialog>
-          <!-- 分页区域 -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pagenum"
-        :page-sizes="[5, 10, 15]"
-        :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+
     </el-card>
 
   </div>
 </template>
 
 <script>
-import { roleList, roleAdd } from '../../api/index.js'
+import { roleList, rolePermissionList, rolePermissionAdd, rolePermissionStatus } from '../../api/index.js'
 export default {
   data () {
     return {
-      /*       rightList: [
-        {
-          authName: '主管',
-          authcontent: '123456',
-          ctime: '2020/04/21'
-        }
-      ], */
+      distribution: [],
       rightList: [],
+      roleList: {},
       addForm: {},
+      editForm: {},
+      distributionForm: {},
       addDialogVisible: false,
+      editDialogVisible: false,
+      distributionDialog: false,
       queryInfo: {
         pagenum: 1,
-        pagesize: 10
+        pagesize: 50
       },
-      /*   roleList: {}, */
       total: 0
     }
   },
 
   created () {
     this.getroleList()
+    this.getList()
     this.objList()
   },
 
@@ -93,6 +104,19 @@ export default {
         this.$router.push('/login')
       }
     },
+    async getList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: 100,
+        page: 1
+      }
+      console.log('4565', data)
+      await roleList(data).then(res => {
+        this.roleList = res.data
+      })
+    },
     // 获取所有的角色
     async getroleList () {
       let data = {
@@ -100,46 +124,70 @@ export default {
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
         paginate: this.queryInfo.pagesize,
-        page: this.queryInfo.pagenum
-
+        page: this.queryInfo.pagenum,
+        status: '1'
       }
       console.log('4565', data)
-      await roleList(data).then(res => {
+      await rolePermissionList(data).then(res => {
         this.rightList = res.data
+        /* this.roleList = res.data */
         this.total = res.pagination.total_record
         console.log('rightList', this.rightList)
       })
     },
-    async addRole () {
-      this.addDialogVisible = false
+    showEditDialog (index, row) {
+      this.editForm = row
+      console.log('editform', this.editForm)
+      this.editDialogVisible = true
+    },
+
+    async savedistribution () {
+      this.distributionDialog = false
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        role_name: this.addForm.roleName,
-        role_des: this.addForm.roleDesc,
-        role_type: '0'
+        role_id: this.distribution,
+        ps_level: this.distributionForm.level,
+        component_name: this.distributionForm.component_name,
+        component: this.distributionForm.component
+
       }
-      console.log('data', data)
-      await roleAdd(data).then(res => {
+      await rolePermissionAdd(data).then(res => {
         if (res.error_code === 0) {
-          this.$message.success('新增成功')
+          this.$message.success('修改成功')
         } else {
-          this.$message.error('新增失敗')
+          this.$message.error('格式不符，修改失敗')
         }
+        this.getroleList()
       })
     },
-    addDialogClosed () {
-
+    handleCheckedChange (value) {
+      console.log(value)
     },
-
-    handleSizeChange (newSize) {
-      this.queryInfo.pagesize = newSize
-      this.getroleList()
+    distributionClosed () {
+      this.distributionForm.role_name = ''
+      this.distributionForm.role_des = ''
     },
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getroleList()
+    async changeSwitch (index, row) {
+      this.form = row
+      console.log('form', this.form)
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        status: this.form.status.toString(),
+        component_name: this.form.component_name
+      }
+      await rolePermissionStatus(data).then(res => {
+        console.log('456', data)
+        if (res.error_code === 0) {
+          this.$message.success('修改成功')
+        } else {
+          this.$message.error('修改失敗')
+        }
+        this.getroleList()
+      })
     }
 
   }
