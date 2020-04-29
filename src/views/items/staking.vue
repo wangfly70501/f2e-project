@@ -436,7 +436,6 @@ export default {
     },
     async fixedInvestment () {
       this.addDialogVisible = false
-
       this.balanceVisible = false
       var data = {
         mg_name: localStorage.getItem('mg_name'),
