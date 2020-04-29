@@ -537,3 +537,21 @@ export const rolePermissionStatus = query => {
     data: query
   })
 }
+
+// 使用者分配角色
+export const updateManagerRole = query => {
+  return request({
+    url: './taskapi?method=updateManagerRole',
+    method: 'post',
+    data: query
+  })
+}
+
+// 定投參加列表
+export const getStakingMemberList = query => {
+  return request({
+    url: './taskapi?method=getStakingMemberList',
+    method: 'post',
+    data: query
+  })
+}

@@ -100,7 +100,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[ 10,20,50]"
+        :page-sizes="[10,20,50]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -258,7 +258,9 @@ import {
 export default {
   data () {
     return {
+      StakingmemList: '',
       showValue: '2',
+      StakingMemberList: [],
       people_limit: '',
       endTime: '',
       queryData: {},
@@ -358,7 +360,7 @@ export default {
   created () {
     this.getStakingList()
     this.getCurrencyList()
-    this.getactypelist()
+
     this.objList()
   },
 
@@ -373,18 +375,6 @@ export default {
         this.$router.push('/login')
       }
     },
-    async getactypelist () {
-      let data = {
-        mg_name: localStorage.getItem('mg_name'),
-        mg_pwd: localStorage.getItem('mg_pwd'),
-        mg_state: localStorage.getItem('mg_state')
-      }
-      await info_behavior(data).then(res => {
-        this.actypelist = res.data
-        console.log('123', this.actypelist)
-      })
-    },
-
     async getCurrencyList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
