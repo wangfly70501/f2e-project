@@ -16,9 +16,9 @@
               <div v-else style="color:#79BB13"> <font-awesome-icon icon="check-circle"  size="lg"/> </div>
           </template>
         </el-table-column>
-        <el-table-column label="定投名稱"  align="center" width="100%" prop="title_GR">
+        <el-table-column label="定投名稱"  align="center" prop="title_GR">
         </el-table-column>
-        <el-table-column label="from幣種"  align="center" width="100%" >
+        <el-table-column label="from幣種"  align="center" >
           <template slot-scope="scope">
             <div
               v-for="item in currencyList"
@@ -30,7 +30,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="to幣種" align="center" width="100%" >
+        <el-table-column label="to幣種" align="center" >
           <template slot-scope="scope">
             <div
               v-for="item in currencyList"
@@ -42,22 +42,22 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="定投日期"  align="center" width="100%" style="background-color:#FFFFF1"  prop="purchase_day">
+        <el-table-column label="定投日期"  align="center"  style="background-color:#FFFFF1"  prop="purchase_day">
           <template slot-scope="scope">
           每月 {{scope.row.purchase_day}} 日
           </template>
         </el-table-column>
-        <el-table-column label="成交手續費" align="center" width="100%" prop="rate_deal">
+        <el-table-column label="成交手續費" align="center" w prop="rate_deal">
           <template slot-scope="scope">
           {{scope.row.rate_deal}} %
             </template>
         </el-table-column>
-        <el-table-column label="代買手續費" align="center" width="100%" prop="rate_purchase">
+        <el-table-column label="代買手續費" align="center"  prop="rate_purchase">
           <template slot-scope="scope">
           {{scope.row.rate_purchase}} %
           </template>
         </el-table-column>
-        <el-table-column label="躉繳優惠" align="center" width="100%" prop="sp_rate">
+        <el-table-column label="躉繳優惠" align="center"  prop="sp_rate">
           <template slot-scope="scope">
            {{scope.row.sp_rate}} %
           </template>
@@ -68,17 +68,17 @@
             <div>{{scope.row.sp_endtime}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="人數上限" align="center" width="100%" >
+        <el-table-column label="人數上限" align="center" >
           <template slot-scope="scope">
            {{scope.row.sp_people_limit}} 人
           </template>
         </el-table-column>
-        <el-table-column label="認購名單" align="center" width="100%" >
+        <el-table-column label="認購名單" align="center" >
           <template slot-scope="scope">
             <el-button type="success"  plain size="mini" @click="joinPeople(scope.$index, scope.row)">{{scope.row.people_count}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="餘額不足" align="center" width="100%" >
+        <el-table-column label="餘額不足" align="center"  >
           <template slot-scope="scope">
             <el-button type="success"  plain size="mini" @click="balancePeople(scope.$index, scope.row)">{{scope.row.people_count}}</el-button>
           </template>
@@ -206,25 +206,25 @@
     </el-dialog>
 
 <!-- 餘額不足 -->
-    <el-dialog title="餘額不足名單" :visible.sync="balanceVisible" width="80%" >
+    <el-dialog title="餘額不足名單" :visible.sync="balancePeopleVisible" width="60%" >
         <div>定投名稱：BTC定投</div>
         <div>報表產製：2020/05/06 10:00</div>
         <div>定投時間：每月6日 10:00</div>
         <el-table :data="stakinglist">
-          <el-table-column label="UUID" prop="id" width="50%"  align="center"></el-table-column>
+          <el-table-column label="UUID" prop="uuid" width="100px"  align="center"></el-table-column>
           <el-table-column label="認購日期"  style="background-color:#FFFFF1" >
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.ctime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="定投金額"  style="background-color:#FFFFF1" >
+          <el-table-column label="定投金額" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="可用餘額"  style="background-color:#FFFFF1" >
+          <el-table-column label="可用餘額" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
           <el-table-column label="手機號碼"  style="background-color:#FFFFF1" >
@@ -280,7 +280,7 @@ export default {
       total: 0,
       addDialogVisible: false,
       joinPeopleVisible: false,
-      balanceVisible: false,
+      balancePeopleVisible: false,
       addForm: {},
       editDialogVisible: false,
       table: {},
@@ -450,7 +450,7 @@ export default {
     },
     async fixedInvestment () {
       this.addDialogVisible = false
-      this.balanceVisible = false
+      // this.balanceVisible = false
       var data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -478,31 +478,36 @@ export default {
         mg_state: localStorage.getItem('mg_state'),
         staking_id: this.joinform.id
       }
-
+      getStakingMemberList(data).then(res => {
+        this.StakingMemberList = res.data
+        console.log('StakingMemberList', this.StakingMemberList)
+      })
+    },
+    balancePeople (index, row) {
+      this.joinform = row
+      console.log('111', this.joinform)
+      this.balancePeopleVisible = true
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        staking_id: this.joinform.id
+      }
       getStakingMemberList(data).then(res => {
         this.StakingMemberList = res.data
         console.log('StakingMemberList', this.StakingMemberList)
       })
     }
-    // addDialogClosed () {
-    //   this.$refs.addFormRef.resetFields()
-    //   this.addForm.addtxtrate = ''
-    // },
-    // joinPeopleClosed () {
-    //   this.$refs.addFormRef.resetFields()
-    //   this.addForm.addtxtrate = ''
-    // },
-    // balanceClosed () {
-    //   console.log(this.$refs.addFormRef)
-    //   this.$refs.addFormRef.resetFields()
-    //   this.addForm.addtxtrate = ''
-    // }
   }
 }
 /* 數字千分位 */
 </script>
 
 <style>
+*{
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
 .form-right {
   width: 50%;
   padding-left: 1rem;
