@@ -173,31 +173,31 @@
     </el-dialog>
 
 <!-- 認購名單 -->
-    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="60%" >
+    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="60%" align="center">
       <div>定投名稱：BTC定投</div>
         <el-table :data="StakingMemberList">
-          <el-table-column label="UUID" prop="uuid" width="100px"  align="center"></el-table-column>
-          <el-table-column label="定投金額" align="center">
+          <el-table-column label="UUID" prop="uuid" width="100%"  align="center"></el-table-column>
+          <el-table-column label="定投金額" align="center" width="100%">
             <template slot-scope="scope">
               <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="定投日期"  style="background-color:#FFFFF1"  align="center">
+          <el-table-column label="定投日期"  style="background-color:#FFFFF1"  align="center" width="100%">
             <template slot-scope="scope">
               <div>每月 {{scope.row.purchase_day}} 日</div>
             </template>
           </el-table-column>
-          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="center" >
-            <template slot-scope="scope">
-              <div>{{scope.row.ctime}}</div>
+          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="center" width="100%">
+            <template slot-scope="scope" >
+              <div align="left">{{scope.row.ctime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出日期"  style="background-color:#FFFFF1" align="center">
+          <el-table-column label="退出日期"  style="background-color:#FFFFF1" align="center" width="100%">
             <template slot-scope="scope">
-              <div>{{scope.row.quittime}}</div>
+              <div align="left">{{scope.row.quittime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出原因"  style="background-color:#FFFFF1" align="center">
+          <el-table-column label="退出原因"  style="background-color:#FFFFF1" align="center" width="100%">
             <template slot-scope="scope">
               <div>{{scope.row.quit_reason}}</div>
             </template>
