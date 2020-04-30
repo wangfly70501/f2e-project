@@ -128,7 +128,7 @@
 
 <script>
 import { userData } from '../../api/index.js'
-
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -295,10 +295,11 @@ export default {
       }
     },
     async  downExcel () {
+      var Today = moment(new Date()).format('YYYY_MM_DD_HH_mm_ss')
       const th = ['UID', '會員姓名', '信箱', '手機', '安全等級', '提領上限', '台幣資產', '註冊時間']
       const filterVal = ['uuid', 'username', 'email', 'mobile', 'securityLevel', 'limitday', 'amount', 'ctime']
       const data = this.allmemlist.map(v => filterVal.map(k => v[k]))
-      const [fileName, fileType, sheetName] = ['匯出會員', 'xlsx', '匯出會員']
+      const [fileName, fileType, sheetName] = ['匯出會員' + Today, 'xlsx', '匯出會員']
       this.$toExcel({ th, data, fileName, fileType, sheetName })
     },
     async getallUserList () {
