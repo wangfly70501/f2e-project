@@ -100,23 +100,23 @@
       ></el-pagination>
 
 <!-- 建立定投 -->
-    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="50%">
-      <el-form  :model="addForm" ref="addFormRef" label-width="130px">
+    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="50%" >
+      <el-form  :model="addForm" ref="addFormRef" label-width="130px" class="addform">
 
         <el-form-item label="前台顯示" prop="show_status">
           <el-switch v-model="addForm.show_status"></el-switch>
         </el-form-item>
 
         <el-form-item label="名稱(繁)" prop="title_GR" class="title_input_size">
-          <el-input v-model="addForm.title_GR"></el-input>
+          <el-input v-model="addForm.title_GR" class="inputcharge"></el-input>
         </el-form-item>
 
         <el-form-item label="名稱(簡)" prop="title_CN" class="title_input_size">
-          <el-input v-model="addForm.title_CN"></el-input>
+          <el-input v-model="addForm.title_CN" class="inputcharge"></el-input>
         </el-form-item>
 
         <el-form-item label="名稱(英)" prop="title_US" class="title_input_size">
-          <el-input v-model="addForm.title_US"></el-input>
+          <el-input v-model="addForm.title_US" class="inputcharge"></el-input>
         </el-form-item>
 <hr class="hr-style1">
 <br>
@@ -132,25 +132,25 @@
         </el-select>
         </el-form-item>
         <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
-          <el-input v-model="addForm.minAmount"></el-input>
+          <el-input v-model="addForm.minAmount" class="inputcharge"></el-input>
           {{addForm.currency_basic}}
         </el-form-item>
         <el-form-item label="定投日期" prop="purchase_day">
         <div class="orange-text">每月6日、16日、26日 早上10:00</div>
         </el-form-item>
         <el-form-item label="成交手續費" prop="rate_deal" class="percent_input_size">
-        <el-input v-model="addForm.rate_deal"></el-input>
+        <el-input v-model="addForm.rate_deal" class="inputcharge"></el-input>
         </el-form-item>
         <el-form-item label="代買手續費" prop="rate_purchase" class="percent_input_size">
-          <el-input v-model="addForm.rate_purchase"></el-input>％
+          <el-input v-model="addForm.rate_purchase" class="inputcharge"></el-input>％
         </el-form-item>
 <hr class="hr-style1">
 <div class="subtitle">躉繳</div>
-        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size">
-          <el-input v-model="addForm.sp_quit_rate"></el-input>％（從剩餘期數金額中扣除)
+        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size" >
+          <el-input v-model="addForm.sp_quit_rate" class="inputcharge"></el-input>％（從剩餘期數金額中扣除)
         </el-form-item>
         <el-form-item label="躉繳優惠" prop="sp_rate" class="percent_input_size">
-          <el-input v-model="addForm.sp_rate"></el-input>%
+          <el-input v-model="addForm.sp_rate" class="inputcharge"></el-input>％
         </el-form-item>
         <el-form-item label="躉繳優惠期間">
           <el-date-picker
@@ -162,7 +162,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="躉繳優惠人數上限" prop="sp_people_limit" class="percent_input_size">
-          <el-input v-model="addForm.sp_people_limit"></el-input>人
+          <el-input v-model="addForm.sp_people_limit" class="inputcharge"></el-input>人
         </el-form-item>
       </el-form>
       <!-- 底部區域 -->
@@ -247,6 +247,8 @@
 <script>
 import {
   currencyList,
+
+  // info_behavior,
   createCharge,
   getStakingList,
   getStakingMemberList,
@@ -395,7 +397,7 @@ export default {
       }
       await getStakingList(data).then(res => {
         this.stakinglist = res.data
-        this.total = res.pagination.total_record
+
         console.log('stakinglist', this.stakinglist)
       })
     },
@@ -411,7 +413,7 @@ export default {
       }
       await getStakingBalanceLackList(data).then(res => {
         this.stakinglist = res.data
-        this.total = res.pagination.total_record
+
         console.log('stakinglist', this.stakinglist)
       })
     },
@@ -550,12 +552,17 @@ input::-webkit-input-placeholder {
 
 .title_input_size{
 
-width:80%;
+width:40%;
 
 }
 .percent_input_size{
-
 width:40%;
 }
+.inputcharge{
+  width: 90%;
+}
+.addform{
+  padding:0 60px;
 
+}
 </style>
