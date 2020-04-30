@@ -457,15 +457,6 @@ export const setMgState = query => {
   })
 }
 
-// 定投列表//
-export const getStakingList = query => {
-  return request({
-    url: './taskapi?method=getStakingList',
-    method: 'post',
-    data: query
-  })
-}
-
 // 取得會員權限列表
 export const getRolePermissions = query => {
   return request({
@@ -533,6 +524,30 @@ export const rolePermissionList = query => {
 export const rolePermissionStatus = query => {
   return request({
     url: './taskapi?method=rolePermissionStatus',
+    method: 'post',
+    data: query
+  })
+}
+// 定投列表//
+export const getStakingList = query => {
+  return request({
+    url: './taskapi?method=getStakingList',
+    method: 'post',
+    data: query
+  })
+}
+// 參加定投會員列表//
+export const getStakingMemberList = query => {
+  return request({
+    url: './taskapi?method=getStakingMemberList',
+    method: 'post',
+    data: query
+  })
+}
+// 餘額不足會員列表//
+export const getStakingBalanceLackList = query => {
+  return request({
+    url: './taskapi?method=getStakingBalanceLackList',
     method: 'post',
     data: query
   })
