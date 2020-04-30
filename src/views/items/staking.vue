@@ -146,7 +146,7 @@
         </el-form-item>
 <hr class="hr-style1">
 <div class="subtitle">躉繳</div>
-        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size">
+        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size" >
           <el-input v-model="addForm.sp_quit_rate"></el-input>％（從剩餘期數金額中扣除)
         </el-form-item>
         <el-form-item label="躉繳優惠" prop="sp_rate" class="percent_input_size">
@@ -396,7 +396,7 @@ export default {
       }
       await getStakingList(data).then(res => {
         this.stakinglist = res.data
-        this.total = res.pagination.total_record
+
         console.log('stakinglist', this.stakinglist)
       })
     },
@@ -412,7 +412,7 @@ export default {
       }
       await getStakingBalanceLackList(data).then(res => {
         this.stakinglist = res.data
-        this.total = res.pagination.total_record
+
         console.log('stakinglist', this.stakinglist)
       })
     },
@@ -546,7 +546,7 @@ input::-webkit-input-placeholder {
 
 .title_input_size{
 
-width:80%;
+width:40%;
 
 }
 .percent_input_size{

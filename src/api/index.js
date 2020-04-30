@@ -552,3 +552,12 @@ export const getStakingBalanceLackList = query => {
     data: query
   })
 }
+
+// 使用者分配角色
+export const updateManagerRole = query => {
+  return request({
+    url: './taskapi?method=updateManagerRole',
+    method: 'post',
+    data: query
+  })
+}
