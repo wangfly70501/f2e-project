@@ -132,6 +132,8 @@ import { userData } from '../../api/index.js'
 export default {
   data () {
     return {
+      alllist: {},
+      allmemlist: [],
       searchlist: '',
       queryInfo: {
         query: '',
@@ -232,6 +234,7 @@ export default {
   created () {
     this.getUserList()
     this.objList()
+    this.getallUserList()
   },
 
   methods: {
@@ -260,7 +263,9 @@ export default {
       }
       await userData(data).then(res => {
         this.userList = res.data
-        console.log('1323', this.userList)
+        localStorage.setItem('alllist', res.pagination.total_record)
+
+        console.log('1323', this.alllist)
         this.total = res.pagination.total_record
       })
     },
@@ -275,6 +280,7 @@ export default {
     async Search () {
       this.queryInfo.pagenum = 1
       await this.getUserList()
+      await this.getallUserList()
     },
     async clear () {
       this.searchlist = ''
@@ -287,7 +293,34 @@ export default {
       if (rowIndex === 0) {
         return 'background-color:#F2F2F2 ;color:#7B7B7B;font-size: 14px;'
       }
-    } }
+    },
+    async  downExcel () {
+      const th = ['UID', '會員姓名', '信箱', '手機', '安全等級', '提領上限', '台幣資產', '註冊時間']
+      const filterVal = ['uuid', 'username', 'email', 'mobile', 'securityLevel', 'limitday', 'amount', 'ctime']
+      const data = this.allmemlist.map(v => filterVal.map(k => v[k]))
+      const [fileName, fileType, sheetName] = ['匯出會員', 'xlsx', '匯出會員']
+      this.$toExcel({ th, data, fileName, fileType, sheetName })
+    },
+    async getallUserList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: localStorage.getItem('alllist'),
+        page: this.queryInfo.pagenum,
+        searchValue: this.searchlist,
+        searchBlacklist: this.enablevalue,
+        searchMemberLevel: this.memlevelvalue,
+        searchSecurityLevel: this.safelevelvalue
+
+      }
+      console.log('data', data)
+      await userData(data).then(res => {
+        this.allmemlist = res.data
+        this.total = res.pagination.total_record
+      })
+    }
+  }
 }
 </script>
 
