@@ -64,7 +64,7 @@
         <el-table-column label="手機" prop="mobile">
 
                         <template slot-scope="scope">
-                 {{scope.row.mobile|phoneformat}}
+                 {{scope.row.mobile}}
                 </template>
         </el-table-column>
         <!-- <el-table-column label="會員帳號" prop="account"></el-table-column> -->
