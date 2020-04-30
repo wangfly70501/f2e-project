@@ -5,11 +5,11 @@
     <el-card>
       <el-button type="primary" @click="addDialogVisible = true" class="btn_right">建立定投</el-button>
 
-      <!-- 列表 -->
+<!-- 列表 -->
       <el-table :data="stakinglist">
-        <el-table-column label="ID" prop="id" width="50%"  align="center">
+        <el-table-column label="ID" prop="id" align="center" width="50%" >
         </el-table-column>
-        <el-table-column label="顯示"  align="center" width="100%">
+        <el-table-column label="顯示"  align="center" width="50%">
           <template slot-scope="scope">
               <div v-if="scope.row.show_status===0" style="color:#AAAAAA"> <font-awesome-icon  icon="ban" size="lg" /> </div>
               <!--  <div v-else-if="scope.row.show_status===1" style="color:#79BB13"> <font-awesome-icon icon="check-circle" size="lg" /> </div> -->
@@ -30,7 +30,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="to幣種" >
+        <el-table-column label="to幣種" align="center" width="100%" >
           <template slot-scope="scope">
             <div
               v-for="item in currencyList"
@@ -42,55 +42,48 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="定投日期"  style="background-color:#FFFFF1"  prop="purchase_day">
+        <el-table-column label="定投日期"  align="center" width="100%" style="background-color:#FFFFF1"  prop="purchase_day">
           <template slot-scope="scope">
-            <div
-              v-for="item in currencyList"
-              :key="item.id"
-              :label="item.currency"
-              :value="item.id"
-            >
-            <div>{{scope.row.purchase_day}}</div>
-            </div>
+          每月 {{scope.row.purchase_day}} 日
           </template>
         </el-table-column>
-        <el-table-column label="成交手續費" prop="rate_deal" width="100%">
+        <el-table-column label="成交手續費" align="center" width="100%" prop="rate_deal">
           <template slot-scope="scope">
           {{scope.row.rate_deal}} %
             </template>
         </el-table-column>
-        <el-table-column label="代買手續費"  align="center" prop="rate_purchase">
+        <el-table-column label="代買手續費" align="center" width="100%" prop="rate_purchase">
           <template slot-scope="scope">
           {{scope.row.rate_purchase}} %
           </template>
         </el-table-column>
-        <el-table-column label="躉繳優惠" prop="sp_rate">
+        <el-table-column label="躉繳優惠" align="center" width="100%" prop="sp_rate">
           <template slot-scope="scope">
            {{scope.row.sp_rate}} %
           </template>
         </el-table-column>
-        <el-table-column label="開放期限">
+        <el-table-column label="開放期限" align="left" width="150%" >
           <template slot-scope="scope">
-            <div>{{scope.row.sp_starttime}}</div>~
+            {{scope.row.sp_starttime}} ~
             <div>{{scope.row.sp_endtime}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="人數上限">
+        <el-table-column label="人數上限" align="center" width="100%" >
           <template slot-scope="scope">
-           {{scope.row.people_limit}} 人
+           {{scope.row.sp_people_limit}} 人
           </template>
         </el-table-column>
-        <el-table-column label="認購名單">
+        <el-table-column label="認購名單" align="center" width="100%" >
           <template slot-scope="scope">
-            <el-button type="success"  plain size="mini" @click="joinPeopleVisible = true">{{scope.row.joinpeople}}</el-button>
+            <el-button type="success"  plain size="mini" @click="joinPeople(scope.$index, scope.row)">{{scope.row.people_count}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="餘額不足">
+        <el-table-column label="餘額不足" align="center" width="100%" >
           <template slot-scope="scope">
-            <el-button type="success"  plain size="mini" @click="balanceVisible = true">{{scope.row.balance}}</el-button>
+            <el-button type="success"  plain size="mini" @click="balancePeople(scope.$index, scope.row)">{{scope.row.people_count}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="">
+        <el-table-column label="編輯" align="center" width="100%" >
           <el-button class="el-icon-edit" plain size="mini" @click="addDialogVisible = true"></el-button>
         </el-table-column>
       </el-table>
@@ -106,59 +99,60 @@
         :total="total"
       ></el-pagination>
 
-  <!-- 建立定投 -->
-    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="50%" >
-      <el-form :model="addForm" ref="addFormRef" label-width="130px">
+<!-- 建立定投 -->
+    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="50%">
+      <el-form  :model="addForm" ref="addFormRef" label-width="130px">
 
-        <el-form-item label="前台顯示" prop="addCharge">
-          <el-switch v-model="addForm.addtxtrate"></el-switch>
+        <el-form-item label="前台顯示" prop="show_status">
+          <el-switch v-model="addForm.show_status"></el-switch>
         </el-form-item>
 
-        <el-form-item label="名稱(繁)" prop="addCharge">
-          <el-input v-model="addForm.addCharge"></el-input>
+        <el-form-item label="名稱(繁)" prop="title_GR" class="title_input_size">
+          <el-input v-model="addForm.title_GR"></el-input>
         </el-form-item>
 
-        <el-form-item label="名稱(簡)" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>
+        <el-form-item label="名稱(簡)" prop="title_CN" class="title_input_size">
+          <el-input v-model="addForm.title_CN"></el-input>
         </el-form-item>
 
-        <el-form-item label="名稱(英)" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>
+        <el-form-item label="名稱(英)" prop="title_US" class="title_input_size">
+          <el-input v-model="addForm.title_US"></el-input>
         </el-form-item>
 <hr class="hr-style1">
 <br>
-        <el-form-item label="幣種from" prop="addCharge">
-          <el-select v-model="addForm.addtxtrate" placeholder="請選擇幣種">
+        <el-form-item label="幣種from" prop="currency_basic">
+          <el-select v-model="addForm.currency_basic" placeholder="請選擇幣種">
             <el-option label="USDT" value="USDT"></el-option>
             <el-option label="TWD" value="TWD"></el-option>
         </el-select>
         </el-form-item>
-        <el-form-item label="幣種to" prop="addCharge">
-          <el-select v-model="addForm.addtxtrate" placeholder="請選擇幣種">
+        <el-form-item label="幣種to" prop="currency_purchase">
+          <el-select v-model="addForm.currency_purchase" placeholder="請選擇幣種">
             <el-option label="BTC" value="BTC"></el-option>
         </el-select>
         </el-form-item>
-        <el-form-item label="最低認購" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>
+        <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
+          <el-input v-model="addForm.minAmount"></el-input>
+          {{addForm.currency_basic}}
         </el-form-item>
-        <el-form-item label="定投日期" prop="addCharge">
+        <el-form-item label="定投日期" prop="purchase_day">
         <div class="orange-text">每月6日、16日、26日 早上10:00</div>
         </el-form-item>
-        <el-form-item label="成交手續費" prop="addCharge">
-        <div class="orange-text">0.1%</div>
+        <el-form-item label="成交手續費" prop="rate_deal" class="percent_input_size">
+        <el-input v-model="addForm.rate_deal"></el-input>
         </el-form-item>
-        <el-form-item label="代買手續費" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>％
+        <el-form-item label="代買手續費" prop="rate_purchase" class="percent_input_size">
+          <el-input v-model="addForm.rate_purchase"></el-input>％
         </el-form-item>
 <hr class="hr-style1">
 <div class="subtitle">躉繳</div>
-        <el-form-item label="躉繳違約手續費" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>％（從剩餘期數金額中扣除）
+        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size">
+          <el-input v-model="addForm.sp_quit_rate"></el-input>％（從剩餘期數金額中扣除)
         </el-form-item>
-        <el-form-item label="躉繳優惠" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>%
+        <el-form-item label="躉繳優惠" prop="sp_rate" class="percent_input_size">
+          <el-input v-model="addForm.sp_rate"></el-input>%
         </el-form-item>
-        <el-form-item label="躉繳優惠期間" prop="addCharge">
+        <el-form-item label="躉繳優惠期間">
           <el-date-picker
             v-model="addForm.addtxtrate"
             type="daterange"
@@ -167,8 +161,8 @@
             end-placeholder="結束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="躉繳優惠人數上限" prop="addCharge">
-          <el-input v-model="addForm.addtxtrate"></el-input>人
+        <el-form-item label="躉繳優惠人數上限" prop="sp_people_limit" class="percent_input_size">
+          <el-input v-model="addForm.sp_people_limit"></el-input>人
         </el-form-item>
       </el-form>
       <!-- 底部區域 -->
@@ -178,42 +172,46 @@
       </span>
     </el-dialog>
 
-    <!-- 認購名單 -->
-    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="80%" >
-        <div>定投名稱：BTC定投</div>
-        <el-table :data="stakinglist">
-          <el-table-column label="UIUD" prop="id" width="50%"  align="center"></el-table-column>
-          <el-table-column label="定投金額"  align="center" width="100%" prop="staking_amount"></el-table-column>
-          <el-table-column label="定投日期"  style="background-color:#FFFFF1" >
+<!-- 認購名單 -->
+    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="60%" >
+      <div>定投名稱：BTC定投</div>
+        <el-table :data="StakingMemberList">
+          <el-table-column label="UUID" prop="uuid" width="100px"  align="center"></el-table-column>
+          <el-table-column label="定投金額" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="認購日期"  style="background-color:#FFFFF1" >
+          <el-table-column label="定投日期"  style="background-color:#FFFFF1"  align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>每月 {{scope.row.purchase_day}} 日</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出日期"  style="background-color:#FFFFF1" >
+          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="center" >
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.ctime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出原因"  style="background-color:#FFFFF1" >
+          <el-table-column label="退出日期"  style="background-color:#FFFFF1" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.quittime}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="退出原因"  style="background-color:#FFFFF1" align="center">
+            <template slot-scope="scope">
+              <div>{{scope.row.quit_reason}}</div>
             </template>
           </el-table-column>
         </el-table>
     </el-dialog>
 
-    <!-- 餘額不足 -->
+<!-- 餘額不足 -->
     <el-dialog title="餘額不足名單" :visible.sync="balanceVisible" width="80%" >
         <div>定投名稱：BTC定投</div>
         <div>報表產製：2020/05/06 10:00</div>
         <div>定投時間：每月6日 10:00</div>
         <el-table :data="stakinglist">
-          <el-table-column label="UIUD" prop="id" width="50%"  align="center"></el-table-column>
+          <el-table-column label="UUID" prop="id" width="50%"  align="center"></el-table-column>
           <el-table-column label="認購日期"  style="background-color:#FFFFF1" >
             <template slot-scope="scope">
               <div>{{scope.row.cdate}}</div>
@@ -252,13 +250,14 @@ import {
 
   // info_behavior,
   createCharge,
-  getStakingList
+  getStakingList,
+  getStakingMemberList,
+  getStakingBalanceLackList
 } from '../../api/index.js'
 
 export default {
   data () {
     return {
-      StakingmemList: '',
       showValue: '2',
       StakingMemberList: [],
       people_limit: '',
@@ -276,9 +275,7 @@ export default {
         endTime: ''
       },
       date: [],
-      stakinglist: [
-
-      ],
+      stakinglist: [ ],
       actypelist: [],
       total: 0,
       addDialogVisible: false,
@@ -358,9 +355,9 @@ export default {
   },
 
   created () {
-    this.getStakingList()
+    this.staList()
     this.getCurrencyList()
-
+    this.staBalanceLackList()
     this.objList()
   },
 
@@ -386,8 +383,9 @@ export default {
         console.log('currencyList', this.currencyList)
       })
     },
-    // 獲取列表
-    async getStakingList () {
+    // 獲取定投列表
+
+    async staList () {
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -396,8 +394,23 @@ export default {
         page: this.queryInfo.pagenum,
         show_status: this.showValue.toString()
       }
-
       await getStakingList(data).then(res => {
+        this.stakinglist = res.data
+        this.total = res.pagination.total_record
+        console.log('stakinglist', this.stakinglist)
+      })
+    },
+
+    async staBalanceLackList () {
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        paginate: this.queryInfo.pagesize,
+        page: this.queryInfo.pagenum,
+        show_status: this.showValue.toString()
+      }
+      await getStakingBalanceLackList(data).then(res => {
         this.stakinglist = res.data
         this.total = res.pagination.total_record
         console.log('stakinglist', this.stakinglist)
@@ -437,7 +450,6 @@ export default {
     },
     async fixedInvestment () {
       this.addDialogVisible = false
-      this.joinPeopleVisible = false
       this.balanceVisible = false
       var data = {
         mg_name: localStorage.getItem('mg_name'),
@@ -454,6 +466,22 @@ export default {
           this.$message.error('此銀行新增過了，請使用編輯修改')
         }
         this.getChargeList()
+      })
+    },
+    joinPeople (index, row) {
+      this.joinform = row
+      console.log('111', this.joinform)
+      this.joinPeopleVisible = true
+      let data = {
+        mg_name: localStorage.getItem('mg_name'),
+        mg_pwd: localStorage.getItem('mg_pwd'),
+        mg_state: localStorage.getItem('mg_state'),
+        staking_id: this.joinform.id
+      }
+
+      getStakingMemberList(data).then(res => {
+        this.StakingMemberList = res.data
+        console.log('StakingMemberList', this.StakingMemberList)
       })
     }
     // addDialogClosed () {
@@ -514,6 +542,16 @@ input::-webkit-input-placeholder {
 .orange-text{
   color:#E67C4B;
   font-weight:600;
+}
+
+.title_input_size{
+
+width:80%;
+
+}
+.percent_input_size{
+
+width:40%;
 }
 
 </style>
