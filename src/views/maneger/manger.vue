@@ -20,7 +20,14 @@
         </el-table-column>
 
         <el-table-column label="email" prop="email"></el-table-column>
-        <el-table-column label="角色名稱" prop="role_name"></el-table-column>
+        <el-table-column label="角色名稱">
+           <template slot-scope="scope">
+             <span  v-for="item in roleList" :label="item.id" :key="item.id">
+              <span v-if="scope.row.role_id===item.id">{{item.role_name}}</span>
+              </span>
+
+          </template>
+        </el-table-column>
         <el-table-column label="狀態" prop="status">
                <template slot-scope="scope">
              <el-switch
@@ -63,9 +70,9 @@
           <el-input v-model="distributionForm.email"></el-input>
         </el-form-item>
            <el-form-item label="角色">
-          <el-checkbox-group v-model="distribution">
-            <el-checkbox v-for="item in roleList" :label="item.id" :key="item.id">{{item.role_name}}</el-checkbox>
-          </el-checkbox-group>
+          <el-radio-group v-model="distribution">
+            <el-radio v-for="item in roleList" :label="item.id" :key="item.id">{{item.role_name}}</el-radio>
+          </el-radio-group>
         </el-form-item>
 
       </el-form>
@@ -90,7 +97,7 @@
 </template>
 
 <script>
-import { setMgState, getAuthList, roleList } from '../../api/index.js'
+import { setMgState, getAuthList, roleList, updateManagerRole } from '../../api/index.js'
 
 export default {
 
@@ -198,7 +205,6 @@ export default {
         set_mgID: this.form.id.toString()
       }
       await setMgState(data).then(res => {
-        console.log('456', data)
         if (res.error_code === 0) {
           this.$message.success('修改成功')
         } else {
@@ -222,20 +228,21 @@ export default {
       this.distributionForm.role_des = ''
     },
     async savedistribution () {
-      const arr = Array.prototype.slice.call(this.distribution)
+      /* const arr = Array.prototype.slice.call(this.distribution) */
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        role_id: arr,
-        id: this.distributionForm.id.toString()
+        role_id: this.distribution,
+        id: this.distributionForm.id
       }
-      await setMgState(data).then(res => {
+      await updateManagerRole(data).then(res => {
         console.log('456', data)
         if (res.error_code === 0) {
-          this.$message.success('修改成功')
+          this.$message.success('分配成功')
+          this.distributionDialog = false
         } else {
-          this.$message.error('修改失敗')
+          this.$message.error('失敗')
         }
         this.getAuthList()
       })
@@ -243,8 +250,11 @@ export default {
     showEditDialog (index, row) {
       this.distributionDialog = true
       this.distributionForm = row
+      this.distribution = row.role_id
       console.log('456', this.distributionForm)
+      console.log('789', this.distribution)
     }
+
   }
 }
 </script>

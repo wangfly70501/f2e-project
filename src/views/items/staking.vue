@@ -256,8 +256,8 @@ import {
 export default {
   data () {
     return {
-      StakingMemberList: {},
       showValue: '2',
+      StakingMemberList: [],
       people_limit: '',
       endTime: '',
       queryData: {},
