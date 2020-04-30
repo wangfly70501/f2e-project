@@ -561,3 +561,11 @@ export const updateManagerRole = query => {
     data: query
   })
 }
+// 新增定投
+export const addStaking = query => {
+  return request({
+    url: './taskapi?method=addStaking',
+    method: 'post',
+    data: query
+  })
+}

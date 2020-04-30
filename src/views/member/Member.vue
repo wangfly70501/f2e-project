@@ -38,6 +38,7 @@
                         </el-select>&nbsp;
                            <el-button type="primary" @click="clear" size='small'>清除</el-button>
                            <el-button type="primary" @click="Search" size='small'>查詢</el-button>
+                            <el-button type="primary" @click="downExcel()" size="small">匯出</el-button>
       <!-- 會員列表数据 -->
       <el-table :data="userList" :header-cell-style="tableHeaderColor">
         <el-table-column type="index" label="編號" width="50px" align="center"></el-table-column>

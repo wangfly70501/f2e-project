@@ -104,7 +104,14 @@
       <el-form  :model="addForm" ref="addFormRef" label-width="130px" class="addform">
 
         <el-form-item label="前台顯示" prop="show_status">
-          <el-switch v-model="addForm.show_status"></el-switch>
+                     <el-switch
+              v-model="addForm.show_status"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+              class="fontpadding"
+            ></el-switch>
         </el-form-item>
 
         <el-form-item label="名稱(繁)" prop="title_GR" class="title_input_size">
@@ -122,13 +129,12 @@
 <br>
         <el-form-item label="幣種from" prop="currency_basic">
           <el-select v-model="addForm.currency_basic" placeholder="請選擇幣種">
-            <el-option label="USDT" value="USDT"></el-option>
-            <el-option label="TWD" value="TWD"></el-option>
+            <el-option label="USDT" value="23"></el-option>
         </el-select>
         </el-form-item>
         <el-form-item label="幣種to" prop="currency_purchase">
           <el-select v-model="addForm.currency_purchase" placeholder="請選擇幣種">
-            <el-option label="BTC" value="BTC"></el-option>
+            <el-option label="BTC" value="24"></el-option>
         </el-select>
         </el-form-item>
         <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
@@ -155,7 +161,9 @@
         <el-form-item label="躉繳優惠期間">
           <el-date-picker
             v-model="addForm.addtxtrate"
-            type="daterange"
+            type="datetimerange"
+            format="yyyy-MM-dd HH:hh"
+            value-format="yyyy-MM-dd HH:hh"
             range-separator="至"
             start-placeholder="開始日期"
             end-placeholder="結束日期">
@@ -163,6 +171,9 @@
         </el-form-item>
         <el-form-item label="躉繳優惠人數上限" prop="sp_people_limit" class="percent_input_size">
           <el-input v-model="addForm.sp_people_limit" class="inputcharge"></el-input>人
+        </el-form-item>
+         <el-form-item label="躉繳優惠金額上限(每月)" prop="sp_maxAmount" class="percent_input_size">
+          <el-input v-model="addForm.sp_maxAmount" class="inputcharge"></el-input>人
         </el-form-item>
       </el-form>
       <!-- 底部區域 -->
@@ -247,12 +258,10 @@
 <script>
 import {
   currencyList,
-
-  // info_behavior,
-  createCharge,
   getStakingList,
   getStakingMemberList,
-  getStakingBalanceLackList
+  getStakingBalanceLackList,
+  addStaking
 } from '../../api/index.js'
 
 export default {
@@ -282,7 +291,9 @@ export default {
       addDialogVisible: false,
       joinPeopleVisible: false,
       balancePeopleVisible: false,
-      addForm: {},
+      addForm: {
+        addtxtrate: []
+      },
       editDialogVisible: false,
       table: {},
       editForm: {
@@ -456,17 +467,31 @@ export default {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        bank_en: this.addForm.addbank,
-        rate: this.addForm.addCharge,
-        txt_rate: this.addForm.addtxtrate
+        title_GR: this.addForm.title_GR,
+        title_CN: this.addForm.title_CN,
+        title_US: this.addForm.title_US,
+        minAmount: this.addForm.minAmount,
+        currency_basic: this.addForm.currency_basic,
+        currency_purchase: this.addForm.currency_purchase,
+        purchase_day: '6',
+        rate_deal: '0',
+        rate_purchase: this.addForm.rate_purchase / 100,
+        show_status: this.addForm.show_status.toString(),
+        sp_quit_rate: this.addForm.sp_quit_rate / 100,
+        sp_rate: this.addForm.sp_rate / 100,
+        sp_starttime: this.addForm.addtxtrate[0],
+        sp_endtime: this.addForm.addtxtrate[1],
+        sp_people_limit: this.addForm.sp_people_limit,
+        sp_maxAmount: this.addForm.sp_maxAmount
       }
-      await createCharge(data).then(res => {
+      console.log('data', data)
+      await addStaking(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('新增成功')
         } else {
-          this.$message.error('此銀行新增過了，請使用編輯修改')
+          this.$message.error('新增錯誤')
         }
-        this.getChargeList()
+        this.staList()
       })
     },
     joinPeople (index, row) {
