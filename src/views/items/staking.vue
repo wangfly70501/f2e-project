@@ -173,31 +173,31 @@
     </el-dialog>
 
 <!-- 認購名單 -->
-    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="60%" align="center">
+    <el-dialog title="認購用戶名單" :visible.sync="joinPeopleVisible" width="60%" >
       <div>定投名稱：BTC定投</div>
         <el-table :data="StakingMemberList">
-          <el-table-column label="UUID" prop="uuid" width="100%"  align="center"></el-table-column>
-          <el-table-column label="定投金額" align="center" width="100%">
+          <el-table-column label="UUID" prop="uuid"  align="center"></el-table-column>
+          <el-table-column label="定投金額" align="center" >
             <template slot-scope="scope">
               <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="定投日期"  style="background-color:#FFFFF1"  align="center" width="100%">
+          <el-table-column label="定投日期"  style="background-color:#FFFFF1" align="center" >
             <template slot-scope="scope">
               <div>每月 {{scope.row.purchase_day}} 日</div>
             </template>
           </el-table-column>
-          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="center" width="100%">
+          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="left" >
             <template slot-scope="scope" >
-              <div align="left">{{scope.row.ctime}}</div>
+              <div >{{scope.row.ctime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出日期"  style="background-color:#FFFFF1" align="center" width="100%">
+          <el-table-column label="退出日期"  style="background-color:#FFFFF1" align="left" >
             <template slot-scope="scope">
               <div align="left">{{scope.row.quittime}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="退出原因"  style="background-color:#FFFFF1" align="center" width="100%">
+          <el-table-column label="退出原因"  style="background-color:#FFFFF1" align="center" >
             <template slot-scope="scope">
               <div>{{scope.row.quit_reason}}</div>
             </template>
@@ -210,9 +210,9 @@
         <div>定投名稱：BTC定投</div>
         <div>報表產製：2020/05/06 10:00</div>
         <div>定投時間：每月6日 10:00</div>
-        <el-table :data="stakinglist">
+        <el-table :data="StakingBalanceLackList">
           <el-table-column label="UUID" prop="uuid" width="100px"  align="center"></el-table-column>
-          <el-table-column label="認購日期"  style="background-color:#FFFFF1" >
+          <el-table-column label="認購日期"  style="background-color:#FFFFF1" align="center" >
             <template slot-scope="scope">
               <div>{{scope.row.ctime}}</div>
             </template>
@@ -224,17 +224,17 @@
           </el-table-column>
           <el-table-column label="可用餘額" align="center">
             <template slot-scope="scope">
-              <div>{{scope.row.amount}} {{scope.row.currencyName}}</div>
+              <div>{{scope.row.balance}} {{scope.row.currencyName}}</div>
             </template>
           </el-table-column>
           <el-table-column label="手機號碼"  style="background-color:#FFFFF1" >
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.mobile}}</div>
             </template>
           </el-table-column>
           <el-table-column label="電子信箱"  style="background-color:#FFFFF1" >
             <template slot-scope="scope">
-              <div>{{scope.row.cdate}}</div>
+              <div>{{scope.row.email}}</div>
             </template>
           </el-table-column>
         </el-table>
@@ -258,6 +258,7 @@ import {
 export default {
   data () {
     return {
+      StakingBalanceLackList: [],
       showValue: '2',
       StakingMemberList: [],
       people_limit: '',
@@ -484,18 +485,18 @@ export default {
       })
     },
     balancePeople (index, row) {
-      this.joinform = row
-      console.log('111', this.joinform)
+      this.lackform = row
       this.balancePeopleVisible = true
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        staking_id: this.joinform.id
+        staking_id: this.lackform.id,
+        purchase_day: '06'
       }
-      getStakingMemberList(data).then(res => {
-        this.StakingMemberList = res.data
-        console.log('StakingMemberList', this.StakingMemberList)
+      getStakingBalanceLackList(data).then(res => {
+        this.StakingBalanceLackList = res.data
+        console.log('StakingBalanceLackList', this.StakingBalanceLackList)
       })
     }
   }
