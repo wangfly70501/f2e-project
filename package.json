@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --port=8081",
-    "build-test": "vue-cli-service build --port=8081 --mode.test",
+    "build-test": "cross-env NODE_ENV=production vue-cli-service build --mode=test",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "@tinymce/tinymce-vue": "^3.0.1",
     "axios": "^0.19.2",
     "core-js": "^3.3.2",
+    "cross-env": "^7.0.2",
     "echarts": "^4.5.0",
     "element-ui": "^2.4.5",
     "file-saver": "^2.0.2",
