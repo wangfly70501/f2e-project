@@ -84,7 +84,11 @@
           </template>
         </el-table-column>
         <el-table-column label="編輯" align="center" width="100%" >
-          <el-button class="el-icon-edit" plain size="mini" @click="addDialogVisible = true"></el-button>
+          <template slot-scope="scope">
+            <el-button  :to="{path:'/activitylist', query: scope.row}" class="el-icon-edit" plain size="mini" @click="editInvestment(scope.$index, scope.row)"></el-button>
+                         <router-link :to="{path:'/activitylist', query: scope.row}" >{{scope.row.activity_name_GR}}</router-link>
+
+          </template>
         </el-table-column>
       </el-table>
 
@@ -216,6 +220,92 @@
         </el-table>
     </el-dialog>
 
+<!-- 編輯定投 -->
+    <el-dialog title="編輯定投" :visible.sync="editDialogVisible" width="50%" >
+      <el-form  :model="editForm" ref="editFormRef" label-width="130px" class="editForm" >
+
+        <el-form-item label="前台顯示" prop="show_status">
+            <el-switch
+              v-model="editForm.show_status"
+              active-color="#169BD5"
+              inactive-color="#BEBEBE"
+              :active-value='1'
+              :inactive-value='0'
+              class="fontpadding"
+            ></el-switch>
+        </el-form-item>
+
+        <el-form-item label="名稱(繁)" prop="title_GR" class="title_input_size">
+          <el-input v-model="editForm.title_GR" class="inputcharge">
+            <template slot-scope="scope">
+              {{scope.row.title_GR}}
+            </template></el-input>
+        </el-form-item>
+
+        <el-form-item label="名稱(簡)" prop="title_CN" class="title_input_size">
+          <el-input v-model="editForm.title_CN" class="inputcharge"></el-input>
+        </el-form-item>
+
+        <el-form-item label="名稱(英)" prop="title_US" class="title_input_size">
+          <el-input v-model="editForm.title_US" class="inputcharge"></el-input>
+        </el-form-item>
+<hr class="hr-style1">
+<br>
+        <el-form-item label="幣種from" prop="currency_basic">
+          <el-select v-model="editForm.currency_basic" placeholder="請選擇幣種">
+            <el-option label="USDT" value="23"></el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="幣種to" prop="currency_purchase">
+          <el-select v-model="editForm.currency_purchase" placeholder="請選擇幣種">
+            <el-option label="BTC" value="24"></el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
+          <el-input v-model="editForm.minAmount" class="inputcharge"></el-input>
+          {{editForm.currency_basic}}
+        </el-form-item>
+        <el-form-item label="定投日期" prop="purchase_day">
+        <div class="orange-text">每月6日、16日、26日 早上10:00</div>
+        </el-form-item>
+        <el-form-item label="成交手續費" prop="rate_deal" class="percent_input_size">
+        <el-input v-model="editForm.rate_deal" class="inputcharge"></el-input>
+        </el-form-item>
+        <el-form-item label="代買手續費" prop="rate_purchase" class="percent_input_size">
+          <el-input v-model="editForm.rate_purchase" class="inputcharge"></el-input>％
+        </el-form-item>
+<hr class="hr-style1">
+<div class="subtitle">躉繳</div>
+        <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size" >
+          <el-input v-model="editForm.sp_quit_rate" class="inputcharge"></el-input>％（從剩餘期數金額中扣除)
+        </el-form-item>
+        <el-form-item label="躉繳優惠" prop="sp_rate" class="percent_input_size">
+          <el-input v-model="editForm.sp_rate" class="inputcharge"></el-input>％
+        </el-form-item>
+        <el-form-item label="躉繳優惠期間">
+          <el-date-picker
+            v-model="editForm.addtxtrate"
+            type="datetimerange"
+            format="yyyy-MM-dd HH:hh"
+            value-format="yyyy-MM-dd HH:hh"
+            range-separator="至"
+            start-placeholder="開始日期"
+            end-placeholder="結束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="躉繳優惠人數上限" prop="sp_people_limit" class="percent_input_size">
+          <el-input v-model="editForm.sp_people_limit" class="inputcharge"></el-input>人
+        </el-form-item>
+         <el-form-item label="躉繳優惠金額上限(每月)" prop="sp_maxAmount" class="percent_input_size">
+          <el-input v-model="editForm.sp_maxAmount" class="inputcharge"></el-input>人
+        </el-form-item>
+      </el-form>
+      <!-- 底部區域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="fixedInvestment">儲 存</el-button>
+      </span>
+    </el-dialog>
 <!-- 餘額不足 -->
     <el-dialog title="餘額不足名單" :visible.sync="balancePeopleVisible" width="60%" >
         <div>定投名稱：BTC定投</div>
@@ -269,6 +359,7 @@ export default {
     return {
       StakingBalanceLackList: [],
       showValue: '2',
+      setStaking: [],
       StakingMemberList: [],
       people_limit: '',
       endTime: '',
@@ -462,7 +553,6 @@ export default {
     },
     async fixedInvestment () {
       this.addDialogVisible = false
-      // this.balanceVisible = false
       var data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -493,6 +583,15 @@ export default {
         }
         this.staList()
       })
+    },
+
+    async editInvestment (index, row) {
+      this.editDialogVisible = true
+      this.editForm = row
+      console.log(index)
+      console.log(row)
+      console.log('1234')
+      console.log(this)
     },
     joinPeople (index, row) {
       this.joinform = row

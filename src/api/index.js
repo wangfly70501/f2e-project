@@ -569,3 +569,11 @@ export const addStaking = query => {
     data: query
   })
 }
+// 修改定投
+export const setStaking = query => {
+  return request({
+    url: './taskapi?method=setStaking',
+    method: 'post',
+    data: query
+  })
+}
