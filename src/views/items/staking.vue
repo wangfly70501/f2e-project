@@ -250,7 +250,7 @@
 import {
   currencyList,
 
-  info_behavior,
+  // info_behavior,
   createCharge,
   getStakingList
 } from '../../api/index.js'
