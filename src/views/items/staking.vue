@@ -485,14 +485,14 @@ export default {
       })
     },
     balancePeople (index, row) {
-      this.joinform = row
-      console.log('111', this.joinform)
+      this.lackform = row
       this.balancePeopleVisible = true
       let data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        staking_id: this.joinform.id
+        staking_id: this.lackform.id,
+        purchase_day: '06'
       }
       getStakingBalanceLackList(data).then(res => {
         this.StakingBalanceLackList = res.data
