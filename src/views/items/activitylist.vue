@@ -121,6 +121,20 @@
             </el-form-item>
           </span>
         </div>
+                 <div class="text">
+          <span>連結網址</span><span class="description">
+            <el-form-item label="網址" >
+              <el-input v-model="editForm.link_url" style="width:400px" ></el-input>
+            </el-form-item>
+                <el-form-item   label="簡中網址" >
+              <el-input v-model="editForm.link_url_cn" style="width:400px" ></el-input>
+            </el-form-item>
+                  <el-form-item   label="英文網址" >
+              <el-input v-model="editForm.link_url_en" style="width:400px" ></el-input>
+                <div style="color:#F78989"> （請輸入完整網址，如https://www.google.com）</div>
+            </el-form-item>
+            </span>
+        </div>
       </el-form>
       <!-- 活動機制 -->
       <div class="txt">

@@ -100,8 +100,8 @@
       ></el-pagination>
 
 <!-- 建立定投 -->
-    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="50%" >
-      <el-form  :model="addForm" ref="addFormRef" label-width="130px" class="addform">
+    <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="60%" >
+      <el-form  :model="addForm" ref="addFormRef" label-width="100px" class="addform">
 
         <el-form-item label="前台顯示" prop="show_status">
                      <el-switch
@@ -139,7 +139,7 @@
         </el-form-item>
         <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
           <el-input v-model="addForm.minAmount" class="inputcharge"></el-input>
-          {{addForm.currency_basic}}
+         <span v-if="addForm.currency_basic==23">USDT</span>
         </el-form-item>
         <el-form-item label="定投日期" prop="purchase_day">
         <div class="orange-text">每月6日、16日、26日 早上10:00</div>
@@ -153,7 +153,7 @@
 <hr class="hr-style1">
 <div class="subtitle">躉繳</div>
         <el-form-item label="躉繳違約手續費" prop="sp_quit_rate" class="percent_input_size" >
-          <el-input v-model="addForm.sp_quit_rate" class="inputcharge"></el-input>％（從剩餘期數金額中扣除)
+          <el-input v-model="addForm.sp_quit_rate" class="inputcharge"></el-input>％ <br/>（從剩餘期數金額中扣除)
         </el-form-item>
         <el-form-item label="躉繳優惠" prop="sp_rate" class="percent_input_size">
           <el-input v-model="addForm.sp_rate" class="inputcharge"></el-input>％
@@ -173,12 +173,12 @@
           <el-input v-model="addForm.sp_people_limit" class="inputcharge"></el-input>人
         </el-form-item>
          <el-form-item label="躉繳優惠金額上限(每月)" prop="sp_maxAmount" class="percent_input_size">
-          <el-input v-model="addForm.sp_maxAmount" class="inputcharge"></el-input>人
+          <el-input v-model="addForm.sp_maxAmount" class="inputcharge"></el-input><span v-if="addForm.currency_basic==23">USDT</span>
         </el-form-item>
       </el-form>
       <!-- 底部區域 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button @click="canceladd">取 消</el-button>
         <el-button type="primary" @click="fixedInvestment">儲 存</el-button>
       </span>
     </el-dialog>
@@ -523,6 +523,25 @@ export default {
         this.StakingBalanceLackList = res.data
         console.log('StakingBalanceLackList', this.StakingBalanceLackList)
       })
+    },
+    canceladd () {
+      this.addForm.title_GR = ''
+      this.addForm.title_CN = ''
+      this.addForm.title_US = ''
+      this.addForm.minAmount = ''
+      this.addForm.currency_basic = ''
+      this.addForm.currency_purchase = ''
+      this.addForm.rate_deal = ''
+      this.addForm.rate_purchase = ''
+      this.addForm.rate_purchase = ''
+      this.addForm.show_status = ''
+      this.addForm.sp_quit_rate = ''
+      this.addForm.sp_rate = ''
+      this.addForm.addtxtrate[0] = ''
+      this.addForm.addtxtrate[1] = ''
+      this.addForm.sp_people_limit = ''
+      this.addForm.sp_maxAmount = ''
+      this.addDialogVisible = false
     }
   }
 }
@@ -584,7 +603,7 @@ width:40%;
 width:40%;
 }
 .inputcharge{
-  width: 90%;
+  width: 80%;
 }
 .addform{
   padding:0 60px;
