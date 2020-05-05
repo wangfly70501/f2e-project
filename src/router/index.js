@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
+
 // 路由分组懒加载定义
 const Login = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Login.vue')
 const Home = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../views/Home.vue')
@@ -39,56 +41,66 @@ const manger = () => import(/* webpackChunkName: "service_Charges" */ '../views/
 const role = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/role.vue')
 const right = () => import(/* webpackChunkName: "service_Charges" */ '../views/maneger/right.vue')
 Vue.use(VueRouter)
+Vue.use(store)
 
 const routes = [
   { path: '/', redirect: '/login' },
-  { path: '/login', component: Login },
-  { path: '/login', redirect: '/forgetpsw' },
-  { path: '/forgetpsw', component: Forgetpsw },
-  { path: '/login', redirect: '/resetpassword' },
-  { path: '/resetpassword', component: Resetpassword },
+  { path: '/login', name: 'login', component: Login },
+  { path: '/login', name: 'login', redirect: '/forgetpsw' },
+  { path: '/forgetpsw', name: 'forgetpsw', component: Forgetpsw },
+  { path: '/login', name: 'login', redirect: '/resetpassword' },
+  { path: '/resetpassword', name: 'resetpassword', component: Resetpassword },
   {
     path: '/home',
     redirect: '/welcome',
     component: Home,
     children: [
-      { path: '/welcome', component: Welcome },
-      { path: '/users', component: Users },
-      { path: '/rights', component: Rights },
-      { path: '/roles', component: Roles },
-      { path: '/forgetpsw', component: Forgetpsw },
-      { path: '/charge', component: Charge },
-      { path: '/deposit', component: Deposit },
-      { path: '/member', component: Member },
-      { path: '/membercatch', component: Membercatch },
-      { path: '/blackmember', component: Blackmember },
-      { path: '/banner', component: Banner },
-      { path: '/bankset', component: Bankset },
-      { path: '/realname', component: Realname },
-      { path: '/realnamepic', component: Realnamepic },
-      { path: '/revenue', component: Revenue },
-      { path: '/transaction', component: Transaction },
-      { path: '/userlevel', component: Userlevel },
-      { path: '/faq', component: Faq },
-      { path: '/faqadd', component: faqadd },
-      { path: '/lockup', component: Lockup },
-      { path: '/lockuplist', component: Lockuplist },
-      { path: '/markdown', component: Markdown },
-      { path: '/maintain', component: maintain },
-      { path: '/withdrawlimit', component: Withdrawlimit },
-      { path: '/activity', component: activity },
-      { path: '/activitylist', component: activitylist },
-      { path: '/addaclist', component: addaclist },
-      { path: '/test', component: test },
-      { path: '/activitymem', component: activitymem },
-      { path: '/setstatus', component: setstatus },
-      { path: '/manger', component: manger },
-      { path: '/staking', component: staking },
-      { path: '/role', component: role },
-      { path: '/right', component: right }
+      { path: '/welcome', name: 'welcome', component: Welcome },
+      { path: '/users', name: 'users', component: Users },
+      { path: '/rights', name: 'rights', component: Rights },
+      { path: '/roles', name: 'roles', component: Roles },
+      { path: '/forgetpsw', name: 'forgetpsw', component: Forgetpsw },
+      { path: '/charge', name: 'charge', component: Charge },
+      { path: '/deposit', name: 'deposit', component: Deposit },
+      { path: '/member', name: 'member', component: Member },
+      { path: '/membercatch', name: 'membercatch', component: Membercatch },
+      { path: '/blackmember', name: 'blackmember', component: Blackmember },
+      { path: '/banner', name: 'banner', component: Banner },
+      { path: '/bankset', name: 'bankset', component: Bankset },
+      { path: '/realname', name: 'realname', component: Realname },
+      { path: '/realnamepic', name: 'realnamepic', component: Realnamepic },
+      { path: '/revenue', name: 'revenue', component: Revenue },
+      { path: '/transaction', name: 'transaction', component: Transaction },
+      { path: '/userlevel', name: 'userlevel', component: Userlevel },
+      { path: '/faq', name: 'faq', component: Faq },
+      { path: '/faqadd', name: 'faqadd', component: faqadd },
+      { path: '/lockup', name: 'lockup', component: Lockup },
+      { path: '/lockuplist', name: 'lockuplist', component: Lockuplist },
+      { path: '/markdown', name: 'markdown', component: Markdown },
+      { path: '/maintain', name: 'maintain', component: maintain },
+      { path: '/withdrawlimit', name: 'withdrawlimit', component: Withdrawlimit },
+      { path: '/activity', name: 'activity', component: activity },
+      { path: '/activitylist', name: 'activitylist', component: activitylist },
+      { path: '/addaclist', name: 'addaclist', component: addaclist },
+      { path: '/test', name: 'test', component: test },
+      { path: '/activitymem', name: 'activitymem', component: activitymem },
+      { path: '/setstatus', name: 'setstatus', component: setstatus },
+      { path: '/staking', name: 'staking', component: staking },
+      { path: '/role', name: 'role', component: role },
+      { path: '/right', name: 'right', component: right }
     ]
   }
 ]
+
+const authChecking = (to) => {
+  let isAllowEnter = false
+  if (!store.getters.isAuthed) {
+    store.dispatch('getRolePermissions')
+  }
+  let allowPage = [...store.getters.allowPage, ...store.getters.pageWhiteList]
+  isAllowEnter = allowPage.indexOf(to.name.toUpperCase()) > -1
+  return isAllowEnter
+}
 
 const router = new VueRouter({
   routes
@@ -96,14 +108,31 @@ const router = new VueRouter({
 
 // 权限控制导航守卫
 router.beforeEach((to, from, next) => {
-  const tokenStr = window.sessionStorage.getItem('token')
+  const tokenStr = window.localStorage.getItem('token')
+  const allowEnter = authChecking(to)
 
-  if (to.path === '/login') {
-    if (tokenStr) return next('/home')
-    next()
-  } else {
-  /*   if (!tokenStr) return next('/login') */
-    next()
+  if (tokenStr && tokenStr !== '') {
+    if (!store.getters.isAuthed && to.path !== '/login') { // 沒取到就先返回
+      window.sessionStorage.setItem('previewPage', to.name)
+      return next('/login')
+    }
+    if (allowEnter) {
+      next()
+    } else {
+      router.app.$message.error('您無該頁面權限')
+      if (from) {
+        next(from.name)
+      } else {
+        next(to.name)
+      }
+    }
+  } else { // 未登入
+    if (to.path === '/login') {
+      next()
+    } else {
+      router.app.$message.error('請登入')
+      next('/login')
+    }
   }
 })
 
