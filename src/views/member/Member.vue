@@ -263,7 +263,7 @@ export default {
       }
       await userData(data).then(res => {
         this.userList = res.data
-        localStorage.setItem('alllist', res.pagination.total_record)
+        sessionStorage.setItem('alllist', res.pagination.total_record)
 
         console.log('1323', this.alllist)
         this.total = res.pagination.total_record
@@ -299,7 +299,7 @@ export default {
       const th = ['UID', '會員姓名', '信箱', '手機', '安全等級', '提領上限', '台幣資產', '註冊時間']
       const filterVal = ['uuid', 'username', 'email', 'mobile', 'securityLevel', 'limitday', 'amount', 'ctime']
       const data = this.allmemlist.map(v => filterVal.map(k => v[k]))
-      const [fileName, fileType, sheetName] = ['匯出會員' + Today, 'xlsx', '匯出會員']
+      const [fileName, fileType, sheetName] = ['會員名單' + Today, 'xlsx', '會員名單']
       this.$toExcel({ th, data, fileName, fileType, sheetName })
     },
     async getallUserList () {
@@ -307,7 +307,7 @@ export default {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
         mg_state: localStorage.getItem('mg_state'),
-        paginate: localStorage.getItem('alllist'),
+        paginate: sessionStorage.getItem('alllist'),
         page: this.queryInfo.pagenum,
         searchValue: this.searchlist,
         searchBlacklist: this.enablevalue,
@@ -318,7 +318,6 @@ export default {
       console.log('data', data)
       await userData(data).then(res => {
         this.allmemlist = res.data
-        this.total = res.pagination.total_record
       })
     }
   }
