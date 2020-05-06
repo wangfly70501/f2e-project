@@ -87,7 +87,8 @@ const routes = [
       { path: '/setstatus', name: 'setstatus', component: setstatus },
       { path: '/staking', name: 'staking', component: staking },
       { path: '/role', name: 'role', component: role },
-      { path: '/right', name: 'right', component: right }
+      { path: '/right', name: 'right', component: right },
+      { path: '/manger', name: 'manger', component: manger }
     ]
   }
 ]
