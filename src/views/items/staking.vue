@@ -269,7 +269,8 @@
         </el-form-item>
         <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
           <el-input v-model="editForm.minAmount" class="inputcharge" type="number"></el-input>
-          {{editForm.currency_basic}}
+          <!-- {{editForm.currency_basic}} -->
+          <span v-if="editForm.currency_basic==23">USDT</span>
         </el-form-item>
         <el-form-item label="定投日期" prop="purchase_day">
         <div class="orange-text">每月6日、16日、26日 早上10:00</div>
