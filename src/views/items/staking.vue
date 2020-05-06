@@ -47,19 +47,19 @@
           每月 {{scope.row.purchase_day}} 日
           </template>
         </el-table-column>
-        <el-table-column label="成交手續費" align="center" w prop="rate_deal">
+        <el-table-column label="成交手續費" align="center"  prop="rate_deal">
           <template slot-scope="scope">
           {{scope.row.rate_deal}} %
             </template>
         </el-table-column>
         <el-table-column label="代買手續費" align="center"  prop="rate_purchase">
           <template slot-scope="scope">
-          {{scope.row.rate_purchase}} %
+          {{scope.row.rate_purchase*100}} %
           </template>
         </el-table-column>
         <el-table-column label="躉繳優惠" align="center"  prop="sp_rate">
           <template slot-scope="scope">
-           {{scope.row.sp_rate}} %
+           {{scope.row.sp_rate*100}} %
           </template>
         </el-table-column>
         <el-table-column label="開放期限" align="left" width="150%" >
@@ -485,7 +485,6 @@ export default {
     this.getCurrencyList()
     this.staBalanceLackList()
     this.objList()
-    this.updateStaking()
   },
 
   methods: {
@@ -611,13 +610,15 @@ export default {
       this.editDialogVisible = true
       console.log('!!!', row)
       this.editForm = { ...row }
+      this.editForm.rate_purchase = Number(this.editForm.rate_purchase) * 100
+      this.editForm.sp_quit_rate = Number(this.editForm.sp_quit_rate) * 100
+      this.editForm.sp_rate = Number(this.editForm.sp_rate) * 100
     //   this.editForm = Object.assign({}, row)
     //   console.log(index)
     //   console.log('1234', this.editForm)
     //   console.log(this)
     },
     async updateStaking () {
-      // this.editDialogVisible = false
       var data = {
         mg_name: localStorage.getItem('mg_name'),
         mg_pwd: localStorage.getItem('mg_pwd'),
@@ -638,11 +639,13 @@ export default {
         sp_endtime: this.editForm.sp_endtime,
         sp_people_limit: this.editForm.sp_people_limit,
         sp_maxAmount: this.editForm.sp_maxAmount,
-        staking_id: this.editForm.staking_id
+        staking_id: this.editForm.id
       }
+      console.log('$$$$$$$$$', data)
       await setStaking(data).then(res => {
         if (res.error_code === 0) {
           this.$message.success('儲存成功')
+          this.editDialogVisible = false
         } else {
           this.$message.error('儲存錯誤')
         }
