@@ -43,9 +43,9 @@
           </template>
         </el-table-column>
         <el-table-column label="定投日期"  align="center"  style="background-color:#FFFFF1"  prop="purchase_day">
-          <template slot-scope="scope">
-          每月 {{scope.row.purchase_day}} 日
-          </template>
+
+          每月6,16,26日
+
         </el-table-column>
         <el-table-column label="成交手續費" align="center"  prop="rate_deal">
           <template slot-scope="scope">
