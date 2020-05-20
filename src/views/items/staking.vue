@@ -105,7 +105,7 @@
 
 <!-- 建立定投 -->
     <el-dialog title="建立定投" :visible.sync="addDialogVisible" width="60%" >
-      <el-form  :model="addForm" ref="addFormRef" label-width="100px" class="addform">
+      <el-form  :model="addForm" ref="addFormRef" label-width="120px" class="addform">
 
         <el-form-item label="前台顯示" prop="show_status">
                      <el-switch
@@ -141,7 +141,7 @@
             <el-option label="BTC" value="24"></el-option>
         </el-select>
         </el-form-item>
-        <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
+        <el-form-item label="最低認購(每月)" prop="minAmount" class="title_input_size">
           <el-input v-model="addForm.minAmount" class="inputcharge"></el-input>
          <span v-if="addForm.currency_basic==23">USDT</span>
         </el-form-item>
@@ -267,7 +267,7 @@
             <el-option label="BTC" value="24"></el-option>
         </el-select>
         </el-form-item>
-        <el-form-item label="最低認購" prop="minAmount" class="title_input_size">
+        <el-form-item label="最低認購(每月)" prop="minAmount" class="title_input_size">
           <el-input v-model="editForm.minAmount" class="inputcharge" type="number"></el-input>
           <!-- {{editForm.currency_basic}} -->
           <span v-if="editForm.currency_basic==23">USDT</span>
@@ -315,7 +315,7 @@
           <el-input v-model="editForm.sp_people_limit" class="inputcharge" type="number"></el-input>人
         </el-form-item>
          <el-form-item label="躉繳優惠金額上限(每月)" prop="sp_maxAmount" class="percent_input_size">
-          <el-input v-model="editForm.sp_maxAmount" class="inputcharge" type="number"></el-input>人
+          <el-input v-model="editForm.sp_maxAmount" class="inputcharge" type="number"></el-input><span v-if="editForm.currency_basic==23">USDT</span>
         </el-form-item>
       </el-form>
       <!-- 底部區域 -->

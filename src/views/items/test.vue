@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -57,7 +58,13 @@ export default {
       endBudgetTime: '' // 預算結束時間
     }
   },
+  created () {
+    this.timeee()
+  },
   methods: {
+    timeee () {
+      console.log(moment.format())
+    },
     // 結束時間限制開始時間
     changeStart () {
       if (!this.endBudgetTime) {

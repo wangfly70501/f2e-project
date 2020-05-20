@@ -201,7 +201,7 @@
         </el-form-item>
           <el-form-item label="獎勵次數" prop="bonus_limit">
          <!--  <el-input v-model="addForm.people_limit" style="width:80px"></el-input> &nbsp; -->
-          <el-input-number v-model="addForm.bonus_limit" :min="1" :max="10" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
+          <el-input-number v-model="addForm.bonus_limit" :min="0" :max="999999" size="mini"></el-input-number>&nbsp;次，超過此次數及停止派發獎勵
         </el-form-item>
         <hr width="80%" />
          </el-form >
