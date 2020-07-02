@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { signup, login } from '../api/index.js'
+import { signup } from '../api/index.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -137,41 +137,8 @@ export default {
     })
   },
   methods: {
-    async login () {
-      let data = {
-        mg_name: this.loginForm.username,
-        mg_pwd: this.loginForm.password
-      }
-
-      await login(data).then(res => {
-        if (res.error_code !== 0) {
-          console.log('res.error_code ', res.error_code)
-          return this.$message.error('登入失敗，請確認帳號密碼')
-        } else if (res.error_code === 0) {
-          console.log('res.error_code ', res.error_code)
-          this.data = res.data.mg_state
-          localStorage.setItem('mg_name', this.loginForm.username)
-          localStorage.setItem('mg_pwd', this.loginForm.password)
-          localStorage.setItem('mg_state', res.data.mg_state)
-          localStorage.setItem('role_id', res.data.role_id)
-          this.$store.dispatch('getRolePermissions', {
-            mg_name: this.loginForm.username,
-            mg_pwd: this.loginForm.password,
-            mg_state: res.data.mg_state,
-            role_id: res.data.role_id
-          })
-
-          if (this.data !== 1 || this.data.mg_name === 'cccc') {
-            this.$message.error('登入失敗，請確認帳號權限')
-          } else {
-          // 登陆成功，保存token到sessionStorage，并跳转到首页
-            this.$message.success(' 登入成功')
-            window.sessionStorage.setItem('token', res.data.token)
-            window.localStorage.setItem('token', res.data.token)
-            this.$router.push('/home')
-          }
-        }
-      })
+     login () {
+    this.$router.push('/home')
     },
 
     // 目前用不道 2020-03
