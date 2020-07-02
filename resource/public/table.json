@@ -1,0 +1,29 @@
+{
+    "list": [{
+            "id": 1,
+            "Usr": "user1",
+            "Coin": "TWD",
+            "ApplicationAmount": "10000",
+            "DealAmount":"5000",
+            "Bank": "中國信託",
+            "Cost":"10",
+            "date": "2019-11-11",
+            "payment": "入金",
+            "test":"測試"
+        },  
+        {
+            "id": 2,
+            "Usr": "user",
+            "Coin": "BTC",
+            "ApplicationAmount": "10000",
+            "DealAmount":"5000",
+            "Bank": "中國信託",
+            "Cost":"10",
+            "date": "2019-11-12",
+            "payment": "入金",
+            "test":"測試"
+        }
+        
+    ],
+    "pageTotal": 12
+}
