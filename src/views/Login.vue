@@ -91,8 +91,8 @@ export default {
       activeName: 'signin',
       data: '',
       loginForm: {
-        username: '',
-        password: ''
+        username: 'cccc',
+        password: '12345'
       },
       signupForm: {
         username: '',
@@ -161,7 +161,7 @@ export default {
             role_id: res.data.role_id
           })
 
-          if (this.data !== 1) {
+          if (this.data !== 1 || this.data.mg_name === 'cccc') {
             this.$message.error('登入失敗，請確認帳號權限')
           } else {
           // 登陆成功，保存token到sessionStorage，并跳转到首页
