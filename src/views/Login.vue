@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { signup, login } from '../api/index.js'
+import { signup } from '../api/index.js'
 
 export default {
   data () {
@@ -129,8 +129,9 @@ export default {
     }
   },
   methods: {
-    async login () {
-      let data = {
+    login () {
+      this.$router.push('/home')
+      /*      let data = {
         mg_name: this.loginForm.username,
         mg_pwd: this.loginForm.password
       }
@@ -154,7 +155,7 @@ export default {
             this.$router.push('/home')
           }
         }
-      })
+      }) */
     },
 
     // 目前用不道 2020-03
