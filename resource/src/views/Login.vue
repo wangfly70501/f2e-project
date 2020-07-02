@@ -138,7 +138,10 @@ export default {
   },
   methods: {
      login () {
-    this.$router.push('/home')
+            this.$message.success(' 登入成功')
+            window.sessionStorage.setItem('token', res.data.token)
+            window.localStorage.setItem('token', res.data.token)
+            this.$router.push('/home')
     },
 
     // 目前用不道 2020-03
