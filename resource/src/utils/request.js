@@ -3,11 +3,7 @@ import axios from 'axios'
 /* export const BeApiUrl = process.env.VUE_APP_BE_API_URL */
 
 const service = axios.create({
-  // process.env.NODE_ENV === 'development' 来判断是否开发环境
-  // easy-mock服务挂了，暂时不使用了
-  /*  baseURL: 'http://192.168.50.105:7777' */
-  /* baseURL: window.location.protocol + '//btcbox.com.tw:7777' */
-  /* baseURL: 'http://192.168.50.156:7777' */
+
   baseURL: process.env.VUE_APP_BE_API_URL
 })
 
